@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pizza extends Producto{
-    public enum SIZE {GRANDE,PEQUEÑA,MEDIANA}
     private SIZE tamanyo;
     private List<Ingrediente>listaIngredientesPizza = new ArrayList<>();
 
