@@ -4,6 +4,8 @@ public class LineaPedido {
     private int id;
     private int cantidad;
 
+    private Pedido pedido;
+
     public LineaPedido(int id, int cantidad) {
         this.id = id;
         this.cantidad = cantidad;

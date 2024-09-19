@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Pedido {
+public class Pedido implements Pagable{
     private int id;
     private Date fecha;
     private float precioTotal;
@@ -17,7 +17,6 @@ public class Pedido {
         this.precioTotal = precioTotal;
         this.estado = estado;
     }
-
 
     public int getId() {
         return id;
@@ -49,6 +48,11 @@ public class Pedido {
 
     public void setEstado(EstadoPedido estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public void pagar(double cantidad) {
+        
     }
 
 }
