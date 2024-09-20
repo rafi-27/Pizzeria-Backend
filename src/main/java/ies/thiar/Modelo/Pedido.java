@@ -12,11 +12,9 @@ public class Pedido {
     private List<LineaPedido>lineaPedido = new ArrayList<>();
     private Pagable pago;
 
-    public Pedido(int id, Date fecha, float precioTotal, EstadoPedido estado) {
-        this.id = id;
-        this.fecha = fecha;
+    public Pedido() {
+        this.fecha = new Date();
         this.precioTotal = precioTotal;
-        this.estado = estado;
     }
 
     public int getId() {
@@ -53,5 +51,9 @@ public class Pedido {
 
     public void setPago(Pagable pago) {
         this.pago = pago;
+    }
+
+    public void carrito(){
+        
     }
 }

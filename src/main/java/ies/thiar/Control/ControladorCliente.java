@@ -7,13 +7,13 @@ public class ControladorCliente {
     private Cliente clienteActual;
     
 
-    //registrarCliente para agregar un cliente
+    //registrarCliente(--------) para agregar un cliente, Crear objeto , meter en tabla
     
-    //loginCliente para logearse
+    //boolean loginCliente(correo, password) para logearse: buscar en tabla, check contrasenya si existe clienteActual = lo buscamos
 
-    //despues de logearte usar clienteActual()
+    //despues de logearte usar clienteActual() va en login
 
-    //agregarLineaPedido()
+    //agregarLineaPedido(Producto p, Cantidad) ya despues del login. este llamo al controlador pedido hariamos un controladoPedido.agregarlineaPedido. esta 
 
 
 
