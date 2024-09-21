@@ -14,7 +14,7 @@ public class Pedido {
 
     public Pedido() {
         this.fecha = new Date();
-        this.precioTotal = precioTotal;
+        this.precioTotal = 0;
     }
 
     public int getId() {
@@ -53,7 +53,8 @@ public class Pedido {
         this.pago = pago;
     }
 
-    public void carrito(){
-        
+    public void anyadirCarrito(Producto p, int canti){
+        lineaPedido.add(new LineaPedido(p, canti));
+        this.precioTotal+=p.getPrecio()*canti;
     }
 }

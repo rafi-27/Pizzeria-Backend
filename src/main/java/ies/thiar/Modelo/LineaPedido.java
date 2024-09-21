@@ -3,20 +3,17 @@ package ies.thiar.Modelo;
 public class LineaPedido {
     private int id;
     private int cantidad;
+    private Producto p;
 
     private Pedido pedido;
 
-    public LineaPedido(int id, int cantidad) {
-        this.id = id;
+    public LineaPedido(Producto a, int cantidad) {
+        this.p=a;
         this.cantidad = cantidad;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getCantidad() {
