@@ -53,4 +53,11 @@ public class Pedido {
     public double getPrecioTotal(){
         return this.precioTotal+=lineaPedido.stream().mapToDouble(LineaPedido::getPrecioSubtotal).sum();
     }
+
+    @Override
+    public String toString() {
+        return "Pedido [id=" + id + ", fecha=" + fecha + ", precioTotal=" + getPrecioTotal() + ", estado=" + estado
+                + ", lineaPedido=" + lineaPedido + ", pago=" + pago + "]";
+    }
+    
 }

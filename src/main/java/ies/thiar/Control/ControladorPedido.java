@@ -6,14 +6,14 @@ import ies.thiar.Modelo.Pedido;
 import ies.thiar.Modelo.Producto;
 
 public class ControladorPedido {
-    private Pedido pedidoActual;
+    private static Pedido pedidoActual;
     //si es null no lo creo si no lo creo
     //pedidoActual
     //Flujo estados: Pendiente, cancelar o finalizar si es finalizar entregado
 
     
     //agregarLineaPedido(Producto p)
-    public void agregarLineaPedido(Producto producto,int cantidad){
+    public static void agregarLineaPedido(Producto producto,int cantidad){
         if(pedidoActual==null){
             pedidoActual = new Pedido();
             pedidoActual.setEstado(EstadoPedido.PENDIENTE);
@@ -27,7 +27,7 @@ public class ControladorPedido {
     
     
     //finalizarPedido(Pagable metodoApaar) entregado y gestionar forma de pago.
-    public void finalizarPedido(Pagable metodoPagar){
+    public static void finalizarPedido(Pagable metodoPagar){
         if (pedidoActual.getEstado()==EstadoPedido.ENTREGADO) {
             System.err.println("El pedido ya fue pagado bro");
         }else{
@@ -48,6 +48,10 @@ public class ControladorPedido {
     public void cancelarPedido(){
         pedidoActual.setEstado(EstadoPedido.CANCELADO);
         pedidoActual = null;
+    }
+
+    public static Pedido pedidoAct(){
+        return pedidoActual;
     }
 
 

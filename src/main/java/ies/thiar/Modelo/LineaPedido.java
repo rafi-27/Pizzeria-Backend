@@ -28,4 +28,10 @@ public class LineaPedido {
         return p.getPrecio()*cantidad;
     }
 
+    @Override
+    public String toString() {
+        return "Producto [id=" + id + ", nombre=" + p.getNombre() + ", precio=" + p.getPrecio() + "]";
+    }
+    
+
 }

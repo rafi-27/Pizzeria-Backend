@@ -11,4 +11,9 @@ public class Pizza extends Producto{
         super(id, nombre, precio);
         this.tamanyo=tam;
     }
+
+    @Override
+    public String toString() {
+        return "Pizza [tamanyo=" + tamanyo + ", listaIngredientesPizza=" + listaIngredientesPizza + "]";
+    }
 }
