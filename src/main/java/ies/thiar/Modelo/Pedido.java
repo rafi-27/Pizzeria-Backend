@@ -7,10 +7,11 @@ import java.util.List;
 public class Pedido {
     private int id;
     private Date fecha;
-    private float precioTotal;
+    private double precioTotal;
     private EstadoPedido estado;
     private List<LineaPedido>lineaPedido = new ArrayList<>();
     private Pagable pago;
+    private Cliente cliente;
 
     public Pedido() {
         this.fecha = new Date();
@@ -33,14 +34,6 @@ public class Pedido {
         this.fecha = fecha;
     }
 
-    public double getPrecioTotal() {
-        return precioTotal;
-    }
-
-    public void setPrecioTotal(float precioTotal) {
-        this.precioTotal = precioTotal;
-    }
-
     public EstadoPedido getEstado() {
         return estado;
     }
@@ -55,6 +48,9 @@ public class Pedido {
 
     public void anyadirCarrito(Producto p, int canti){
         lineaPedido.add(new LineaPedido(p, canti));
-        this.precioTotal+=p.getPrecio()*canti;
+    }
+
+    public double getPrecioTotal(){
+        return this.precioTotal+=lineaPedido.stream().mapToDouble(LineaPedido::getPrecioSubtotal).sum();
     }
 }

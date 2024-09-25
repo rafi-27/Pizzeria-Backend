@@ -24,4 +24,8 @@ public class LineaPedido {
         this.cantidad = cantidad;
     }
 
+    public double getPrecioSubtotal(){
+        return p.getPrecio()*cantidad;
+    }
+
 }
