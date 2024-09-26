@@ -48,9 +48,6 @@ public class Pruebas {
 
         System.out.println(pedido);
         
-        
-
-
 
 
         Pedido dos = ControladorPedido.pedidoAct();
