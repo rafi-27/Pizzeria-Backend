@@ -29,7 +29,7 @@ public class ControladorCliente {
     }
     
     //agregarLineaPedido(Producto p, Cantidad) ya despues del login. este llamo al controlador pedido hariamos un controladoPedido.agregarlineaPedido. esta 
-    public void agregarLineaPedido(Producto p,int Cantidad){
-        ControladorPedido.agregarLineaPedido(p, Cantidad);
+    public void agregarLineaPedido(Producto p,int Cantidad,Cliente cliente) throws IllegalAccessException{
+        ControladorPedido.agregarLineaPedido(p, Cantidad,cliente);
     }
 }

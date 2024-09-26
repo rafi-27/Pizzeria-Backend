@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ies.thiar.Control.ControladorCliente;
+
 public class Pedido {
     private int id;
     private Date fecha;
@@ -13,9 +15,10 @@ public class Pedido {
     private Pagable pago;
     private Cliente cliente;
 
-    public Pedido() {
+    public Pedido(Cliente c) {
         this.fecha = new Date();
         this.precioTotal = 0;
+        this.cliente=c;
     }
 
     public int getId() {
@@ -52,6 +55,9 @@ public class Pedido {
 
     public double getPrecioTotal(){
         return this.precioTotal+=lineaPedido.stream().mapToDouble(LineaPedido::getPrecioSubtotal).sum();
+    }
+    public Cliente getCliente(){
+        return this.cliente;
     }
 
     @Override
