@@ -6,8 +6,8 @@ import ies.thiar.Control.ControladorPedido;
 public class Pruebas {
     public static void main(String[] args) {
         //Creamos un cliente:
-        Cliente cliente1 = new Cliente(0,"22222222e", "Rafe","calle real madrid","632548220","null@gmail.com", "1234");
-        Cliente cliente2 = new Cliente(0,"22222222e", "Rafe","calle real madrid","632548220","null@gmail.com", "1234");
+        Cliente cliente1 = new Cliente(0,"22222222e", "Rafe","calle real madrid","632548220","null@gmail.com", "1234",false);
+        Cliente cliente2 = new Cliente(0,"22222222e", "Rafe","calle real madrid","632548220","null@gmail.com", "1234",false);
 
         //Pantalla inicio
         ControladorCliente controlCliente = new ControladorCliente();

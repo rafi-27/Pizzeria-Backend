@@ -17,11 +17,14 @@ public class Cliente {
     private String email;
     private String password;
     private List<Pedido> listaPedidos = new ArrayList<>();
+
+    //Nuevo atributo
+    private boolean esAdministrador;
     
     
     //Constructor:
     public Cliente(int id, String dni, String nombre, String direccion, String telefono, String email,
-            String password) {
+            String password,boolean admin) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
@@ -29,6 +32,7 @@ public class Cliente {
         this.telefono = telefono;
         this.email = email;
         this.password = password;
+        this.esAdministrador=admin;
     }
 
 
@@ -93,7 +97,10 @@ public class Cliente {
     @Override
     public String toString() {
         return "Cliente [id=" + id + ", dni=" + dni + ", nombre=" + nombre + ", direccion=" + direccion + ", telefono="
-                + telefono + ", email=" + email + ", password=" + password + "]";
+                + telefono + ", email=" + email + ", password=" + password + ", esAdministrador=" + esAdministrador + "]";
     }
+
+
+    
 
 }
