@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "personas")
+@XmlRootElement(name = "Clientes")
 @XmlAccessorType(XmlAccessType.FIELD)
 
 public class ClienteWrape {
@@ -23,4 +23,9 @@ public class ClienteWrape {
     public void setListaPersonas(List<Cliente> listaPersonas) {
         this.listaPersonas = listaPersonas;
     }
+
+    public List<Cliente> getListaPersonas() {
+        return listaPersonas;
+    }
+
 }

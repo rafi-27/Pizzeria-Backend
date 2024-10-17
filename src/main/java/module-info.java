@@ -8,6 +8,6 @@ module ies.thiar {
 
     exports ies.thiar.Control;
     exports ies.thiar.Modelo;
-    
 
+    opens ies.thiar.Modelo to java.xml.bind;
 }

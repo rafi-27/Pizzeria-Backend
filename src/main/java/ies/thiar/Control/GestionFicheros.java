@@ -1,47 +1,51 @@
 package ies.thiar.Control;
+
 import java.io.*;
 import java.util.*;
-
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.ClienteWrape;;
+
 public class GestionFicheros {
-    
-    public void gestionBasicaDeFicheros() throws IOException{
-        File file = new File("admin.txt"); 
+    private static final String archivoXML = "nuevoFichero.xml";
+    private static final String archivoAdmin = "admin.txt";
+
+    public void gestionBasicaDeFicheros() throws IOException {
+        File file = new File(archivoAdmin);
         List<String> lineas = new ArrayList();
 
-        String primeraLinea="";
-        String segundaLinea="";
-        String terceraLinea="";
-        
-        if (file.exists()) { 
-            FileReader fr = new FileReader(file); 
-            BufferedReader bf = new BufferedReader(fr); 
+        String primeraLinea = "";
+        String segundaLinea = "";
+        String terceraLinea = "";
+
+        if (file.exists()) {
+            FileReader fr = new FileReader(file);
+            BufferedReader bf = new BufferedReader(fr);
             String linea;
 
-            while ((linea = bf.readLine()) != null ){ 
+            while ((linea = bf.readLine()) != null) {
                 lineas.add(linea);
             }
-            
+
             primeraLinea = lineas.get(0);
             segundaLinea = lineas.get(1);
             terceraLinea = lineas.get(2);
         }
 
-        //hacemos los split aqui:
+        // hacemos los split aqui:
         String[] primera = primeraLinea.split(";");
         String[] segunda = segundaLinea.split(" \\| ");
         String[] tercera = terceraLinea.split(",");
 
-        //vaciamos la lista para pasarle los datos correctamente.
+        // vaciamos la lista para pasarle los datos correctamente.
         lineas.clear();
-        
-        //Corregimos
+
+        // Corregimos
         for (int i = 0; i < primera.length; i++) {
             primera[i] = primera[i].trim();
         }
@@ -54,14 +58,19 @@ public class GestionFicheros {
             tercera[i] = tercera[i].trim();
         }
 
-        //probamos mapearlos a clientes.
-        List<Cliente>listaClientes = new ArrayList();
+        // probamos mapearlos a clientes.
+        List<Cliente> listaClientes = new ArrayList();
 
-        //Añadimos los clientes que ya tenemos sus datos correctos.
-        listaClientes.add(new Cliente(Integer.parseInt(primera[0]),String.valueOf(primera[1]), String.valueOf(primera[2]), String.valueOf(primera[3]), String.valueOf(primera[4]), String.valueOf(primera[5]), String.valueOf(primera[6]), true));
-        listaClientes.add(new Cliente(Integer.parseInt(segunda[0]),String.valueOf(segunda[1]), String.valueOf(segunda[2]), String.valueOf(segunda[3]), String.valueOf(segunda[4]), String.valueOf(segunda[5]), String.valueOf(segunda[6]), true));
-        listaClientes.add(new Cliente(Integer.parseInt(tercera[0]),String.valueOf(tercera[1]), String.valueOf(tercera[2]), String.valueOf(tercera[3]), String.valueOf(tercera[4]), String.valueOf(tercera[5]), String.valueOf(tercera[6]), true));
-
+        // Añadimos los clientes que ya tenemos sus datos correctos.
+        listaClientes.add(new Cliente(Integer.parseInt(primera[0]), String.valueOf(primera[1]),
+                String.valueOf(primera[2]), String.valueOf(primera[3]), String.valueOf(primera[4]),
+                String.valueOf(primera[5]), String.valueOf(primera[6]), true));
+        listaClientes.add(new Cliente(Integer.parseInt(segunda[0]), String.valueOf(segunda[1]),
+                String.valueOf(segunda[2]), String.valueOf(segunda[3]), String.valueOf(segunda[4]),
+                String.valueOf(segunda[5]), String.valueOf(segunda[6]), true));
+        listaClientes.add(new Cliente(Integer.parseInt(tercera[0]), String.valueOf(tercera[1]),
+                String.valueOf(tercera[2]), String.valueOf(tercera[3]), String.valueOf(tercera[4]),
+                String.valueOf(tercera[5]), String.valueOf(tercera[6]), true));
 
         System.out.println(listaClientes.size());
         for (Cliente client : listaClientes) {
@@ -70,24 +79,31 @@ public class GestionFicheros {
 
     }
 
-    //Exportamos en xml:
-    public void exportarAXml(){
-
-    }
-
     public void convertimosAXml(List<Cliente> listaPerson, String nombre) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(Cliente.class, ClienteWrape.class);
         Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,true);
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
         File f = new File(nombre);
         ClienteWrape p = new ClienteWrape(listaPerson);
-        marshaller.marshal(p,f);
+        marshaller.marshal(p, f);
+    }
+
+    public void importacionXml() throws JAXBException, FileNotFoundException {
+        List<Cliente> listaClientes = new ArrayList<>();
+
+        JAXBContext context = JAXBContext.newInstance(ClienteWrape.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+
+        ClienteWrape clientes = (ClienteWrape) unmarshaller.unmarshal(new FileReader(archivoXML));
+
+        listaClientes.addAll(clientes.getListaPersonas());
+
+        clientes.getListaPersonas().forEach(cliente -> System.out.println(cliente));
     }
 
 
-
-
+    
 
 
 
