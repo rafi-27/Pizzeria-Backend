@@ -2,7 +2,12 @@ package ies.thiar.Control;
 import java.io.*;
 import java.util.*;
 
-import ies.thiar.Modelo.Cliente;;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
+import ies.thiar.Modelo.Cliente;
+import ies.thiar.Modelo.ClienteWrape;;
 public class GestionFicheros {
     
     public void gestionBasicaDeFicheros() throws IOException{
@@ -63,4 +68,30 @@ public class GestionFicheros {
         }
 
     }
+
+    //Exportamos en xml:
+    public void exportarAXml(){
+
+    }
+
+    public static void convertimosAXml(List<Cliente> listaPerson, String nombre) throws JAXBException {
+        JAXBContext context = JAXBContext.newInstance(Cliente.class, ClienteWrape.class);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,true);
+
+        File f = new File(nombre);
+        ClienteWrape p = new ClienteWrape(listaPerson);
+        marshaller.marshal(p,f);
+    }
+
+
+
+
+
+
+
+
+
+
+
 }
