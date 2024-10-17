@@ -2,6 +2,7 @@ package ies.thiar.Control;
 import java.io.*;
 import java.util.*;
 
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -74,7 +75,7 @@ public class GestionFicheros {
 
     }
 
-    public static void convertimosAXml(List<Cliente> listaPerson, String nombre) throws JAXBException {
+    public void convertimosAXml(List<Cliente> listaPerson, String nombre) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(Cliente.class, ClienteWrape.class);
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,true);

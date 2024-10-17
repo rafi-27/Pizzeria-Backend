@@ -7,5 +7,7 @@ module ies.thiar {
     exports ies.thiar;
 
     exports ies.thiar.Control;
+    exports ies.thiar.Modelo;
+    
 
 }
