@@ -11,11 +11,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 
 public class ClienteWrape {
-    @XmlElement(name = "persona")
+    @XmlElement(name = "Cliente")
     private List<Cliente> listaPersonas = new ArrayList<>();
 
     public ClienteWrape() {}
-
 
     public ClienteWrape(List<Cliente> listaPersonas) {
         this.listaPersonas = listaPersonas;
