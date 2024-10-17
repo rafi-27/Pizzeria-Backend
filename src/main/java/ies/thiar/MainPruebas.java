@@ -6,8 +6,10 @@ import java.util.*;
 import ies.thiar.Control.GestionFicheros;
 import ies.thiar.Modelo.Cliente;
 
+import javax.xml.bind.JAXBException;
+
 public class MainPruebas {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JAXBException {
         GestionFicheros gestor = new GestionFicheros();
         try {
             gestor.gestionBasicaDeFicheros();
