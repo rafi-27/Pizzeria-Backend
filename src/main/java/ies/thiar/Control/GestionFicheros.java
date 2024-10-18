@@ -8,6 +8,11 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+// import com.opencsv.bean.CsvToBean;
+// import com.opencsv.bean.CsvToBeanBuilder;
+// import com.opencsv.bean.StatefulBeanToCsv;
+// import com.opencsv.bean.StatefulBeanToCsvBuilder;
+
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.ClienteWrape;;
 
@@ -17,6 +22,7 @@ public class GestionFicheros {
 
     /**
      * (3 puntos) Actividad 1. Gestión básica de ficheros.
+     * 
      * @return gestionBasicaDeFicheros
      * @throws IOException
      */
@@ -81,9 +87,9 @@ public class GestionFicheros {
 
     }
 
-
     /**
      * (3 puntos) Actividad 2. JAXB
+     * 
      * @param convertimosAXml
      * @param importacionXml
      * @throws JAXBException
@@ -108,26 +114,44 @@ public class GestionFicheros {
 
         listaClientes.addAll(clientes.getListaPersonas());
 
-        //clientes.getListaPersonas().forEach(cliente -> System.out.println(cliente));
+        // clientes.getListaPersonas().forEach(cliente -> System.out.println(cliente));
         return listaClientes;
     }
 
-
     /**
      * (4 puntos) Actividad 3. OpenCSV
+     * 
      * @return
      * @throws JAXBException
      * @throws FileNotFoundException
      */
 
-     
+    // public void leerClienteCSV(String nombre){
+    // try (FileReader fileReader = new FileReader(nombre)) {
+    // CsvToBean<Cliente> csvToBean = new CsvToBeanBuilder<Cliente>(fileReader)
+    // .withType(Cliente.class).build();
+
+    // List<Cliente> listaClientes = csvToBean.parse();
+    // System.out.println(listaClientes.size());
+
+    // listaClientes.forEach(cliente -> System.out.println(cliente.toString()));
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
+    // }
+
 
     
 
+    // public void exportarClienteCSV(String nombre,List<Cliente>listaClientes){
+    // try (PrintWriter pw = new PrintWriter(nombre+".csv")) {
+    // StatefulBeanToCsv<Cliente> beanToCsv = new
+    // StatefulBeanToCsvBuilder<Cliente>(pw).build();
+    // beanToCsv.write(listaClientes);
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
 
-
-
-
-
+    // }
 
 }
