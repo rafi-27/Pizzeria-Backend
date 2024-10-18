@@ -6,9 +6,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Cliente {
     /**
@@ -25,13 +24,9 @@ public class Cliente {
     private String telefono;
     private String email;
     private String password;
+    @XmlTransient
     private List<Pedido> listaPedidos = new ArrayList<>();
-    private List<Cliente> listaClientes = new ArrayList<>();
 
-
-    public List<Cliente> getListaClientes() {
-        return listaClientes;
-    }
 
     //Nuevo atributo
     private boolean esAdministrador;

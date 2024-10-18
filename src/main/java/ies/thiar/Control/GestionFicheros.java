@@ -15,7 +15,12 @@ public class GestionFicheros {
     private static final String archivoXML = "nuevoFichero.xml";
     private static final String archivoAdmin = "admin.txt";
 
-    public void gestionBasicaDeFicheros() throws IOException {
+    /**
+     * (3 puntos) Actividad 1. Gestión básica de ficheros.
+     * @return gestionBasicaDeFicheros
+     * @throws IOException
+     */
+    public List<Cliente> gestionBasicaDeFicheros() throws IOException {
         File file = new File(archivoAdmin);
         List<String> lineas = new ArrayList();
 
@@ -72,13 +77,17 @@ public class GestionFicheros {
                 String.valueOf(tercera[2]), String.valueOf(tercera[3]), String.valueOf(tercera[4]),
                 String.valueOf(tercera[5]), String.valueOf(tercera[6]), true));
 
-        System.out.println(listaClientes.size());
-        for (Cliente client : listaClientes) {
-            System.out.println(client.toString());
-        }
+        return listaClientes;
 
     }
 
+
+    /**
+     * (3 puntos) Actividad 2. JAXB
+     * @param convertimosAXml
+     * @param importacionXml
+     * @throws JAXBException
+     */
     public void convertimosAXml(List<Cliente> listaPerson, String nombre) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(Cliente.class, ClienteWrape.class);
         Marshaller marshaller = context.createMarshaller();
@@ -89,7 +98,7 @@ public class GestionFicheros {
         marshaller.marshal(p, f);
     }
 
-    public void importacionXml() throws JAXBException, FileNotFoundException {
+    public List<Cliente> importacionXml() throws JAXBException, FileNotFoundException {
         List<Cliente> listaClientes = new ArrayList<>();
 
         JAXBContext context = JAXBContext.newInstance(ClienteWrape.class);
@@ -99,9 +108,19 @@ public class GestionFicheros {
 
         listaClientes.addAll(clientes.getListaPersonas());
 
-        clientes.getListaPersonas().forEach(cliente -> System.out.println(cliente));
+        //clientes.getListaPersonas().forEach(cliente -> System.out.println(cliente));
+        return listaClientes;
     }
 
+
+    /**
+     * (4 puntos) Actividad 3. OpenCSV
+     * @return
+     * @throws JAXBException
+     * @throws FileNotFoundException
+     */
+
+     
 
     
 

@@ -27,5 +27,4 @@ public class ClienteWrape {
     public List<Cliente> getListaPersonas() {
         return listaPersonas;
     }
-
 }
