@@ -1,11 +1,11 @@
-package ies.thiar;
+package ies.thiar.Control;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
-import ies.thiar.Control.GestionFicheros;
 import ies.thiar.Modelo.Cliente;
+import ies.thiar.Modelo.Ingrediente;
 
 import javax.xml.bind.JAXBException;
 
@@ -61,11 +61,30 @@ public class Pruebas2 {
 
 
             /**
-             * Ejer 4
+             * Ejer 4 Exportacion
              */
+            List<Ingrediente>listaIngredientes = new ArrayList<>();
+            List<String>listaAlergenosUno = new ArrayList<>();
+            List<String>listaAlergenosDos = new ArrayList<>();
+            List<String>listaAlergenosTres = new ArrayList<>();
+
+            listaAlergenosUno.add("Lactosa");
+            listaAlergenosUno.add("Lactose");
+            listaAlergenosUno.add("Lactoso");
+
+            listaAlergenosDos.add("Leche");
+            listaAlergenosDos.add("Lechi");
+            listaAlergenosDos.add("Lechu");
+
+            listaAlergenosTres.add("Alergeno 1");
 
 
 
+            listaIngredientes.add(new Ingrediente(1, "Gambas",listaAlergenosUno));
+            listaIngredientes.add(new Ingrediente(2, "Carne kebab",listaAlergenosDos));
+            listaIngredientes.add(new Ingrediente(3, "Queso",listaAlergenosTres));
+
+            gestor.exportarClienteCSV("FicheroCSV",listaIngredientes);
 
 
 

@@ -1,7 +1,5 @@
-package ies.thiar;
+package ies.thiar.Control;
 
-import ies.thiar.Control.ControladorCliente;
-import ies.thiar.Control.ControladorPedido;
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.PagarEfectivo;
 import ies.thiar.Modelo.PagarTarjeta;

@@ -1,4 +1,4 @@
-package ies.thiar.Modelo;
+package ies.thiar.Control;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import ies.thiar.Modelo.Cliente;
 
 @XmlRootElement(name = "Clientes")
 @XmlAccessorType(XmlAccessType.FIELD)

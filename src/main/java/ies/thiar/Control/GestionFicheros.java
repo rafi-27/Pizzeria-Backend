@@ -8,13 +8,17 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+
 // import com.opencsv.bean.CsvToBean;
 // import com.opencsv.bean.CsvToBeanBuilder;
 // import com.opencsv.bean.StatefulBeanToCsv;
 // import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
 import ies.thiar.Modelo.Cliente;
-import ies.thiar.Modelo.ClienteWrape;;
+import ies.thiar.Modelo.Ingrediente;
+import ies.thiar.Control.ClienteWrape;
 
 public class GestionFicheros {
     private static final String archivoXML = "nuevoFichero.xml";
@@ -140,18 +144,14 @@ public class GestionFicheros {
     // }
     // }
 
+    public void exportarClienteCSV(String nombre, List<Ingrediente> listaIngredientes) {
+        try (PrintWriter pw = new PrintWriter(nombre + ".csv")) {
+            StatefulBeanToCsv<Ingrediente> beanToCsv = new StatefulBeanToCsvBuilder<Ingrediente>(pw).withSeparator(';').build();
+            beanToCsv.write(listaIngredientes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-    
-
-    // public void exportarClienteCSV(String nombre,List<Cliente>listaClientes){
-    // try (PrintWriter pw = new PrintWriter(nombre+".csv")) {
-    // StatefulBeanToCsv<Cliente> beanToCsv = new
-    // StatefulBeanToCsvBuilder<Cliente>(pw).build();
-    // beanToCsv.write(listaClientes);
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-
-    // }
+    }
 
 }
