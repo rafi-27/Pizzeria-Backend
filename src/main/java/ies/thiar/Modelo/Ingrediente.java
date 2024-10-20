@@ -57,10 +57,6 @@ public class Ingrediente {
 
     @Override
     public String toString() {
-        return "Ingrediente{" +
-                "id=" + id +
-                ", nombre='" + nombre +
-                ", alergenos=" + listaAlergenos + '\'' +
-                '}';
+        return "Ingrediente{alergenos=" + listaAlergenos +";"+ "id=" + id + "; nombre=" + nombre;
     }
 }

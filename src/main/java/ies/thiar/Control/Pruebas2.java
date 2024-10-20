@@ -69,7 +69,9 @@ public class Pruebas2 {
             listaAlergenosDos.add("Lechi");
             listaAlergenosDos.add("Lechu");
 
-            listaAlergenosTres.add("Alergeno 1");
+            listaAlergenosTres.add("Alergeno1");
+            listaAlergenosTres.add("Alergeno1");
+            listaAlergenosTres.add("Alergeno1");
 
             listaIngredientes.add(new Ingrediente(1, "Gambas",listaAlergenosUno));
             listaIngredientes.add(new Ingrediente(2, "Carne kebab",listaAlergenosDos));
