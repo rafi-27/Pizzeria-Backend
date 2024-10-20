@@ -84,26 +84,16 @@ public class Pruebas2 {
             listaIngredientes.add(new Ingrediente(2, "Carne kebab",listaAlergenosDos));
             listaIngredientes.add(new Ingrediente(3, "Queso",listaAlergenosTres));
 
-            gestor.exportarClienteCSV("FicheroCSV",listaIngredientes);
-
-
-
-
-
+            gestor.exportarClienteCSV("ArchivoCSV",listaIngredientes);
 
              
             /**
-             * Ejer 4
+             * Ejer 4 Importacion
              */
 
-
-
-
-
-
-
-
-             
+             List<Ingrediente>listaIngredientes2 = gestor.leerClienteCSV("ArchivoCSV.csv");
+             System.out.println(listaIngredientes2.size());
+             listaIngredientes2.forEach(ingre->System.out.println(ingre.toString()));
 
         } catch (Exception e) {
             e.printStackTrace();

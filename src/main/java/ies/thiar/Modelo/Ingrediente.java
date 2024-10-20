@@ -4,26 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.opencsv.bean.CsvBindAndSplitByName;
+import com.opencsv.bean.CsvBindAndSplitByPosition;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvIgnore;
 
 public class Ingrediente {
-    @CsvBindByPosition(position = 0)
-    @CsvBindAndSplitByName(writeDelimiter = ",", elementType = String.class)
+    @CsvBindByName
+    @CsvBindAndSplitByPosition(position = 0, writeDelimiter = ",", elementType = String.class)
     private List<String> listaAlergenos = new ArrayList<>();
 
+    @CsvBindByName
     @CsvBindByPosition(position = 1)
-    @CsvBindByName
     private int id;
-    @CsvBindByPosition(position = 2)
+
     @CsvBindByName
+    @CsvBindByPosition(position = 2)
     private String nombre;
- 
-    @CsvIgnore
-    private Pizza pizza;
-    @CsvIgnore
-    private Pasta pasta;
 
     public Ingrediente(int id, String nombre, List<String> listaAlergenos) {
         this.id = id;

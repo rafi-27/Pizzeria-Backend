@@ -8,8 +8,12 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 // import com.opencsv.bean.CsvToBean;
 // import com.opencsv.bean.CsvToBeanBuilder;
@@ -124,34 +128,35 @@ public class GestionFicheros {
 
     /**
      * (4 puntos) Actividad 3. OpenCSV
+     * Importacion
+     * Exportacion
      * 
-     * @return
-     * @throws JAXBException
+     * @throws IOException
      * @throws FileNotFoundException
      */
 
-    // public void leerClienteCSV(String nombre){
-    // try (FileReader fileReader = new FileReader(nombre)) {
-    // CsvToBean<Cliente> csvToBean = new CsvToBeanBuilder<Cliente>(fileReader)
-    // .withType(Cliente.class).build();
+    public List<Ingrediente> leerClienteCSV(String ficheroIngredientes) throws FileNotFoundException, IOException {
+        List<Ingrediente>listaClientesDevolver = new ArrayList<>();
+        try (FileReader fileReader = new FileReader(ficheroIngredientes)) {
+            CsvToBean<Ingrediente> csvToBean = new CsvToBeanBuilder<Ingrediente>(fileReader).withSkipLines(1)
+                    .withType(Ingrediente.class).withSeparator(';').build();
 
-    // List<Cliente> listaClientes = csvToBean.parse();
-    // System.out.println(listaClientes.size());
+            listaClientesDevolver = csvToBean.parse();
+            //System.out.println(listaClientesDevolver.size());
 
-    // listaClientes.forEach(cliente -> System.out.println(cliente.toString()));
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // }
-
-    public void exportarClienteCSV(String nombre, List<Ingrediente> listaIngredientes) {
-        try (PrintWriter pw = new PrintWriter(nombre + ".csv")) {
-            StatefulBeanToCsv<Ingrediente> beanToCsv = new StatefulBeanToCsvBuilder<Ingrediente>(pw).withSeparator(';').build();
-            beanToCsv.write(listaIngredientes);
-        } catch (Exception e) {
-            e.printStackTrace();
+            //listaClientesDevolver.forEach(cliente -> System.out.println(cliente.toString()));
         }
+        return listaClientesDevolver;
+    }
 
+    public void exportarClienteCSV(String nombre, List<Ingrediente> listaIngredientes)
+            throws FileNotFoundException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
+        try (PrintWriter pw = new PrintWriter(nombre + ".csv");) {
+            pw.println("\"ALERGENOS\";\"ID\";\"NOMBRE\"");
+            StatefulBeanToCsv<Ingrediente> beanToCsv = new StatefulBeanToCsvBuilder<Ingrediente>(pw).withSeparator(';')
+                    .build();
+            beanToCsv.write(listaIngredientes);
+        }
     }
 
 }
