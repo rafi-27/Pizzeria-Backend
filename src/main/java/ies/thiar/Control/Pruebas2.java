@@ -17,9 +17,7 @@ public class Pruebas2 {
              * Ejer 1
              */
             List<Cliente> lista = gestor.gestionBasicaDeFicheros();
-            for (Cliente cliente : lista) {
-                System.out.println(cliente.toString());
-            }
+            lista.forEach(admins->System.out.println(admins));
 
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------");
 
@@ -47,18 +45,13 @@ public class Pruebas2 {
             gestor.convertimosAXml(listaClientes, "nuevoFichero.xml");
 
             System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");
-
             
             /**
              * Ejer 3
              */
             List<Cliente>listaImportacionXML = gestor.importacionXml();
             System.out.println(listaImportacionXML.size());
-            for (Cliente cliente : listaImportacionXML) {
-                System.out.println(cliente.toString());
-            }
-
-
+            listaImportacionXML.forEach(cliente -> System.out.println(cliente));
 
             /**
              * Ejer 4 Exportacion
@@ -78,15 +71,12 @@ public class Pruebas2 {
 
             listaAlergenosTres.add("Alergeno 1");
 
-
-
             listaIngredientes.add(new Ingrediente(1, "Gambas",listaAlergenosUno));
             listaIngredientes.add(new Ingrediente(2, "Carne kebab",listaAlergenosDos));
             listaIngredientes.add(new Ingrediente(3, "Queso",listaAlergenosTres));
 
             gestor.exportarClienteCSV("ArchivoCSV",listaIngredientes);
-
-             
+ 
             /**
              * Ejer 4 Importacion
              */

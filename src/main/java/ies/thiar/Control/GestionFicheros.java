@@ -142,9 +142,6 @@ public class GestionFicheros {
                     .withType(Ingrediente.class).withSeparator(';').build();
 
             listaClientesDevolver = csvToBean.parse();
-            //System.out.println(listaClientesDevolver.size());
-
-            //listaClientesDevolver.forEach(cliente -> System.out.println(cliente.toString()));
         }
         return listaClientesDevolver;
     }
