@@ -146,6 +146,7 @@ public class GestionFicheros {
         return listaClientesDevolver;
     }
 
+    
     public void exportarClienteCSV(String nombre, List<Ingrediente> listaIngredientes)
             throws FileNotFoundException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
         try (PrintWriter pw = new PrintWriter(nombre + ".csv");) {
