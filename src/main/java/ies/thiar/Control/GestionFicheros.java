@@ -25,8 +25,10 @@ import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Control.ClienteWrape;
 
 public class GestionFicheros {
-    private static final String archivoXML = "nuevoFichero.xml";
-    private static final String archivoAdmin = "admin.txt";
+    private final String archivoXML = "Clientes.xml";
+    private final String archivoAdmin = "admin.txt";
+    private final String archivoCSV = "Ingredientes.csv";
+
 
     /**
      * (3 puntos) Actividad 1. Gestión básica de ficheros.
@@ -102,15 +104,18 @@ public class GestionFicheros {
      * @param importacionXml
      * @throws JAXBException
      */
-    public void convertimosAXml(List<Cliente> listaPerson, String nombre) throws JAXBException {
+    public void convertimosAXml(List<Cliente> listaPerson) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(Cliente.class, ClienteWrape.class);
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-        File f = new File(nombre);
+        File f = new File(archivoXML);
         ClienteWrape p = new ClienteWrape(listaPerson);
         marshaller.marshal(p, f);
     }
+
+    /*Aqui directamente no le paso el parametro del nombre del fichero, tengo una variable static
+    con el nombre del ficher*/
 
     public List<Cliente> importacionXml() throws JAXBException, FileNotFoundException {
         List<Cliente> listaClientes = new ArrayList<>();
@@ -122,7 +127,6 @@ public class GestionFicheros {
 
         listaClientes.addAll(clientes.getListaPersonas());
 
-        // clientes.getListaPersonas().forEach(cliente -> System.out.println(cliente));
         return listaClientes;
     }
 
@@ -135,11 +139,10 @@ public class GestionFicheros {
      * @throws FileNotFoundException
      */
 
-    public List<Ingrediente> leerClienteCSV(String ficheroIngredientes) throws FileNotFoundException, IOException {
+    public List<Ingrediente> leerIngredienteCSV() throws FileNotFoundException, IOException {
         List<Ingrediente>listaClientesDevolver = new ArrayList<>();
-        try (FileReader fileReader = new FileReader(ficheroIngredientes)) {
-            CsvToBean<Ingrediente> csvToBean = new CsvToBeanBuilder<Ingrediente>(fileReader).withSkipLines(1)
-                    .withType(Ingrediente.class).withSeparator(';').build();
+        try (FileReader fileReader = new FileReader(archivoCSV)) {
+            CsvToBean<Ingrediente> csvToBean = new CsvToBeanBuilder<Ingrediente>(fileReader).withType(Ingrediente.class).withSeparator(';').withIgnoreLeadingWhiteSpace(true).build();
 
             listaClientesDevolver = csvToBean.parse();
         }
@@ -147,14 +150,11 @@ public class GestionFicheros {
     }
 
     
-    public void exportarClienteCSV(String nombre, List<Ingrediente> listaIngredientes)
+    public void exportarIngredienteCSV(List<Ingrediente> listaIngredientes)
             throws FileNotFoundException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
-        try (PrintWriter pw = new PrintWriter(nombre + ".csv");) {
-            pw.println("\"ALERGENOS\";\"ID\";\"NOMBRE\"");
-            StatefulBeanToCsv<Ingrediente> beanToCsv = new StatefulBeanToCsvBuilder<Ingrediente>(pw).withSeparator(';')
-                    .build();
+        try (PrintWriter pw = new PrintWriter(archivoCSV);) {
+            StatefulBeanToCsv<Ingrediente> beanToCsv = new StatefulBeanToCsvBuilder<Ingrediente>(pw).withSeparator(';').build();
             beanToCsv.write(listaIngredientes);
         }
     }
-
 }

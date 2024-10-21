@@ -12,19 +12,23 @@ import javax.xml.bind.JAXBException;
 public class Pruebas2 {
     public static void main(String[] args) throws JAXBException {
         GestionFicheros gestor = new GestionFicheros();
+
         try {
             /**
              * Ejer 1
              */
+            System.out.println("---------------------------------------------------------Primer Ejer-------------------------------------------------------------------------");
             List<Cliente> lista = gestor.gestionBasicaDeFicheros();
             lista.forEach(admins->System.out.println(admins));
 
-            System.out.println("----------------------------------------------------------------------------------------------------------------------------------");
-
             
+
+            System.out.println("---------------------------------------------------------Segundo Ejer-------------------------------------------------------------------------");
             /**
-             * Ejer 3
+             * Ejer 2
              */
+            ControladorCliente controlCliente = new ControladorCliente();
+
             List<Cliente> listaClientes = new ArrayList<>();
 
             // Metemos los clientes:
@@ -41,51 +45,41 @@ public class Pruebas2 {
             listaClientes.add(
                     new Cliente(3, "76584903O", "Moha", "calle tuppq", "87654345678", "null@gmail.com", "Hola", true));
 
-            System.out.println();
-            gestor.convertimosAXml(listaClientes, "nuevoFichero.xml");
-
-            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("Tamaño de lista de clientes: "+listaClientes.size());
             
+            controlCliente.exportarClientesAXML(listaClientes);
+
+
+            System.out.println("---------------------------------------------------------Tercer Ejer-------------------------------------------------------------------------");
             /**
-             * Ejer 3
+             * Ejer 2.1
              */
-            List<Cliente>listaImportacionXML = gestor.importacionXml();
-            System.out.println(listaImportacionXML.size());
+            List<Cliente>listaImportacionXML = controlCliente.importamosClientesXML();
             listaImportacionXML.forEach(cliente -> System.out.println(cliente));
 
+
+            System.out.println("---------------------------------------------------------Cuarto Ejer-------------------------------------------------------------------------");
             /**
-             * Ejer 4 Exportacion
+             * Ejer 3 Exportacion
              */
-            List<Ingrediente>listaIngredientes = new ArrayList<>();
-            List<String>listaAlergenosUno = new ArrayList<>();
-            List<String>listaAlergenosDos = new ArrayList<>();
-            List<String>listaAlergenosTres = new ArrayList<>();
+            ControladorProducto controladorProducto = new ControladorProducto();
 
-            listaAlergenosUno.add("Lactosa");
-            listaAlergenosUno.add("Lactose");
-            listaAlergenosUno.add("Lactoso");
+            List<Ingrediente>listaIngredientes = new ArrayList<>(){{
+                add(new Ingrediente(1,"null", List.of("uno","dos","tres")));
+                add(new Ingrediente(1,"nulle", List.of("Quesso","Patatas","Carne")));
+                add(new Ingrediente(1,"nullo", List.of("Lactosa","Lactose","Calamares")));
+                add(new Ingrediente(1,"nulla", List.of("Otro")));
+            }};
 
-            listaAlergenosDos.add("Leche");
-            listaAlergenosDos.add("Lechi");
-            listaAlergenosDos.add("Lechu");
+            controladorProducto.exportarIngredienteDeProducto(listaIngredientes);
+            System.out.println("Tamaño de lista de ingredientes: "+listaIngredientes.size());
+            
 
-            listaAlergenosTres.add("Alergeno1");
-            listaAlergenosTres.add("Alergeno1");
-            listaAlergenosTres.add("Alergeno1");
-
-            listaIngredientes.add(new Ingrediente(1, "Gambas",listaAlergenosUno));
-            listaIngredientes.add(new Ingrediente(2, "Carne kebab",listaAlergenosDos));
-            listaIngredientes.add(new Ingrediente(3, "Queso",listaAlergenosTres));
-
-            gestor.exportarClienteCSV("ArchivoCSV",listaIngredientes);
- 
+            System.out.println("---------------------------------------------------------Quinto Ejer-------------------------------------------------------------------------");
             /**
-             * Ejer 4 Importacion
+             * Ejer 3.1 Importacion
              */
-
-             List<Ingrediente>listaIngredientes2 = gestor.leerClienteCSV("ArchivoCSV.csv");
-             System.out.println(listaIngredientes2.size());
-             listaIngredientes2.forEach(ingre->System.out.println(ingre.toString()));
+             controladorProducto.importarIngredienteDeProducto().forEach(ingre -> System.out.println(ingre.toString()));;
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,6 +1,9 @@
 package ies.thiar.Control;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.JAXBException;
 
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.Producto;
@@ -10,6 +13,9 @@ public class ControladorCliente {
     private Cliente clienteActual;
     private List<Cliente>listaClientes = new ArrayList<>();    
     //Illegal state exception
+
+    //Gestion de ficheros:
+    GestionFicheros gestor = new GestionFicheros();
 
     //registrarCliente(--------) para agregar un cliente, Crear objeto , meter en tabla
     public void registrarCliente(Cliente cliente){
@@ -31,5 +37,14 @@ public class ControladorCliente {
     //agregarLineaPedido(Producto p, Cantidad) ya despues del login. este llamo al controlador pedido hariamos un controladoPedido.agregarlineaPedido. esta 
     public void agregarLineaPedido(Producto p,int Cantidad,Cliente cliente) throws IllegalAccessException{
         ControladorPedido.agregarLineaPedido(p, Cantidad,cliente);
+    }
+
+    //Hay un comentario en mi clase Gestion de ficheros que explico porque no le paso un parametro a esta funcion
+    public List<Cliente> importamosClientesXML() throws FileNotFoundException, JAXBException{
+        return gestor.importacionXml();
+    }
+
+    public void exportarClientesAXML(List<Cliente>listaClintes) throws JAXBException{
+        gestor.convertimosAXml(listaClintes);
     }
 }

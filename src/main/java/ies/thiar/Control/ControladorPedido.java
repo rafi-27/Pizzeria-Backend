@@ -28,7 +28,6 @@ public class ControladorPedido {
             pedidoActual.anyadirCarrito(producto, cantidad);
             
         }
-
     }
     
     
@@ -43,7 +42,6 @@ public class ControladorPedido {
             pedidoActual = null;
         }
     }
-    
 
     //entregarPedido() para comprobar el estado.
     public void entregado(){
@@ -60,6 +58,4 @@ public class ControladorPedido {
     public static Pedido pedidoAct(){
         return pedidoActual;
     }
-
-
 }

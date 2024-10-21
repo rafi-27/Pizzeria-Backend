@@ -1,25 +1,20 @@
 package ies.thiar.Modelo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.opencsv.bean.CsvBindAndSplitByName;
-import com.opencsv.bean.CsvBindAndSplitByPosition;
 import com.opencsv.bean.CsvBindByName;
-import com.opencsv.bean.CsvBindByPosition;
-import com.opencsv.bean.CsvIgnore;
+
 
 public class Ingrediente {
-    @CsvBindByName
-    @CsvBindAndSplitByPosition(position = 0, writeDelimiter = ",", elementType = String.class)
-    private List<String> listaAlergenos = new ArrayList<>();
 
-    @CsvBindByName
-    @CsvBindByPosition(position = 1)
+    @CsvBindAndSplitByName(column = "ALERGENOS", writeDelimiter = ",", elementType = String.class)
+    private List<String> listaAlergenos;
+
+    @CsvBindByName(column = "ID")
     private int id;
 
-    @CsvBindByName
-    @CsvBindByPosition(position = 2)
+    @CsvBindByName(column = "NOMBRE")
     private String nombre;
 
     public Ingrediente(int id, String nombre, List<String> listaAlergenos) {
@@ -47,16 +42,21 @@ public class Ingrediente {
         this.nombre = nombre;
     }
 
-    public List<String> getAlergenos() {
+    public List<String> getListaAlergenos() {
         return listaAlergenos;
     }
 
-    public void setAlergenos(List<String> alergenos) {
+    public void setListaAlergenos(List<String> alergenos) {
         this.listaAlergenos = alergenos;
     }
 
     @Override
     public String toString() {
-        return "Ingrediente{alergenos=" + listaAlergenos +";"+ "id=" + id + "; nombre=" + nombre;
+        return "Ingrediente [id=" + id + ", nombre=" + nombre + ", lista de ingredientes " + listaAlergenos;
     }
+
+
+
+
+    
 }
