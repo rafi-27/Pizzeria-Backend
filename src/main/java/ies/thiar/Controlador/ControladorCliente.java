@@ -1,4 +1,4 @@
-package ies.thiar.Control;
+package ies.thiar.Controlador;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;

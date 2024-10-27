@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ies.thiar.Control.ControladorCliente;
+import ies.thiar.Controlador.ControladorCliente;
 
 public class Pedido {
     private int id;

@@ -1,4 +1,4 @@
-package ies.thiar.Control;
+package ies.thiar.Controlador;
 
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.PagarEfectivo;

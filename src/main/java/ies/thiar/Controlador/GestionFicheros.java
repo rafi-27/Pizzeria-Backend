@@ -1,4 +1,4 @@
-package ies.thiar.Control;
+package ies.thiar.Controlador;
 
 import java.io.*;
 import java.util.*;
@@ -15,6 +15,7 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
+
 // import com.opencsv.bean.CsvToBean;
 // import com.opencsv.bean.CsvToBeanBuilder;
 // import com.opencsv.bean.StatefulBeanToCsv;
@@ -22,7 +23,6 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.Ingrediente;
-import ies.thiar.Control.ClienteWrape;
 
 public class GestionFicheros {
     private final String archivoXML = "Clientes.xml";
@@ -148,7 +148,6 @@ public class GestionFicheros {
         }
         return listaClientesDevolver;
     }
-
     
     public void exportarIngredienteCSV(List<Ingrediente> listaIngredientes)
             throws FileNotFoundException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
