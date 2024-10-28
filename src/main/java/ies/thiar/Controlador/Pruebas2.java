@@ -11,15 +11,16 @@ import javax.xml.bind.JAXBException;
 
 public class Pruebas2 {
     public static void main(String[] args) throws JAXBException {
-        GestionFicheros gestor = new GestionFicheros();
+        ControladorCliente controlCliente = new ControladorCliente();
 
         try {
             /**
              * Ejer 1
              */
             System.out.println("---------------------------------------------------------Primer Ejer-------------------------------------------------------------------------");
-            List<Cliente> lista = gestor.gestionBasicaDeFicheros();
+            List<Cliente> lista = controlCliente.importarAdministradorres();
             lista.forEach(admins->System.out.println(admins));
+
 
             
 
@@ -27,7 +28,6 @@ public class Pruebas2 {
             /**
              * Ejer 2
              */
-            ControladorCliente controlCliente = new ControladorCliente();
 
             List<Cliente> listaClientes = new ArrayList<>();
 

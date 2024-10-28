@@ -1,5 +1,6 @@
 package ies.thiar.Controlador;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,11 @@ public class ControladorCliente {
     public void agregarLineaPedido(Producto p,int Cantidad,Cliente cliente) throws IllegalAccessException{
         ControladorPedido.agregarLineaPedido(p, Cantidad,cliente);
     }
+
+    public List<Cliente> importarAdministradorres() throws IOException{
+        return gestor.leerArchivo();
+    }
+
 
     //Hay un comentario en mi clase Gestion de ficheros que explico porque no le paso un parametro a esta funcion
     public List<Cliente> importamosClientesXML() throws FileNotFoundException, JAXBException{

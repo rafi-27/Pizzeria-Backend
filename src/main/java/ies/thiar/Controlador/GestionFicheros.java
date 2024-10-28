@@ -24,11 +24,29 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.Ingrediente;
 
+import java.util.stream.Stream;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+
 public class GestionFicheros {
     private final String archivoXML = "Clientes.xml";
     private final String archivoAdmin = "admin.txt";
     private final String archivoCSV = "Ingredientes.csv";
 
+    public List<Cliente> leerArchivo() throws IOException {
+        try (Stream<String> lineas = Files.lines(Path.of(archivoAdmin))) {
+            return lineas.map(linea -> {
+                List<String> cosas = List.of(linea.split("[,;|]"));
+                cosas = cosas.stream().map(String::trim).toList();
+
+                return new Cliente(Integer.parseInt(cosas.get(0)), cosas.get(1), cosas.get(2), cosas.get(3),
+                        cosas.get(4),
+                        cosas.get(5), cosas.get(6), true);
+            }).toList();
+        }
+    }
 
     /**
      * (3 puntos) Actividad 1. Gestión básica de ficheros.
