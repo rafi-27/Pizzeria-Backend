@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.xml.bind.JAXBContext;
@@ -24,18 +25,21 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
+import ies.thiar.Modelo.Bebida;
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.Ingrediente;
+import ies.thiar.Modelo.Pasta;
+import ies.thiar.Modelo.Pizza;
 import ies.thiar.Modelo.Producto;
+import ies.thiar.Modelo.SIZE;
 
+import java.io.FileWriter;
 
 public class GestionFicheros {
     private final String archivoXML = "Clientes.xml";
     private final String archivoAdmin = "admin.txt";
     private final String archivoCSV = "Ingredientes.csv";
     private final String archivoCSVProductos = "productos.csv";
-
-
 
     public List<Cliente> leerArchivo() throws IOException {
         try (Stream<String> lineas = Files.lines(Path.of(archivoAdmin))) {
@@ -52,6 +56,7 @@ public class GestionFicheros {
 
     /**
      * (3 puntos) Actividad 1. Gestión básica de ficheros.
+     * 
      * @gestionBasicaDeFicheros
      */
     public List<Cliente> gestionBasicaDeFicheros() throws IOException {
@@ -131,8 +136,11 @@ public class GestionFicheros {
         marshaller.marshal(p, f);
     }
 
-    /*Aqui directamente no le paso el parametro del nombre del fichero, tengo una variable static
-    con el nombre del ficher*/
+    /*
+     * Aqui directamente no le paso el parametro del nombre del fichero, tengo una
+     * variable static
+     * con el nombre del ficher
+     */
 
     public List<Cliente> importacionXml() throws JAXBException, FileNotFoundException {
         List<Cliente> listaClientes = new ArrayList<>();
@@ -157,44 +165,118 @@ public class GestionFicheros {
      */
 
     public List<Ingrediente> leerIngredienteCSV() throws FileNotFoundException, IOException {
-        List<Ingrediente>listaClientesDevolver = new ArrayList<>();
+        List<Ingrediente> listaClientesDevolver = new ArrayList<>();
         try (FileReader fileReader = new FileReader(archivoCSV)) {
-            CsvToBean<Ingrediente> csvToBean = new CsvToBeanBuilder<Ingrediente>(fileReader).withType(Ingrediente.class).withSeparator(';').withIgnoreLeadingWhiteSpace(true).build();
+            CsvToBean<Ingrediente> csvToBean = new CsvToBeanBuilder<Ingrediente>(fileReader).withType(Ingrediente.class)
+                    .withSeparator(';').withIgnoreLeadingWhiteSpace(true).build();
 
             listaClientesDevolver = csvToBean.parse();
         }
         return listaClientesDevolver;
     }
-    
+
     public void exportarIngredienteCSV(List<Ingrediente> listaIngredientes)
             throws FileNotFoundException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
         try (PrintWriter pw = new PrintWriter(archivoCSV);) {
-            StatefulBeanToCsv<Ingrediente> beanToCsv = new StatefulBeanToCsvBuilder<Ingrediente>(pw).withSeparator(';').build();
+            StatefulBeanToCsv<Ingrediente> beanToCsv = new StatefulBeanToCsvBuilder<Ingrediente>(pw).withSeparator(';')
+                    .build();
             beanToCsv.write(listaIngredientes);
         }
     }
 
-    
-    //------------------------------------------------------------------------------------PRUEBAS------------------------------------------------------------------------------------//
-    //Probar importar y exportar productos xml y con csv y de forma brusca.
+    // ------------------------------------------------------------------------------------PRUEBAS------------------------------------------------------------------------------------//
+    // Probar importar y exportar productos xml y con csv y de forma brusca.
     public void exportarProductos(List<Producto> listaProductos)
-    throws FileNotFoundException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException{
-        try (PrintWriter pw = new PrintWriter(archivoCSVProductos);) {
-            StatefulBeanToCsv<Producto> beanToCsv = new StatefulBeanToCsvBuilder<Producto>(pw).withSeparator(';').build();
-            beanToCsv.write(listaProductos);
+            throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+        // try (PrintWriter pw = new PrintWriter(archivoCSVProductos);) {
+        // StatefulBeanToCsv<Producto> beanToCsv = new
+        // StatefulBeanToCsvBuilder<Producto>(pw).withSeparator(';').build();
+        // beanToCsv.write(listaProductos);
+        // }
+
+        try (PrintWriter pw = new PrintWriter(new FileWriter(archivoCSVProductos))) {
+            pw.println("id;nombre;precio;tamanyo;ingredientes");
+
+            for (Producto producto : listaProductos) {
+                pw.print(producto.getId() + ";" + producto.getNombre() + ";" + producto.getPrecio() + ";");
+
+                if (producto instanceof Pizza pizza) {
+                    String ingredientesPizza = pizza.getListaIngredientesPizza().stream()
+                            .map(Ingrediente::toString)
+                            .collect(Collectors.joining(","));
+                    pw.print(pizza.getTamanyo() + ";" + ingredientesPizza);
+                } else if (producto instanceof Bebida bebida) {
+                    pw.print(bebida.getTamanyo() + ";");
+                } else if (producto instanceof Pasta pasta) {
+                    String ingredientesPasta = pasta.getListaIngredientePasta().stream()
+                            .map(Ingrediente::toString)
+                            .collect(Collectors.joining(","));
+                    pw.print(";" + ingredientesPasta);
+                }
+
+                pw.println();
+            }
         }
     }
 
 
+    public List<Producto> importarProductos() throws IOException {
+        List<Producto> listaProductos = new ArrayList<>();
+    
+        try (BufferedReader br = new BufferedReader(new FileReader(archivoCSVProductos))) {
+            String linea;
+    
+            // Leer la primera línea para omitir el encabezado
+            br.readLine();
+    
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(";"); // Divide la línea por ";"
+    
+                // Asegúrate de que la longitud de datos sea suficiente
+                if (datos.length < 6) {
+                    System.out.println("La línea no tiene suficientes columnas: " + linea);
+                    continue; // Saltar esta línea si no tiene las columnas requeridas
+                }
+    
+                // Obtener los datos básicos
+                int id = Integer.parseInt(datos[0]);
+                String nombre = datos[1];
+                double precio = Double.parseDouble(datos[2]);
+                String tamano = datos[3]; // Tamaño, puede ser vacío
+                String ingredientesStr = datos[4]; // IDs de los ingredientes
+                String alergenosStr = datos[5]; // Alérgenos, puede ser vacío
+    
+                // Crear producto dependiendo de los datos
+                if (!tamano.isEmpty() && !ingredientesStr.isEmpty()) {
+                    // Es una Pizza
+                    List<Ingrediente> ingredientes = obtenerIngredientesPorIds(ingredientesStr, alergenosStr);
+                    listaProductos.add(new Pizza(id, nombre, precio, SIZE.valueOf(tamano), ingredientes));
+                } else if (!tamano.isEmpty()) {
+                    // Es una Bebida
+                    listaProductos.add(new Bebida(id, nombre, precio, SIZE.valueOf(tamano)));
+                } else if (!ingredientesStr.isEmpty()) {
+                    // Es una Pasta
+                    List<Ingrediente> ingredientes = obtenerIngredientesPorIds(ingredientesStr, alergenosStr);
+                    listaProductos.add(new Pasta(id, nombre, precio, ingredientes));
+                }
+            }
+        }
+        return listaProductos;
+    }
+    // Método para obtener los ingredientes por sus IDs
+    private List<Ingrediente> obtenerIngredientesPorIds(String ingredientesStr, String alergenosStr) {
+        List<Ingrediente> ingredientes = new ArrayList<>();
+        String[] idsArray = ingredientesStr.split(","); // Divide por comas
 
+        for (String idStr : idsArray) {
+            int id = Integer.parseInt(idStr.trim()); // Obtener el ID del ingrediente
 
-
-
-
-
-
-
-
+            // Crear un nuevo Ingrediente con ID, nombre y alérgenos
+            Ingrediente ingrediente = new Ingrediente(id, "NombreDelIngrediente", List.of()); // Solo ejemplo
+            ingredientes.add(ingrediente); // Añadir ingrediente
+        }
+        return ingredientes;
+    }
 
 
 }

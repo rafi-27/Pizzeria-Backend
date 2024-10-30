@@ -13,9 +13,10 @@ public class Pizza extends Producto{
     @CsvBindAndSplitByName(column = "Ingredientes pizza", writeDelimiter = ",", elementType = String.class)
     private List<Ingrediente>listaIngredientesPizza = new ArrayList<>();
 
-    public Pizza(int id, String nombre, double precio,SIZE tam) {
+    public Pizza(int id, String nombre, double precio,SIZE tam,List<Ingrediente>listaIngredientesPizzaParam) {
         super(id, nombre, precio);
         this.tamanyo=tam;
+        this.listaIngredientesPizza=listaIngredientesPizzaParam;
     }
 
     public SIZE getTamanyo() {

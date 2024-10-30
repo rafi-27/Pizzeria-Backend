@@ -1,1 +1,6 @@
-"INGREDIENTES PIZZA";"TAMANYO"
+id;nombre;precio;tamanyo;ingredientes
+1;Pizza Atun;15.0;GRANDE;Ingrediente [id=1, nombre=IngredientepizzaAtun, lista de alergenos [AlergenoHola, AlergenoComo, AlergenoEstas]
+2;Pizza Kebab;15.0;GRANDE;Ingrediente [id=1, nombre=IngredientepizzaKebah, lista de alergenos [KebabHola, KebajComo],Ingrediente [id=1, nombre=IngreSimple, lista de alergenos [Hola, Como, Estas]
+3;Motzarela;15.0;;Ingrediente [id=1, nombre=Ingrediente Pasta, lista de alergenos [Pasta, Siuuu]
+4;Coca cola;15.0;GRANDE;
+5;Pizza;15.0;GRANDE;

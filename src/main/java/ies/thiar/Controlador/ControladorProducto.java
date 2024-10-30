@@ -28,7 +28,11 @@ public class ControladorProducto {
         gestor.exportarIngredienteCSV(listaIngredientes);
     }
 
-    public void exportarProductosCSV(List<Producto>listaProductos) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, FileNotFoundException{
+    public void exportarProductosCSV(List<Producto>listaProductos) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException{
         gestor.exportarProductos(listaProductos);
+    }
+
+    public List<Producto> impoortarProductos() throws IOException{
+        return gestor.importarProductos();
     }
 }
