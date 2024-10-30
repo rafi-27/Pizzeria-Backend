@@ -1,7 +1,16 @@
 package ies.thiar.Controlador;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -15,19 +24,8 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
-
-// import com.opencsv.bean.CsvToBean;
-// import com.opencsv.bean.CsvToBeanBuilder;
-// import com.opencsv.bean.StatefulBeanToCsv;
-// import com.opencsv.bean.StatefulBeanToCsvBuilder;
-
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.Ingrediente;
-
-import java.util.stream.Stream;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 
 public class GestionFicheros {
@@ -50,9 +48,7 @@ public class GestionFicheros {
 
     /**
      * (3 puntos) Actividad 1. Gestión básica de ficheros.
-     * 
-     * @return gestionBasicaDeFicheros
-     * @throws IOException
+     * @gestionBasicaDeFicheros
      */
     public List<Cliente> gestionBasicaDeFicheros() throws IOException {
         File file = new File(archivoAdmin);
@@ -112,7 +108,6 @@ public class GestionFicheros {
                 String.valueOf(tercera[5]), String.valueOf(tercera[6]), true));
 
         return listaClientes;
-
     }
 
     /**
@@ -174,4 +169,22 @@ public class GestionFicheros {
             beanToCsv.write(listaIngredientes);
         }
     }
+
+    
+    //------------------------------------------------------------------------------------PRUEBAS------------------------------------------------------------------------------------//
+    //Probar importar y exportar productos xml y con csv y de forma brusca.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
