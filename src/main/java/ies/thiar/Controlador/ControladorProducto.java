@@ -5,6 +5,8 @@ import java.io.IOException;
 
 
 import ies.thiar.Modelo.Ingrediente;
+import ies.thiar.Modelo.Producto;
+
 import java.util.*;
 
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
@@ -24,5 +26,9 @@ public class ControladorProducto {
 
     public void exportarIngredienteDeProducto(List<Ingrediente>listaIngredientes) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, FileNotFoundException{
         gestor.exportarIngredienteCSV(listaIngredientes);
+    }
+
+    public void exportarProductosCSV(List<Producto>listaProductos) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, FileNotFoundException{
+        gestor.exportarProductos(listaProductos);
     }
 }

@@ -26,12 +26,16 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.Ingrediente;
+import ies.thiar.Modelo.Producto;
 
 
 public class GestionFicheros {
     private final String archivoXML = "Clientes.xml";
     private final String archivoAdmin = "admin.txt";
     private final String archivoCSV = "Ingredientes.csv";
+    private final String archivoCSVProductos = "productos.csv";
+
+
 
     public List<Cliente> leerArchivo() throws IOException {
         try (Stream<String> lineas = Files.lines(Path.of(archivoAdmin))) {
@@ -173,7 +177,13 @@ public class GestionFicheros {
     
     //------------------------------------------------------------------------------------PRUEBAS------------------------------------------------------------------------------------//
     //Probar importar y exportar productos xml y con csv y de forma brusca.
-
+    public void exportarProductos(List<Producto> listaProductos)
+    throws FileNotFoundException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException{
+        try (PrintWriter pw = new PrintWriter(archivoCSVProductos);) {
+            StatefulBeanToCsv<Producto> beanToCsv = new StatefulBeanToCsvBuilder<Producto>(pw).withSeparator(';').build();
+            beanToCsv.write(listaProductos);
+        }
+    }
 
 
 
