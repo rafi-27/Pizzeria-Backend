@@ -234,7 +234,7 @@ public class GestionFicheros {
     
                 // Asegúrate de que la longitud de datos sea suficiente
                 if (datos.length < 6) {
-                    System.out.println("La línea no tiene suficientes columnas: " + linea);
+                    System.out.println(linea);
                     continue; // Saltar esta línea si no tiene las columnas requeridas
                 }
     
