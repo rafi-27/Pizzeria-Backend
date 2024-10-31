@@ -40,7 +40,14 @@ public class GestionFicheros {
     private final String archivoCSV = "Ingredientes.csv";
     private final String archivoCSVProductos = "productos.csv";
     private final String archivoXMLProductos = "productos.xml";
+    private final String archivoPizzasCSV = "pizzas.csv";
+    private final String archivoPizzasXML = "pizzas.xml";
 
+    /**
+     * (3 puntos) Actividad 1. Gestión básica de ficheros.
+     * 
+     * @gestionBasicaDeFicheros
+     */
     public List<Cliente> leerArchivo() throws IOException {
         try (Stream<String> lineas = Files.lines(Path.of(archivoAdmin))) {
             return lineas.map(linea -> {
@@ -54,70 +61,6 @@ public class GestionFicheros {
         }
     }
 
-    /**
-     * (3 puntos) Actividad 1. Gestión básica de ficheros.
-     * 
-     * @gestionBasicaDeFicheros
-     */
-    public List<Cliente> gestionBasicaDeFicheros() throws IOException {
-        File file = new File(archivoAdmin);
-        List<String> lineas = new ArrayList();
-
-        String primeraLinea = "";
-        String segundaLinea = "";
-        String terceraLinea = "";
-
-        if (file.exists()) {
-            FileReader fr = new FileReader(file);
-            BufferedReader bf = new BufferedReader(fr);
-            String linea;
-
-            while ((linea = bf.readLine()) != null) {
-                lineas.add(linea);
-            }
-
-            primeraLinea = lineas.get(0);
-            segundaLinea = lineas.get(1);
-            terceraLinea = lineas.get(2);
-        }
-
-        // hacemos los split aqui:
-        String[] primera = primeraLinea.split(";");
-        String[] segunda = segundaLinea.split(" \\| ");
-        String[] tercera = terceraLinea.split(",");
-
-        // vaciamos la lista para pasarle los datos correctamente.
-        lineas.clear();
-
-        // Corregimos
-        for (int i = 0; i < primera.length; i++) {
-            primera[i] = primera[i].trim();
-        }
-
-        for (int i = 0; i < segunda.length; i++) {
-            segunda[i] = segunda[i].trim();
-        }
-
-        for (int i = 0; i < tercera.length; i++) {
-            tercera[i] = tercera[i].trim();
-        }
-
-        // probamos mapearlos a clientes.
-        List<Cliente> listaClientes = new ArrayList();
-
-        // Añadimos los clientes que ya tenemos sus datos correctos.
-        listaClientes.add(new Cliente(Integer.parseInt(primera[0]), String.valueOf(primera[1]),
-                String.valueOf(primera[2]), String.valueOf(primera[3]), String.valueOf(primera[4]),
-                String.valueOf(primera[5]), String.valueOf(primera[6]), true));
-        listaClientes.add(new Cliente(Integer.parseInt(segunda[0]), String.valueOf(segunda[1]),
-                String.valueOf(segunda[2]), String.valueOf(segunda[3]), String.valueOf(segunda[4]),
-                String.valueOf(segunda[5]), String.valueOf(segunda[6]), true));
-        listaClientes.add(new Cliente(Integer.parseInt(tercera[0]), String.valueOf(tercera[1]),
-                String.valueOf(tercera[2]), String.valueOf(tercera[3]), String.valueOf(tercera[4]),
-                String.valueOf(tercera[5]), String.valueOf(tercera[6]), true));
-
-        return listaClientes;
-    }
 
     /**
      * (3 puntos) Actividad 2. JAXB
@@ -308,4 +251,53 @@ public class GestionFicheros {
         // Devolver la lista de productos
         return wrapper.getProductos();
     }
+
+    //------------------------------------------------------------------------------Exportar e importar pizzas------------------------------------------------------------------------------//
+    //CSV
+    public void exportarPizzaCSV(List<Pizza> listaPizzas) throws FileNotFoundException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
+        try (PrintWriter pw = new PrintWriter(archivoPizzasCSV);) {
+            StatefulBeanToCsv<Pizza> beanToCsv = new StatefulBeanToCsvBuilder<Pizza>(pw).withSeparator(';').build();
+            beanToCsv.write(listaPizzas);
+        }
+    }
+    //leer CSV
+    public List<Pizza> importarPizzasCSV() throws FileNotFoundException, IOException {
+        List<Pizza> listaPizzasDevolver = new ArrayList<>();
+        try (FileReader fileReader = new FileReader(archivoPizzasCSV)) {
+            CsvToBean<Pizza> csvToBean = new CsvToBeanBuilder<Pizza>(fileReader).withType(Pizza.class).withSeparator(';').withIgnoreLeadingWhiteSpace(true).build();
+
+            listaPizzasDevolver = csvToBean.parse();
+        }
+        return listaPizzasDevolver;
+    }
+
+    //exportar XML 
+    public void exportamosPizzasXML(List<Pizza> listaPizzas) throws JAXBException {
+        JAXBContext context = JAXBContext.newInstance(PizzasWrapper.class,Pizza.class);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        File f = new File(archivoPizzasXML);
+        PizzasWrapper p = new PizzasWrapper(listaPizzas);
+        marshaller.marshal(p, f);
+    }
+
+
+
+    //importar XML
+    public List<Pizza> importacionPizzasXml() throws JAXBException, FileNotFoundException {
+        List<Pizza> listaPizzas = new ArrayList<>();
+
+        JAXBContext context = JAXBContext.newInstance(PizzasWrapper.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+
+        PizzasWrapper pizzas = (PizzasWrapper) unmarshaller.unmarshal(new FileReader(archivoPizzasXML));
+
+        listaPizzas.addAll(pizzas.getListaPizzas());
+
+        return listaPizzas;
+    }
+
+
+
 }

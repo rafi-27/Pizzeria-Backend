@@ -10,6 +10,7 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 import ies.thiar.Modelo.Ingrediente;
+import ies.thiar.Modelo.Pizza;
 import ies.thiar.Modelo.Producto;
 
 public class ControladorProducto {
@@ -43,4 +44,25 @@ public class ControladorProducto {
     public List<Producto> impoortarProductosXML() throws IOException, JAXBException{
         return gestor.importarProductosXML();
     }
+
+    //----------Pizza CSV-----------//
+    public void exportarPizzasCSV(List<Pizza>listaPizzas) throws FileNotFoundException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException{
+        gestor.exportarPizzaCSV(listaPizzas);
+    }
+
+    public List<Pizza> impoortarPizzasCSV() throws IOException, JAXBException{
+        return gestor.importarPizzasCSV();
+    }
+        //----------Pizza XML-----------//
+    public void exportarPizzasXML(List<Pizza>listaPizzas) throws FileNotFoundException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, JAXBException{
+        gestor.exportamosPizzasXML(listaPizzas);
+    }
+    
+    public List<Pizza> importarPizzasXML() throws IOException, JAXBException{
+        return gestor.importacionPizzasXml();
+    }
+
+
+
+
 }

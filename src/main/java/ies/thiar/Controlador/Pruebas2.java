@@ -110,10 +110,26 @@ public class Pruebas2 {
             // listaProductosDos.forEach(producto ->
             // System.out.println(producto.toString()));
 
-            controladorProducto.exportarProductosXML(listaProductos);
+            //controladorProducto.exportarProductosXML(listaProductos);
 
-            List<Producto>listaProductosTres = controladorProducto.impoortarProductosXML();
-            listaProductosTres.forEach(producto -> System.out.println(producto.toString()));
+            // List<Producto>listaProductosTres = controladorProducto.impoortarProductosXML();
+            // listaProductosTres.forEach(producto -> System.out.println(producto.toString()));
+
+            List<Pizza>listaPizzas = new ArrayList<>(){{
+                add(new Pizza(1, "Pizza Atun", 15.0, SIZE.GRANDE, List.of(new Ingrediente(23, "IngredientepizzaAtun",List.of("AlergenoHola", "AlergenoComo", "AlergenoEstas")))));
+                add(new Pizza(2, "Pizza", 10.0, SIZE.MEDIANA, List.of(new Ingrediente(4555, "Ingredientepizza",List.of("AlergenoHola", "Alerge", "AEstas")))));
+                add(new Pizza(3, "Pizzaffrr", 23.0, SIZE.PEQUEÑA, List.of(new Ingrediente(45, "Atun",List.of("Hola", "Como")))));
+            }};
+
+            //controladorProducto.exportarPizzasCSV(listaPizzas);
+
+            //List<Pizza>listaPizzasImport = controladorProducto.impoortarPizzasCSV();
+            //listaPizzasImport.forEach(producto -> System.out.println(producto.toString()));
+
+            //controladorProducto.exportarPizzasXML(listaPizzas);
+
+            List<Pizza>listaPizzillas = controladorProducto.importarPizzasXML();
+            listaPizzillas.forEach(producto -> System.out.println(producto.toString()));
 
         } catch (Exception e) {
             e.printStackTrace();

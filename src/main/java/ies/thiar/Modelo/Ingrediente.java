@@ -2,13 +2,20 @@ package ies.thiar.Modelo;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 import com.opencsv.bean.CsvBindAndSplitByName;
 import com.opencsv.bean.CsvBindByName;
 
-
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Ingrediente {
 
     @CsvBindAndSplitByName(column = "ALERGENOS", writeDelimiter = ",", elementType = String.class)
+    @XmlElementWrapper(name="alergenos")
+    @XmlElement(name="alergeno")
     private List<String> listaAlergenos;
 
     @CsvBindByName(column = "ID")

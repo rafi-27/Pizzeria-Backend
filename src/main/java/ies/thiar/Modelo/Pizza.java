@@ -3,16 +3,20 @@ package ies.thiar.Modelo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
-@XmlRootElement(name = "pizza")
+//@XmlRootElement(name = "pizza")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Pizza extends Producto{
     //@CsvBindByName(column = "Tamanyo")
     private SIZE tamanyo;
     
-    @XmlElement(name = "ingredientes")
     //@CsvBindAndSplitByName(column = "Ingredientes pizza", writeDelimiter = ",", elementType = String.class)
+    @XmlElementWrapper(name="Ingredientes")
+    @XmlElement(name = "ingrediente")
     private List<Ingrediente>listaIngredientesPizza = new ArrayList<>();
 
     public Pizza(int id, String nombre, double precio,SIZE tam,List<Ingrediente>listaIngredientesPizzaParam) {
