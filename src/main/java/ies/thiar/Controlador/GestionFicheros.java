@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -32,8 +33,6 @@ import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pizza;
 import ies.thiar.Modelo.Producto;
 import ies.thiar.Modelo.SIZE;
-
-import java.io.FileWriter;
 
 public class GestionFicheros {
     private final String archivoXML = "Clientes.xml";
@@ -186,14 +185,14 @@ public class GestionFicheros {
 
     // ------------------------------------------------------------------------------------PRUEBAS------------------------------------------------------------------------------------//
     // Probar importar y exportar productos xml y con csv y de forma brusca.
-    public void exportarProductos(List<Producto> listaProductos)
-            throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
-        // try (PrintWriter pw = new PrintWriter(archivoCSVProductos);) {
+    /**
+     * // try (PrintWriter pw = new PrintWriter(archivoCSVProductos);) {
         // StatefulBeanToCsv<Producto> beanToCsv = new
         // StatefulBeanToCsvBuilder<Producto>(pw).withSeparator(';').build();
         // beanToCsv.write(listaProductos);
         // }
-
+     */
+    public void exportarProductos(List<Producto> listaProductos) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
         try (PrintWriter pw = new PrintWriter(new FileWriter(archivoCSVProductos))) {
             pw.println("id;nombre;precio;tamanyo;ingredientes");
 
@@ -213,7 +212,6 @@ public class GestionFicheros {
                             .collect(Collectors.joining(","));
                     pw.print(";" + ingredientesPasta);
                 }
-
                 pw.println();
             }
         }
@@ -225,19 +223,15 @@ public class GestionFicheros {
     
         try (BufferedReader br = new BufferedReader(new FileReader(archivoCSVProductos))) {
             String linea;
-    
             // Leer la primera línea para omitir el encabezado
             br.readLine();
-    
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(";"); // Divide la línea por ";"
-    
                 // Asegúrate de que la longitud de datos sea suficiente
                 if (datos.length < 6) {
                     System.out.println(linea);
                     continue; // Saltar esta línea si no tiene las columnas requeridas
                 }
-    
                 // Obtener los datos básicos
                 int id = Integer.parseInt(datos[0]);
                 String nombre = datos[1];
@@ -245,7 +239,6 @@ public class GestionFicheros {
                 String tamano = datos[3]; // Tamaño, puede ser vacío
                 String ingredientesStr = datos[4]; // IDs de los ingredientes
                 String alergenosStr = datos[5]; // Alérgenos, puede ser vacío
-    
                 // Crear producto dependiendo de los datos
                 if (!tamano.isEmpty() && !ingredientesStr.isEmpty()) {
                     // Es una Pizza
@@ -263,6 +256,9 @@ public class GestionFicheros {
         }
         return listaProductos;
     }
+
+
+
     // Método para obtener los ingredientes por sus IDs
     private List<Ingrediente> obtenerIngredientesPorIds(String ingredientesStr, String alergenosStr) {
         List<Ingrediente> ingredientes = new ArrayList<>();
