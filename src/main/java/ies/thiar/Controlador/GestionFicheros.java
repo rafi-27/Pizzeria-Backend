@@ -39,6 +39,7 @@ public class GestionFicheros {
     private final String archivoAdmin = "admin.txt";
     private final String archivoCSV = "Ingredientes.csv";
     private final String archivoCSVProductos = "productos.csv";
+    private final String archivoXMLProductos = "productos.xml";
 
     public List<Cliente> leerArchivo() throws IOException {
         try (Stream<String> lineas = Files.lines(Path.of(archivoAdmin))) {
@@ -275,4 +276,36 @@ public class GestionFicheros {
     }
 
 
+    //-----------------------------------------------------------------XML-----------------------------------------------------------------//
+    public void exportarProductosXML(List<Producto> listaProductos) throws JAXBException {
+        // Crea el contexto de JAXB para las clases anotadas
+        JAXBContext context = JAXBContext.newInstance(ProductosWrapper.class, Pizza.class, Bebida.class, Pasta.class);
+    
+        // Crea el wrapper y añade los productos
+        ProductosWrapper wrapper = new ProductosWrapper();
+        wrapper.setProductos(listaProductos);
+    
+        // Crea el marshaller para convertir el objeto a XML
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);  // Formato bonito del XML
+    
+        // Escribe el XML al archivo
+        marshaller.marshal(wrapper, new File("productos.xml"));
+    }
+
+
+
+    public List<Producto> importarProductosXML() throws JAXBException {
+        // Crear el contexto JAXB para ProductosWrapper y sus clases relacionadas
+        JAXBContext context = JAXBContext.newInstance(ProductosWrapper.class, Pizza.class, Pasta.class, Bebida.class, Ingrediente.class);
+    
+        // Crear un Unmarshaller para convertir XML a objetos
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+    
+        // Deserializar el XML en un objeto ProductosWrapper
+        ProductosWrapper wrapper = (ProductosWrapper) unmarshaller.unmarshal(new File(archivoXMLProductos));
+    
+        // Devolver la lista de productos
+        return wrapper.getProductos();
+    }
 }

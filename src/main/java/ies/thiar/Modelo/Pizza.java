@@ -3,14 +3,16 @@ package ies.thiar.Modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.opencsv.bean.CsvBindAndSplitByName;
-import com.opencsv.bean.CsvBindByName;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name = "pizza")
 public class Pizza extends Producto{
-    @CsvBindByName(column = "Tamanyo")
+    //@CsvBindByName(column = "Tamanyo")
     private SIZE tamanyo;
     
-    @CsvBindAndSplitByName(column = "Ingredientes pizza", writeDelimiter = ",", elementType = String.class)
+    @XmlElement(name = "ingredientes")
+    //@CsvBindAndSplitByName(column = "Ingredientes pizza", writeDelimiter = ",", elementType = String.class)
     private List<Ingrediente>listaIngredientesPizza = new ArrayList<>();
 
     public Pizza(int id, String nombre, double precio,SIZE tam,List<Ingrediente>listaIngredientesPizzaParam) {
@@ -18,6 +20,8 @@ public class Pizza extends Producto{
         this.tamanyo=tam;
         this.listaIngredientesPizza=listaIngredientesPizzaParam;
     }
+
+    public Pizza(){}
 
     public SIZE getTamanyo() {
         return tamanyo;

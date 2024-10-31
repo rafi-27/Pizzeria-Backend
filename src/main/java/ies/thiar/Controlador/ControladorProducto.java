@@ -2,15 +2,15 @@ package ies.thiar.Controlador;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
-
-import ies.thiar.Modelo.Ingrediente;
-import ies.thiar.Modelo.Producto;
-
-import java.util.*;
+import javax.xml.bind.JAXBException;
 
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
+import ies.thiar.Modelo.Ingrediente;
+import ies.thiar.Modelo.Producto;
 
 public class ControladorProducto {
     GestionFicheros gestor;
@@ -34,5 +34,13 @@ public class ControladorProducto {
 
     public List<Producto> impoortarProductos() throws IOException{
         return gestor.importarProductos();
+    }
+
+    public void exportarProductosXML(List<Producto>listaProductos) throws JAXBException{
+        gestor.exportarProductosXML(listaProductos);
+    }
+
+    public List<Producto> impoortarProductosXML() throws IOException, JAXBException{
+        return gestor.importarProductosXML();
     }
 }

@@ -1,16 +1,20 @@
 package ies.thiar.Modelo;
 
-import com.opencsv.bean.CsvBindByName;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name = "bebida")
 public class Bebida extends Producto{
     
-    @CsvBindByName(column = "TamanyoB")
+    //@CsvBindByName(column = "TamanyoB")
     private SIZE tamanyo;
+    
 
     public Bebida(int id, String nombre, double precio,SIZE tam) {
         super(id, nombre, precio);
         this.tamanyo=tam;
     }
+
+    public Bebida() {}
 
     public SIZE getTamanyo() {
         return tamanyo;

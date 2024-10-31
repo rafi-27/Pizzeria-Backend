@@ -1,18 +1,16 @@
 package ies.thiar.Controlador;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.JAXBException;
 
 import ies.thiar.Modelo.Bebida;
-import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pizza;
 import ies.thiar.Modelo.Producto;
 import ies.thiar.Modelo.SIZE;
-
-import javax.xml.bind.JAXBException;
 
 public class Pruebas2 {
     public static void main(String[] args) throws JAXBException {
@@ -106,10 +104,16 @@ public class Pruebas2 {
                     add(new Pizza(5, "Pizza", 15.0, SIZE.GRANDE, List.of()));
                 }
             };
-            controladorProducto.exportarProductosCSV(listaProductos);
+            // controladorProducto.exportarProductosCSV(listaProductos);
 
-            List<Producto> listaProductosDos = controladorProducto.impoortarProductos();
-            listaProductosDos.forEach(producto -> System.out.println(producto.toString()));
+            // List<Producto> listaProductosDos = controladorProducto.impoortarProductos();
+            // listaProductosDos.forEach(producto ->
+            // System.out.println(producto.toString()));
+
+            controladorProducto.exportarProductosXML(listaProductos);
+
+            List<Producto>listaProductosTres = controladorProducto.impoortarProductosXML();
+            listaProductosTres.forEach(producto -> System.out.println(producto.toString()));
 
         } catch (Exception e) {
             e.printStackTrace();
