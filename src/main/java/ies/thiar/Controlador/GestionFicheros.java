@@ -298,6 +298,155 @@ public class GestionFicheros {
         return listaPizzas;
     }
 
+/**
+ * import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+
+public class PedidoService {
+    public void exportarPedidosCSV(List<Pedido> pedidos, String rutaArchivo) {
+        try (FileWriter writer = new FileWriter(rutaArchivo)) {
+            writer.append("id,fecha,precioTotal,estado,cliente\n"); // Cabecera del CSV
+            
+            for (Pedido pedido : pedidos) {
+                writer.append(String.valueOf(pedido.getId()))
+                      .append(",")
+                      .append(pedido.getFecha().toString())
+                      .append(",")
+                      .append(String.valueOf(pedido.getPrecioTotal()))
+                      .append(",")
+                      .append(pedido.getEstado().toString())
+                      .append(",")
+                      .append(pedido.getCliente().toString()) // Asumiendo que Cliente tiene un método toString
+                      .append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+
+public void exportarPedidosCSV(List<Pedido> listaPedidos, String archivoPedidosCSV) {
+    try (FileWriter writer = new FileWriter(archivoPedidosCSV)) {
+        StatefulBeanToCsv<Pedido> beanToCsv = new StatefulBeanToCsvBuilder<Pedido>(writer)
+                .withSeparator(';')
+                .withIgnoreLeadingWhiteSpace(true)
+                .build();
+        beanToCsv.write(listaPedidos);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public List<Pedido> importarPedidosCSV(String archivoPedidosCSV) {
+    List<Pedido> listaPedidosDevolver = new ArrayList<>();
+    try (FileReader fileReader = new FileReader(archivoPedidosCSV)) {
+        CsvToBean<Pedido> csvToBean = new CsvToBeanBuilder<Pedido>(fileReader)
+                .withType(Pedido.class)
+                .withSeparator(';')
+                .withIgnoreLeadingWhiteSpace(true)
+                .build();
+
+        listaPedidosDevolver = csvToBean.parse();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return listaPedidosDevolver;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public List<Pedido> importarPedidosCSV(String rutaArchivo) {
+    List<Pedido> pedidos = new ArrayList<>();
+    
+    try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
+        String line;
+        br.readLine(); // Leer la cabecera
+
+        while ((line = br.readLine()) != null) {
+            String[] datos = line.split(",");
+            Pedido pedido = new Pedido(new Cliente(datos[4])); // Asumiendo que los datos del cliente se manejan así
+            pedido.setId(Integer.parseInt(datos[0]));
+            pedido.setFecha(new Date(datos[1])); // Tendrías que convertir la cadena a Date
+            pedido.setPrecioTotal(Double.parseDouble(datos[2]));
+            pedido.setEstado(EstadoPedido.valueOf(datos[3])); // Convertir a enum
+            pedidos.add(pedido);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return pedidos;
+}
+
+
+
+
+
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
+public void exportarPedidosXML(List<Pedido> pedidos, String rutaArchivo) {
+    try {
+        JAXBContext context = JAXBContext.newInstance(Pedido.class);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        for (Pedido pedido : pedidos) {
+            marshaller.marshal(pedido, new File(rutaArchivo + pedido.getId() + ".xml")); // Guarda cada pedido en un archivo XML separado
+        }
+    } catch (JAXBException e) {
+        e.printStackTrace();
+    }
+}
+
+
+
+
+
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+public List<Pedido> importarPedidosXML(String rutaArchivo) {
+    List<Pedido> pedidos = new ArrayList<>();
+    try {
+        JAXBContext context = JAXBContext.newInstance(Pedido.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        File file = new File(rutaArchivo);
+        Pedido pedido = (Pedido) unmarshaller.unmarshal(file);
+        pedidos.add(pedido);
+    } catch (JAXBException e) {
+        e.printStackTrace();
+    }
+    return pedidos;
+}
+ */
 }
