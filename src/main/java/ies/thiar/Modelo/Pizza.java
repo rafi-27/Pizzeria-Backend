@@ -19,10 +19,11 @@ public class Pizza extends Producto{
     @XmlElement(name = "ingrediente")
     private List<Ingrediente>listaIngredientesPizza = new ArrayList<>();
 
-    public Pizza(int id, String nombre, double precio,SIZE tam,List<Ingrediente>listaIngredientesPizzaParam) {
+    //,List<Ingrediente>listaIngredientesPizzaParam
+    public Pizza(int id, String nombre, double precio,SIZE tam) {
         super(id, nombre, precio);
         this.tamanyo=tam;
-        this.listaIngredientesPizza=listaIngredientesPizzaParam;
+        //this.listaIngredientesPizza=listaIngredientesPizzaParam;
     }
 
     public Pizza(){}
@@ -37,6 +38,6 @@ public class Pizza extends Producto{
 
     @Override
     public String toString() {
-        return "Pizza [tamanyo=" + tamanyo + ", listaIngredientesPizza=" + listaIngredientesPizza + "]";
+        return super.toString()+" tamanyo=" + tamanyo;
     }
 }

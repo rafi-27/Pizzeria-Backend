@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ies.thiar.Controlador.ControladorCliente;
-
 public class Pedido {
     private int id;
     private Date fecha;
@@ -49,9 +47,9 @@ public class Pedido {
         this.pago = pago;
     }
 
-    public void anyadirCarrito(Producto p, int canti){
-        lineaPedido.add(new LineaPedido(p, canti));
-    }
+    // public void anyadirCarrito(Producto p, int canti){
+    //     lineaPedido.add(new LineaPedido(p, canti));
+    // }
 
     public double getPrecioTotal(){
         return this.precioTotal+=lineaPedido.stream().mapToDouble(LineaPedido::getPrecioSubtotal).sum();

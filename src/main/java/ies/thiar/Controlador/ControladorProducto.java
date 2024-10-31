@@ -19,7 +19,6 @@ public class ControladorProducto {
     public ControladorProducto(){
         gestor = new GestionFicheros();
     }
-
     
     public List<Ingrediente> importarIngredienteDeProducto() throws FileNotFoundException, IOException{
         return gestor.leerIngredienteCSV();
@@ -31,10 +30,6 @@ public class ControladorProducto {
 
     public void exportarProductosCSV(List<Producto>listaProductos) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException{
         gestor.exportarProductos(listaProductos);
-    }
-
-    public List<Producto> impoortarProductos() throws IOException{
-        return gestor.importarProductos();
     }
 
     public void exportarProductosXML(List<Producto>listaProductos) throws JAXBException{
@@ -62,7 +57,11 @@ public class ControladorProducto {
         return gestor.importacionPizzasXml();
     }
 
-
+    ///////////////////////////////////////////Examen///////////////////////////////////////////
+    public List<Pizza> importarListaPizzasExamen() throws IOException{
+        return gestor.importarPizzasSinLibreria();
+    }
+    ///////////////////////////////////////////Examen///////////////////////////////////////////
 
 
 }

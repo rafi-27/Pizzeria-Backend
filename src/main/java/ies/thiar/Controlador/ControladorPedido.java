@@ -1,10 +1,16 @@
 package ies.thiar.Controlador;
 
-import ies.thiar.Modelo.Cliente;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
+
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
 import ies.thiar.Modelo.EstadoPedido;
+import ies.thiar.Modelo.LineaPedido;
 import ies.thiar.Modelo.Pagable;
 import ies.thiar.Modelo.Pedido;
-import ies.thiar.Modelo.Producto;
 
 public class ControladorPedido {
     private static Pedido pedidoActual;
@@ -12,23 +18,24 @@ public class ControladorPedido {
     //pedidoActual
     //Flujo estados: Pendiente, cancelar o finalizar si es finalizar entregado
 
+    GestionFicheros gestor = new GestionFicheros();
     
     //agregarLineaPedido(Producto p)
-    public static void agregarLineaPedido(Producto producto,int cantidad,Cliente clienteActual) throws IllegalAccessException{
-        if(pedidoActual==null){
-            pedidoActual = new Pedido(clienteActual);
-            pedidoActual.setEstado(EstadoPedido.PENDIENTE);
-            pedidoActual.anyadirCarrito(producto, cantidad);
+    // public static void agregarLineaPedido(Producto producto,int cantidad,Cliente clienteActual) throws IllegalAccessException{
+    //     if(pedidoActual==null){
+    //         pedidoActual = new Pedido(clienteActual);
+    //         pedidoActual.setEstado(EstadoPedido.PENDIENTE);
+    //         pedidoActual.anyadirCarrito(producto, cantidad);
             
-        }
+    //     }
         
-        if(pedidoActual.getCliente()!=clienteActual){
-            throw new IllegalAccessException("No se puede hacer el pedido sin logearte correctamente.");
-        }else{
-            pedidoActual.anyadirCarrito(producto, cantidad);
+    //     if(pedidoActual.getCliente()!=clienteActual){
+    //         throw new IllegalAccessException("No se puede hacer el pedido sin logearte correctamente.");
+    //     }else{
+    //         pedidoActual.anyadirCarrito(producto, cantidad);
             
-        }
-    }
+    //     }
+    // }
     
     
     //finalizarPedido(Pagable metodoApaar) entregado y gestionar forma de pago.
@@ -58,4 +65,14 @@ public class ControladorPedido {
     public static Pedido pedidoAct(){
         return pedidoActual;
     }
+
+    //////////////////////////////////////////Examen//////////////////////////////////////////
+    public void exportarLineasDePedido(List<LineaPedido>listaLineaPedido) throws FileNotFoundException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException{
+        gestor.exportarLineaPedidoCSV(listaLineaPedido);
+    }
+
+     public List<LineaPedido> importarLineaPedidosExam() throws FileNotFoundException, IOException{
+        return  gestor.importarLineaPedidoExam();
+     }
+    //////////////////////////////////////////Examen//////////////////////////////////////////
 }

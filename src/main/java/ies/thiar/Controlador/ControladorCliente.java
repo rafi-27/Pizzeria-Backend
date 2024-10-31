@@ -7,7 +7,6 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import ies.thiar.Modelo.Cliente;
-import ies.thiar.Modelo.Producto;
 
 public class ControladorCliente {
     //ciienteActual
@@ -17,6 +16,16 @@ public class ControladorCliente {
 
     //Gestion de ficheros:
     GestionFicheros gestor = new GestionFicheros();
+
+        ////////////////////////////////////////Examen////////////////////////////////////////
+        public void exportarClientesAXMLExam(List<Cliente> listaPerson) throws JAXBException{
+            gestor.exportarClientesAXML(listaPerson);
+        }
+    
+        public List<Cliente> importarClientesExam() throws FileNotFoundException, JAXBException{
+            return gestor.importacionXmlClientesExam();
+        }
+        ////////////////////////////////////////Examen////////////////////////////////////////
 
     //registrarCliente(--------) para agregar un cliente, Crear objeto , meter en tabla
     public void registrarCliente(Cliente cliente){
@@ -36,9 +45,9 @@ public class ControladorCliente {
     }
     
     //agregarLineaPedido(Producto p, Cantidad) ya despues del login. este llamo al controlador pedido hariamos un controladoPedido.agregarlineaPedido. esta 
-    public void agregarLineaPedido(Producto p,int Cantidad,Cliente cliente) throws IllegalAccessException{
-        ControladorPedido.agregarLineaPedido(p, Cantidad,cliente);
-    }
+    // public void agregarLineaPedido(Producto p,int Cantidad,Cliente cliente) throws IllegalAccessException{
+    //     ControladorPedido.agregarLineaPedido(p, Cantidad,cliente);
+    // }
 
     public List<Cliente> importarAdministradorres() throws IOException{
         return gestor.leerArchivo();

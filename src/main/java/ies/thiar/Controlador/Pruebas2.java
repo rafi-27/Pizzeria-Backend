@@ -1,16 +1,10 @@
 package ies.thiar.Controlador;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import ies.thiar.Modelo.Bebida;
-import ies.thiar.Modelo.Ingrediente;
-import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pizza;
-import ies.thiar.Modelo.Producto;
-import ies.thiar.Modelo.SIZE;
 
 public class Pruebas2 {
     public static void main(String[] args) throws JAXBException {
@@ -91,19 +85,19 @@ public class Pruebas2 {
             // controladorProducto.importarIngredienteDeProducto().forEach(ingre ->
             // System.out.println(ingre.toString()));;
 
-            List<Producto> listaProductos = new ArrayList<>() {
-                {
-                    add(new Pizza(1, "Pizza Atun", 15.0, SIZE.GRANDE, List.of(new Ingrediente(1, "IngredientepizzaAtun",
-                            List.of("AlergenoHola", "AlergenoComo", "AlergenoEstas")))));
-                    add(new Pizza(2, "Pizza Kebab", 15.0, SIZE.GRANDE,
-                            List.of(new Ingrediente(1, "IngredientepizzaKebah", List.of("KebabHola", "KebajComo")),
-                                    new Ingrediente(1, "IngreSimple", List.of("Hola", "Como", "Estas")))));
-                    add(new Pasta(3, "Motzarela", 15.0,
-                            List.of(new Ingrediente(1, "Ingrediente Pasta", List.of("Pasta", "Siuuu")))));
-                    add(new Bebida(4, "Coca cola", 15.0, SIZE.GRANDE));
-                    add(new Pizza(5, "Pizza", 15.0, SIZE.GRANDE, List.of()));
-                }
-            };
+            // List<Producto> listaProductos = new ArrayList<>() {
+            //     {
+            //         add(new Pizza(1, "Pizza Atun", 15.0, SIZE.GRANDE, List.of(new Ingrediente(1, "IngredientepizzaAtun",
+            //                 List.of("AlergenoHola", "AlergenoComo", "AlergenoEstas")))));
+            //         add(new Pizza(2, "Pizza Kebab", 15.0, SIZE.GRANDE,
+            //                 List.of(new Ingrediente(1, "IngredientepizzaKebah", List.of("KebabHola", "KebajComo")),
+            //                         new Ingrediente(1, "IngreSimple", List.of("Hola", "Como", "Estas")))));
+            //         add(new Pasta(3, "Motzarela", 15.0,
+            //                 List.of(new Ingrediente(1, "Ingrediente Pasta", List.of("Pasta", "Siuuu")))));
+            //         add(new Bebida(4, "Coca cola", 15.0, SIZE.GRANDE));
+            //         add(new Pizza(5, "Pizza", 15.0, SIZE.GRANDE, List.of()));
+            //     }
+            // };
             // controladorProducto.exportarProductosCSV(listaProductos);
 
             // List<Producto> listaProductosDos = controladorProducto.impoortarProductos();
@@ -115,11 +109,11 @@ public class Pruebas2 {
             // List<Producto>listaProductosTres = controladorProducto.impoortarProductosXML();
             // listaProductosTres.forEach(producto -> System.out.println(producto.toString()));
 
-            List<Pizza>listaPizzas = new ArrayList<>(){{
-                add(new Pizza(1, "Pizza Atun", 15.0, SIZE.GRANDE, List.of(new Ingrediente(23, "IngredientepizzaAtun",List.of("AlergenoHola", "AlergenoComo", "AlergenoEstas")))));
-                add(new Pizza(2, "Pizza", 10.0, SIZE.MEDIANA, List.of(new Ingrediente(4555, "Ingredientepizza",List.of("AlergenoHola", "Alerge", "AEstas")))));
-                add(new Pizza(3, "Pizzaffrr", 23.0, SIZE.PEQUEÑA, List.of(new Ingrediente(45, "Atun",List.of("Hola", "Como")))));
-            }};
+            // List<Pizza>listaPizzas = new ArrayList<>(){{
+            //     add(new Pizza(1, "Pizza Atun", 15.0, SIZE.GRANDE, List.of(new Ingrediente(23, "IngredientepizzaAtun",List.of("AlergenoHola", "AlergenoComo", "AlergenoEstas")))));
+            //     add(new Pizza(2, "Pizza", 10.0, SIZE.MEDIANA, List.of(new Ingrediente(4555, "Ingredientepizza",List.of("AlergenoHola", "Alerge", "AEstas")))));
+            //     add(new Pizza(3, "Pizzaffrr", 23.0, SIZE.PEQUEÑA, List.of(new Ingrediente(45, "Atun",List.of("Hola", "Como")))));
+            // }};
 
             //controladorProducto.exportarPizzasCSV(listaPizzas);
 

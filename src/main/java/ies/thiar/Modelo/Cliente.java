@@ -15,7 +15,6 @@ public class Cliente {
      */
     
      //Atributos:
-    @XmlAttribute
     private int id;
 
     private String dni;
@@ -23,12 +22,15 @@ public class Cliente {
     private String direccion;
     private String telefono;
     private String email;
+
+    @XmlTransient
     private String password;
     @XmlTransient
     private List<Pedido> listaPedidos = new ArrayList<>();
 
 
     //Nuevo atributo
+    @XmlAttribute
     private boolean esAdministrador;
     
     public Cliente(){}

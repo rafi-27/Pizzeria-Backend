@@ -1,57 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Clientes>
-    <Cliente id="8">
+    <Cliente esAdministrador="false">
+        <id>8</id>
         <dni>78879645E</dni>
         <nombre>Rodri</nombre>
         <direccion>calle hgola</direccion>
         <telefono>87654345678</telefono>
         <email>null@gmail.com</email>
-        <password>Hola</password>
-        <esAdministrador>false</esAdministrador>
     </Cliente>
-    <Cliente id="1">
+    <Cliente esAdministrador="false">
+        <id>1</id>
         <dni>65784903R</dni>
         <nombre>Rafe</nombre>
         <direccion>calle jnondf</direccion>
         <telefono>87654345678</telefono>
         <email>null@gmail.com</email>
-        <password>Hola</password>
-        <esAdministrador>false</esAdministrador>
     </Cliente>
-    <Cliente id="2">
+    <Cliente esAdministrador="true">
+        <id>2</id>
         <dni>34566786T</dni>
         <nombre>Jose</nombre>
         <direccion>calle utueiu</direccion>
         <telefono>87654345678</telefono>
         <email>null@gmail.com</email>
-        <password>Hola</password>
-        <esAdministrador>true</esAdministrador>
     </Cliente>
-    <Cliente id="3">
+    <Cliente esAdministrador="false">
+        <id>3</id>
         <dni>76584903O</dni>
         <nombre>Moha</nombre>
         <direccion>calle tuppq</direccion>
         <telefono>87654345678</telefono>
         <email>null@gmail.com</email>
-        <password>Hola</password>
-        <esAdministrador>false</esAdministrador>
     </Cliente>
-    <Cliente id="2">
+    <Cliente esAdministrador="false">
+        <id>2</id>
         <dni>34566786T</dni>
         <nombre>Jose</nombre>
         <direccion>calle utueiu</direccion>
         <telefono>87654345678</telefono>
         <email>null@gmail.com</email>
-        <password>Hola</password>
-        <esAdministrador>false</esAdministrador>
     </Cliente>
-    <Cliente id="3">
+    <Cliente esAdministrador="true">
+        <id>3</id>
         <dni>76584903O</dni>
         <nombre>Moha</nombre>
         <direccion>calle tuppq</direccion>
         <telefono>87654345678</telefono>
         <email>null@gmail.com</email>
-        <password>Hola</password>
-        <esAdministrador>true</esAdministrador>
     </Cliente>
 </Clientes>

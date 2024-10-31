@@ -1,16 +1,25 @@
 package ies.thiar.Modelo;
 
-public class LineaPedido {
-    private int id;
-    private int cantidad;
-    private Producto p;
+import com.opencsv.bean.CsvBindByName;
 
+public class LineaPedido {
+
+    //@CsvBindAndSplitByName(column = "IDENTIFICATION", writeDelimiter = ",", elementType = Integer.class)
+    @CsvBindByName(column = "IDENTIFICATION")
+    private int id;
+    
+    @CsvBindByName(column = "QUANTITY")
+    private int cantidad;
+
+    private Producto p;
     private Pedido pedido;
 
-    public LineaPedido(Producto a, int cantidad) {
-        this.p=a;
+    public LineaPedido(int ide, int cantidad) {
+        //this.p=a;
+        this.id=ide;
         this.cantidad = cantidad;
     }
+    public LineaPedido(){}
 
     public int getId() {
         return id;
@@ -30,8 +39,6 @@ public class LineaPedido {
 
     @Override
     public String toString() {
-        return "Producto [id=" + id + ", nombre=" + p.getNombre() + ", precio=" + p.getPrecio() + "]";
+        return "LineaPedido [id=" + id + ", cantidad=" + cantidad + "]";
     }
-    
-
 }
