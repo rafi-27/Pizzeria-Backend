@@ -1,12 +1,6 @@
-package ies.thiar.Controlador;
+package ies.thiar.ClasesEnDeshuso;
 
 import ies.thiar.Modelo.Cliente;
-import ies.thiar.Modelo.PagarEfectivo;
-import ies.thiar.Modelo.PagarTarjeta;
-import ies.thiar.Modelo.Pedido;
-import ies.thiar.Modelo.Pizza;
-import ies.thiar.Modelo.Producto;
-import ies.thiar.Modelo.SIZE;
 
 public class Pruebas {
     public static void main(String[] args) {

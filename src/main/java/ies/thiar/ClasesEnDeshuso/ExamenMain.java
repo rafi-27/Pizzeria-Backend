@@ -1,4 +1,4 @@
-package ies.thiar.Controlador;
+package ies.thiar.ClasesEnDeshuso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.LineaPedido;
 import ies.thiar.Modelo.Pizza;
+import ies.thiar.controlador.ControladorPedido;
+import ies.thiar.controlador.ControladorProducto;
 
 public class ExamenMain {
     public static void main(String[] args) {

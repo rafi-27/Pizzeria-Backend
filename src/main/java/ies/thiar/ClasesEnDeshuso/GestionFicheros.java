@@ -1,4 +1,4 @@
-package ies.thiar.Controlador;
+package ies.thiar.ClasesEnDeshuso;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -126,26 +126,6 @@ public class GestionFicheros {
     }
 
     //////////////////////////////////////////////////////////////////////////////////////// Examen//////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * (3 puntos) Actividad 1. Gestión básica de ficheros.

@@ -8,9 +8,9 @@ module ies.thiar {
     opens ies.thiar to javafx.fxml;
     exports ies.thiar;
 
-    exports ies.thiar.Controlador;
+    exports ies.thiar.controlador;
     exports ies.thiar.Modelo;
     opens ies.thiar.Modelo;
     //opens ies.thiar.Modelo to java.xml.bind;
-    opens ies.thiar.Controlador to java.xml.bind;
+    opens ies.thiar.controlador to java.xml.bind;
 }
