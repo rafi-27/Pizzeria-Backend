@@ -10,7 +10,7 @@ public class DatabaseConf {
      * URL,User,Password,CreateTable
      */
 
-    public static final String URL = "jdbc:mysql://localhost:3306/concesionario";
+    public static final String URL = "jdbc:mysql://localhost:3306/pizzeria";
     public static final String USUARIO = "root";
     public static final String PASSWORD = "admin";
 
@@ -19,29 +19,21 @@ public class DatabaseConf {
             "    id int primary key Auto_Increment, \r\n" + //
             "    dni VARCHAR(255) not null unique,   \r\n" + //
             "    nombre VARCHAR(255) not null,     \r\n" + //
-            "    apellidos VARCHAR(255) not null,     \r\n" + //
-            "    telefono VARCHAR(255) NULL UNIQUE     \r\n" + //
+            "    direccion VARCHAR(255) not null,     \r\n" + //
+            "    telefono VARCHAR(255) NULL UNIQUE,     \r\n" +
+            "    email VARCHAR(255) not NULL UNIQUE, \r\n" +
+            "    password VARCHAR(255) not NULL,\r\n" +
+            "    esAdministrador bool default false\r\n" +
             ");";
     static final String DROP_TABLE_CLIENTE = "DROP TABLE IF EXISTS clientes";
-    static final String DROP_TABLE_Coches = "DROP TABLE IF EXISTS coches";
 
-    static final String CREATE_TABLE_COCHES = "create table Coches(Matricula varchar(255) primary key,Marca varchar(255) not null,Modelo varchar(255) not null,Fecha date null,Propietario int, Foreign key(Propietario) references clientes(id) on delete no action on update cascade )";
-
-    public static void createTables() throws SQLException {
-        try (Connection cn = DriverManager.getConnection(URL, USUARIO, PASSWORD);
-                Statement statement = cn.createStatement()) {
-            statement.execute(CREATE_TABLE_CLIENTE);
-            statement.execute(CREATE_TABLE_COCHES);
-            System.out.println("Creada la tabla cliente, coches perfe.");
-        }
-    }
 
     public static void dropAndCreateTables() throws SQLException {
         try (Connection cn = DriverManager.getConnection(URL, USUARIO, PASSWORD);
                 Statement statement = cn.createStatement()) {
-                    statement.execute(DROP_TABLE_Coches);
                     statement.execute(DROP_TABLE_CLIENTE);
-            System.out.println("Tabla de cliente, coches borrada perfe.");
+                    statement.execute(CREATE_TABLE_CLIENTE);
+            System.out.println("Tabla de cliente borrada y creada perfe.");
         }
     }
 }

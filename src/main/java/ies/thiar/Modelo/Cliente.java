@@ -36,17 +36,14 @@ public class Cliente {
     public Cliente(){}
     
     //Constructor:
-    public Cliente(int id, String dni, String nombre, String direccion, String telefono, String email, String password, boolean admin) {
-        this.id = id;
+    public Cliente(String dni, String nombre, String direccion, String telefono, String email, String password) {
         this.dni = dni;
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
         this.email = email;
         this.password = password;
-        this.esAdministrador=admin;
     }
-
 
     public String getEmail() {
         return email;
@@ -62,6 +59,59 @@ public class Cliente {
                 + telefono + ", email=" + email + ", password=" + password + ", esAdministrador=" + esAdministrador + "]";
     }
 
-   
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public List<Pedido> getListaPedidos() {
+        return listaPedidos;
+    }
+
+    public void setListaPedidos(List<Pedido> listaPedidos) {
+        this.listaPedidos = listaPedidos;
+    }
+
+    public boolean isEsAdministrador() {
+        return esAdministrador;
+    }
+
+    public void setEsAdministrador(boolean esAdministrador) {
+        this.esAdministrador = esAdministrador;
+    }
 }
