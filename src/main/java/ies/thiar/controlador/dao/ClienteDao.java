@@ -8,7 +8,7 @@ import ies.thiar.Modelo.Cliente;
 public interface ClienteDao {
     //CRUD
     public void insert(Cliente client) throws SQLException;
-    public void delete(Cliente client) throws SQLException;
+    public void delete(int id) throws SQLException;
     public void update(Cliente client) throws SQLException;
     public Cliente findByID(int id) throws SQLException;
     public Cliente findByEmail(String email) throws SQLException;

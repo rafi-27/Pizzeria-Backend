@@ -21,12 +21,15 @@ public class ControladorCliente {
         return jClienteDao.findAll();
     }
 
+    public void deleteClient(int id) throws SQLException {
+        jClienteDao.delete(id);
+    }
 
+    public Cliente selectByID(int id) throws SQLException{
+        return jClienteDao.findByID(id);
+    }
 
-
-
-
-
-
-
+    public void updateCliente(Cliente cliente) throws SQLException {
+        jClienteDao.update(cliente);
+    }
 }

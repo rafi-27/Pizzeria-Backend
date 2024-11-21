@@ -17,12 +17,14 @@ public class JDBCClienteDao implements ClienteDao {
     // ---------------------------------Sentencias
     // SQL---------------------------------//
     final String INSERT_CLIENTE = "INSERT INTO clientes (dni, nombre, direccion, telefono, email, password) values (?,?,?,?,?,?)";
+    
+    final String DELETE_CLIENTE = "delete from clientes where id=?";
+
     final String SELECT_EMAIL = "select dni, nombre, direccion, telefono, email, password from clientes where email=?";
+    final String SELECT_BY_ID = "select id, dni, nombre, direccion, telefono, email, password from clientes where id=?";
+    final String SELECT_ALL = "select id, dni, nombre, direccion, telefono, email, password from clientes";
 
-    final String DELETE_CLIENTE = "";
-
-    final String SELECT_ALL = "select dni, nombre, direccion, telefono, email, password from clientes";
-
+    final String UPDATE = "update clientes set clientes.dni=?, clientes.nombre=? ,clientes.direccion=?, clientes.telefono=?, clientes.email=?, clientes.password=? where clientes.id=?";
     // ---------------------------------Sentencias
     // SQL---------------------------------//
 
@@ -55,18 +57,58 @@ public class JDBCClienteDao implements ClienteDao {
     }
 
     @Override
-    public void delete(Cliente client) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void delete(int id) throws SQLException {
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
+                PreparedStatement pstmtCliente = conexion.prepareStatement(DELETE_CLIENTE);) {
+            pstmtCliente.setInt(1, id);
+            pstmtCliente.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error al borrar");
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void update(Cliente client) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
+                PreparedStatement pstmtCliente = conexion.prepareStatement(UPDATE);) {
+            pstmtCliente.setString(1, client.getDni());
+            pstmtCliente.setString(2, client.getNombre());
+            pstmtCliente.setString(3, client.getDireccion());
+            pstmtCliente.setString(4, client.getTelefono());
+            pstmtCliente.setString(5, client.getEmail());
+            pstmtCliente.setString(6, client.getPassword());
+            pstmtCliente.setInt(7,client.getId());
+            pstmtCliente.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error al hacer update");
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Cliente findByID(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
+                PreparedStatement pstmtCliente = conexion.prepareStatement(SELECT_BY_ID);) {
+            pstmtCliente.setInt(1, id);
+            try (ResultSet rs = pstmtCliente.executeQuery()) {
+                if (rs.next()) {
+                    Cliente cliente = new Cliente(
+                            rs.getString("dni"),
+                            rs.getString("nombre"),
+                            rs.getString("direccion"),
+                            rs.getString("telefono"),
+                            rs.getString("email"),
+                            rs.getString("password"));
+                            cliente.setId(rs.getInt("id"));
+                    return cliente;
+                }
+            }
+            return null;
+        }
     }
 
     @Override
@@ -93,12 +135,12 @@ public class JDBCClienteDao implements ClienteDao {
 
     @Override
     public List<Cliente> findAll() throws SQLException {
-        List<Cliente>listaClientesADevolver = new ArrayList<>();
+        List<Cliente> listaClientesADevolver = new ArrayList<>();
         try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
                 DatabaseConf.PASSWORD);
                 PreparedStatement pstmtCliente = conexion.prepareStatement(SELECT_ALL);) {
             try (ResultSet rs = pstmtCliente.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     Cliente cliente = new Cliente(
                             rs.getString("dni"),
                             rs.getString("nombre"),
@@ -106,6 +148,7 @@ public class JDBCClienteDao implements ClienteDao {
                             rs.getString("telefono"),
                             rs.getString("email"),
                             rs.getString("password"));
+                    cliente.setId(rs.getInt("id"));
                     listaClientesADevolver.add(cliente);
                 }
             }

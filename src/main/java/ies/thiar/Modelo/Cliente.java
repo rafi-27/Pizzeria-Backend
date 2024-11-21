@@ -64,10 +64,13 @@ public class Cliente {
         return password;
     }
 
+    
+
     @Override
     public String toString() {
         return "Cliente [id=" + id + ", dni=" + dni + ", nombre=" + nombre + ", direccion=" + direccion + ", telefono="
-                + telefono + ", email=" + email + ", password=" + password + ", esAdministrador=" + esAdministrador + "]";
+                + telefono + ", email=" + email + ", password=" + password + ", listaPedidos=" + listaPedidos
+                + ", esAdministrador=" + esAdministrador + "]";
     }
 
     public int getId() {
