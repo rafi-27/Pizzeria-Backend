@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import ies.thiar.Modelo.Cliente;
@@ -20,8 +21,7 @@ public class JDBCClienteDao implements ClienteDao {
 
     final String DELETE_CLIENTE = "";
 
-
-
+    final String SELECT_ALL = "select dni, nombre, direccion, telefono, email, password from clientes";
 
     // ---------------------------------Sentencias
     // SQL---------------------------------//
@@ -59,18 +59,15 @@ public class JDBCClienteDao implements ClienteDao {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-
     @Override
     public void update(Cliente client) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-
     @Override
     public Cliente findByID(int id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 
     @Override
     public Cliente findByEmail(String email) throws SQLException {
@@ -96,6 +93,23 @@ public class JDBCClienteDao implements ClienteDao {
 
     @Override
     public List<Cliente> findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<Cliente>listaClientesADevolver = new ArrayList<>();
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
+                PreparedStatement pstmtCliente = conexion.prepareStatement(SELECT_ALL);) {
+            try (ResultSet rs = pstmtCliente.executeQuery()) {
+                if (rs.next()) {
+                    Cliente cliente = new Cliente(
+                            rs.getString("dni"),
+                            rs.getString("nombre"),
+                            rs.getString("direccion"),
+                            rs.getString("telefono"),
+                            rs.getString("email"),
+                            rs.getString("password"));
+                    listaClientesADevolver.add(cliente);
+                }
+            }
+            return listaClientesADevolver;
+        }
     }
 }
