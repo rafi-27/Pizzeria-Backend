@@ -23,7 +23,7 @@ public class MainDePruebas {
             controladorCliente.registrarCliente(juan);
 
             List<Cliente>listaClientesAll = controladorCliente.selectAll();
-            System.out.println(listaClientesAll.size());
+            
 
         } catch (Exception e) {
             e.getMessage();
