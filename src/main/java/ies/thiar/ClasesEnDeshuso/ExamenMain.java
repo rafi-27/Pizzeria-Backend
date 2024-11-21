@@ -23,27 +23,27 @@ System.out.println();
             
 
             //Ejer2:
-            List<Cliente> listaClientes = new ArrayList<>();
-            listaClientes.add(new Cliente(8, "78879645E", "Rodri", "calle hgola",
-                    "87654345678", "null@gmail.com",
-                    "Hola", false));
-            listaClientes.add(new Cliente(1, "65784903R", "Rafe", "calle jnondf",
-                    "87654345678", "null@gmail.com",
-                    "Hola", false));
-            listaClientes.add(
-                    new Cliente(2, "34566786T", "Jose", "calle utueiu", "87654345678",
-                            "null@gmail.com", "Hola", true));
-            listaClientes.add(
-                    new Cliente(3, "76584903O", "Moha", "calle tuppq", "87654345678",
-                            "null@gmail.com", "Hola", false));
-            listaClientes.add(new Cliente(2, "34566786T", "Jose", "calle utueiu",
-                    "87654345678", "null@gmail.com",
-                    "Hola", false));
-            listaClientes.add(
-                    new Cliente(3, "76584903O", "Moha", "calle tuppq", "87654345678",
-                            "null@gmail.com", "Hola", true));
-            //Exportar
-            controladorCliente.exportarClientesAXMLExam(listaClientes);
+        //     List<Cliente> listaClientes = new ArrayList<>();
+        //     listaClientes.add(new Cliente(8, "78879645E", "Rodri", "calle hgola",
+        //             "87654345678", "null@gmail.com",
+        //             "Hola", false));
+        //     listaClientes.add(new Cliente(1, "65784903R", "Rafe", "calle jnondf",
+        //             "87654345678", "null@gmail.com",
+        //             "Hola", false));
+        //     listaClientes.add(
+        //             new Cliente(2, "34566786T", "Jose", "calle utueiu", "87654345678",
+        //                     "null@gmail.com", "Hola", true));
+        //     listaClientes.add(
+        //             new Cliente(3, "76584903O", "Moha", "calle tuppq", "87654345678",
+        //                     "null@gmail.com", "Hola", false));
+        //     listaClientes.add(new Cliente(2, "34566786T", "Jose", "calle utueiu",
+        //             "87654345678", "null@gmail.com",
+        //             "Hola", false));
+        //     listaClientes.add(
+        //             new Cliente(3, "76584903O", "Moha", "calle tuppq", "87654345678",
+        //                     "null@gmail.com", "Hola", true));
+        //     //Exportar
+           // controladorCliente.exportarClientesAXMLExam(listaClientes);
 
             //Importar
             List<Cliente>listaClientesImportar = controladorCliente.importarClientesExam();

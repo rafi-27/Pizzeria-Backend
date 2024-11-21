@@ -18,6 +18,7 @@ public class MainDePruebas {
             //Pruebas con registro:
             controladorCliente.registrarCliente(ruben);
 
+
         } catch (Exception e) {
             e.getMessage();
             e.printStackTrace();

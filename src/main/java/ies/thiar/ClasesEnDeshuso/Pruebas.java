@@ -1,22 +1,20 @@
 package ies.thiar.ClasesEnDeshuso;
 
-import ies.thiar.Modelo.Cliente;
-
 public class Pruebas {
     public static void main(String[] args) {
         //Creamos un cliente:
-        Cliente cliente1 = new Cliente(0,"22222222e", "Rafe","calle real madrid","632548220","null@gmail.com", "1234",false);
-        Cliente cliente2 = new Cliente(0,"22222222e", "Rafe","calle real madrid","632548220","null@gmail.com", "1234",false);
+        // Cliente cliente1 = new Cliente(0,"22222222e", "Rafe","calle real madrid","632548220","null@gmail.com", "1234",false);
+        // Cliente cliente2 = new Cliente(0,"22222222e", "Rafe","calle real madrid","632548220","null@gmail.com", "1234",false);
 
-        //Pantalla inicio
-        ControladorCliente controlCliente = new ControladorCliente();
-        controlCliente.registrarCliente(cliente1);
+        // //Pantalla inicio
+        // ControladorCliente controlCliente = new ControladorCliente();
+        // controlCliente.registrarCliente(cliente1);
 
-        if (controlCliente.loginCliente("null@gmail.com","1234")) {
-            System.out.println("Existe");
-        }else{
-            System.err.println("No existe");
-        }
+        // if (controlCliente.loginCliente("null@gmail.com","1234")) {
+        //     System.out.println("Existe");
+        // }else{
+        //     System.err.println("No existe");
+        // }
 
         //Empezamos a crear pedido:
         

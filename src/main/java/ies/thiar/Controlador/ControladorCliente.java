@@ -11,11 +11,12 @@ public class ControladorCliente {
 
     public void registrarCliente(Cliente cliente) throws SQLException{
         Cliente client = jClienteDao.findByEmail(cliente.getEmail());
-
-        if(client==null){throw new IllegalArgumentException("Usuario ya registrado con anterioridad");}
+        System.out.println(client);
+        if(client!=null){throw new IllegalArgumentException("Usuario ya registrado con anterioridad");}
         else {jClienteDao.insert(cliente);}
     }
 
+    
 
 
 

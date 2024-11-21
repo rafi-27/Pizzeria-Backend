@@ -16,7 +16,13 @@ public class JDBCClienteDao implements ClienteDao {
     // ---------------------------------Sentencias
     // SQL---------------------------------//
     final String INSERT_CLIENTE = "INSERT INTO clientes (dni, nombre, direccion, telefono, email, password) values (?,?,?,?,?,?)";
-    final String SELECT_EMAIL = "select id, dni, nombre, direccion, telefono, email, password where email=?";
+    final String SELECT_EMAIL = "select dni, nombre, direccion, telefono, email, password from clientes where email=?";
+
+    final String DELETE_CLIENTE = "";
+
+
+
+
     // ---------------------------------Sentencias
     // SQL---------------------------------//
 
@@ -53,22 +59,25 @@ public class JDBCClienteDao implements ClienteDao {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+
     @Override
     public void update(Cliente client) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
 
     @Override
     public Cliente findByID(int id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+
     @Override
     public Cliente findByEmail(String email) throws SQLException {
         try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
                 DatabaseConf.PASSWORD);
                 PreparedStatement pstmtCliente = conexion.prepareStatement(SELECT_EMAIL);) {
-            pstmtCliente.setString(6, email);
+            pstmtCliente.setString(1, email);
             try (ResultSet rs = pstmtCliente.executeQuery()) {
                 if (rs.next()) {
                     Cliente cliente = new Cliente(

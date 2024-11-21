@@ -1,6 +1,5 @@
 package ies.thiar.ClasesEnDeshuso;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,9 +48,9 @@ public class ControladorCliente {
     //     ControladorPedido.agregarLineaPedido(p, Cantidad,cliente);
     // }
 
-    public List<Cliente> importarAdministradorres() throws IOException{
-        return gestor.leerArchivo();
-    }
+    // public List<Cliente> importarAdministradorres() throws IOException{
+    //     return gestor.leerArchivo();
+    // }
 
 
     //Hay un comentario en mi clase Gestion de ficheros que explico porque no le paso un parametro a esta funcion

@@ -25,6 +25,7 @@ public class Cliente {
 
     @XmlTransient
     private String password;
+    
     @XmlTransient
     private List<Pedido> listaPedidos = new ArrayList<>();
 
@@ -43,6 +44,16 @@ public class Cliente {
         this.telefono = telefono;
         this.email = email;
         this.password = password;
+    }
+
+    public Cliente(String dni, String nombre, String direccion, String telefono, String email, String password, boolean esadmin) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.email = email;
+        this.password = password;
+        this.esAdministrador=esadmin;
     }
 
     public String getEmail() {

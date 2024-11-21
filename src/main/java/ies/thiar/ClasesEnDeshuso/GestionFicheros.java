@@ -132,18 +132,18 @@ public class GestionFicheros {
      * 
      * @gestionBasicaDeFicheros
      */
-    public List<Cliente> leerArchivo() throws IOException {
-        try (Stream<String> lineas = Files.lines(Path.of(archivoAdmin))) {
-            return lineas.map(linea -> {
-                List<String> cosas = List.of(linea.split("[,;|]"));
-                cosas = cosas.stream().map(String::trim).toList();
+    // public List<Cliente> leerArchivo() throws IOException {
+    //     try (Stream<String> lineas = Files.lines(Path.of(archivoAdmin))) {
+    //         return lineas.map(linea -> {
+    //             List<String> cosas = List.of(linea.split("[,;|]"));
+    //             cosas = cosas.stream().map(String::trim).toList();
 
-                return new Cliente(Integer.parseInt(cosas.get(0)), cosas.get(1), cosas.get(2), cosas.get(3),
-                        cosas.get(4),
-                        cosas.get(5), cosas.get(6), true);
-            }).toList();
-        }
-    }
+    //             return new Cliente(Integer.parseInt(cosas.get(0)), cosas.get(1), cosas.get(2), cosas.get(3),
+    //                     cosas.get(4),
+    //                     cosas.get(5), cosas.get(6), true);
+    //         }).toList();
+    //     }
+    // }
 
     /**
      * (3 puntos) Actividad 2. JAXB
