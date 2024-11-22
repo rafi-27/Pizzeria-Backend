@@ -24,7 +24,7 @@ public class JDBCClienteDao implements ClienteDao {
     final String SELECT_BY_ID = "select id, dni, nombre, direccion, telefono, email, password from clientes where id=?";
     final String SELECT_ALL = "select id, dni, nombre, direccion, telefono, email, password from clientes";
 
-    final String UPDATE = "update clientes set clientes.dni=?, clientes.nombre=? ,clientes.direccion=?, clientes.telefono=?, clientes.email=?, clientes.password=? where clientes.id=?";
+    final String UPDATE = "update clientes set clientes.dni=?, clientes.nombre=? ,clientes.direccion=?, clientes.telefono=? where clientes.id=?";
     // ---------------------------------Sentencias
     // SQL---------------------------------//
 
@@ -78,9 +78,7 @@ public class JDBCClienteDao implements ClienteDao {
             pstmtCliente.setString(2, client.getNombre());
             pstmtCliente.setString(3, client.getDireccion());
             pstmtCliente.setString(4, client.getTelefono());
-            pstmtCliente.setString(5, client.getEmail());
-            pstmtCliente.setString(6, client.getPassword());
-            pstmtCliente.setInt(7,client.getId());
+            pstmtCliente.setInt(5,client.getId());
             pstmtCliente.executeUpdate();
         } catch (Exception e) {
             System.out.println("Error al hacer update");

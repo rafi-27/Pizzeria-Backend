@@ -5,7 +5,6 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import ies.thiar.Modelo.Pizza;
-import ies.thiar.controlador.ControladorProducto;
 
 public class Pruebas2 {
     public static void main(String[] args) throws JAXBException {

@@ -1,4 +1,4 @@
-package ies.thiar.controlador;
+package ies.thiar.ClasesEnDeshuso;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,7 +9,6 @@ import javax.xml.bind.JAXBException;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
-import ies.thiar.ClasesEnDeshuso.GestionFicheros;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.Pizza;
 import ies.thiar.Modelo.Producto;

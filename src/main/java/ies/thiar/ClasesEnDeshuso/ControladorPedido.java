@@ -1,4 +1,4 @@
-package ies.thiar.controlador;
+package ies.thiar.ClasesEnDeshuso;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,7 +7,6 @@ import java.util.List;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
-import ies.thiar.ClasesEnDeshuso.GestionFicheros;
 import ies.thiar.Modelo.EstadoPedido;
 import ies.thiar.Modelo.LineaPedido;
 import ies.thiar.Modelo.Pagable;

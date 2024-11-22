@@ -10,14 +10,14 @@ import ies.thiar.controlador.dao.imp.JDBCClienteDao;
 public class ControladorCliente {
     ClienteDao jClienteDao = new JDBCClienteDao();
 
-    public void registrarCliente(Cliente cliente) throws SQLException{
+    public void registrarCliente(Cliente cliente) throws SQLException {
         Cliente client = jClienteDao.findByEmail(cliente.getEmail());
-        System.out.println(client);
-        if(client!=null){throw new IllegalArgumentException("Usuario ya registrado con anterioridad");}
-        else {jClienteDao.insert(cliente);}
+
+        if (client != null) throw new IllegalArgumentException("Usuario ya registrado con anterioridad");
+        jClienteDao.insert(cliente);
     }
 
-    public List<Cliente> selectAll() throws SQLException{
+    public List<Cliente> selectAll() throws SQLException {
         return jClienteDao.findAll();
     }
 
@@ -25,11 +25,20 @@ public class ControladorCliente {
         jClienteDao.delete(id);
     }
 
-    public Cliente selectByID(int id) throws SQLException{
+    public Cliente selectByID(int id) throws SQLException {
         return jClienteDao.findByID(id);
     }
 
     public void updateCliente(Cliente cliente) throws SQLException {
         jClienteDao.update(cliente);
+    }
+
+    public Cliente clienteLogin(String email, String password) throws SQLException {
+        Cliente client = jClienteDao.findByEmail(email);
+
+        if (client == null) throw new IllegalArgumentException("Usuario no encontrado");
+
+        if (client.getPassword().equals(password)) return client;
+        throw new IllegalArgumentException("Contraseña incorrecta");
     }
 }

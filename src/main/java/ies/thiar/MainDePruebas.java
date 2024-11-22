@@ -1,9 +1,10 @@
-package ies.thiar.controlador;
+package ies.thiar;
 
 import java.util.List;
 
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Utils.DatabaseConf;
+import ies.thiar.controlador.ControladorCliente;
 
 public class MainDePruebas {
     public static void main(String[] args) {
@@ -48,9 +49,24 @@ public class MainDePruebas {
 
             System.out.println("------------------------------------------------------------------------------------");
             //pruebas con update:
-            ruben.setDni("uno random");
-            controladorCliente.updateCliente(ruben);
-            System.out.println(ruben.toString());
+            //ruben.setDni("uno random");
+            //controladorCliente.updateCliente(ruben);
+            //System.out.println(ruben.toString());
+
+            System.out.println("------------------------------------------------------------------------------------");
+            //Login
+            Cliente clienteLogin = controladorCliente.clienteLogin("ruben@gmail.com", "1234");
+            System.out.println(clienteLogin.toString());
+
+
+            
+
+
+
+
+
+
+
         } catch (Exception e) {
             e.getMessage();
             e.printStackTrace();
