@@ -6,62 +6,92 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseConf {
-    /**
-     * URL,User,Password,CreateTable
-     */
+        /**
+         * URL,User,Password,CreateTable
+         */
 
-    public static final String URL = "jdbc:mysql://localhost:3306/pizzeria";
-    public static final String USUARIO = "root";
-    public static final String PASSWORD = "admin";
+        public static final String URL = "jdbc:mysql://localhost:3306/pizzeria";
+        public static final String USUARIO = "root";
+        public static final String PASSWORD = "admin";
 
-    // Creamos tabla clientes:
-    static final String CREATE_TABLE_CLIENTE = "CREATE TABLE IF NOT EXISTS CLIENTES( \r\n" + //
-            "    id int primary key Auto_Increment, \r\n" + //
-            "    dni VARCHAR(255) not null unique,   \r\n" + //
-            "    nombre VARCHAR(255) not null,     \r\n" + //
-            "    direccion VARCHAR(255) not null,     \r\n" + //
-            "    telefono VARCHAR(255) NULL UNIQUE,     \r\n" +
-            "    email VARCHAR(255) not NULL UNIQUE, \r\n" +
-            "    password VARCHAR(255) not NULL,\r\n" +
-            "    esAdministrador bool default false\r\n" +
-            ");";
+        // Creamos tabla clientes:
+        static final String CREATE_TABLE_CLIENTE = "CREATE TABLE IF NOT EXISTS CLIENTES( \r\n" + //
+                        "    id int primary key Auto_Increment, \r\n" + //
+                        "    dni VARCHAR(255) not null unique,   \r\n" + //
+                        "    nombre VARCHAR(255) not null,     \r\n" + //
+                        "    direccion VARCHAR(255) not null,     \r\n" + //
+                        "    telefono VARCHAR(255) NULL UNIQUE,     \r\n" +
+                        "    email VARCHAR(255) not NULL UNIQUE, \r\n" +
+                        "    password VARCHAR(255) not NULL,\r\n" +
+                        "    esAdministrador bool default false\r\n" +
+                        ");";
 
-    // Borramos tabla clientes:
-    static final String DROP_TABLE_CLIENTE = "DROP TABLE IF EXISTS clientes";
+        // Borramos tabla clientes:
+        static final String DROP_TABLE_CLIENTE = "DROP TABLE IF EXISTS clientes";
 
-    // Creamos tabla Producto
-    static final String CREATE_TABLE_PRODUCT = "CREATE TABLE IF NOT EXISTS PRODUCTOS( \r\n" + //
-            "    id int primary key Auto_Increment, \r\n" + //
-            "    nombre VARCHAR(255) not null unique,   \r\n" + //
-            "    precio double not null,     \r\n" + //
-            "    tipo VARCHAR(255) not null     \r\n" +
-            ");";
+        // Creamos tabla Producto
+        static final String CREATE_TABLE_PRODUCT = "CREATE TABLE IF NOT EXISTS PRODUCTOS( \r\n" +
+                        "    id int primary key Auto_Increment, \r\n" +
+                        "    nombre VARCHAR(255) not null unique,   \r\n" +
+                        "    precio double not null,     \r\n" +
+                        "    tipo_Producto ENUM('PIZZA','PASTA','BEBIDA') not null,     \r\n" +
+                        "    size ENUM('Grande','Mediana','Pequeña') default null     \r\n" +
+                        ");";
 
-    // Borramos tabla producto:
-    static final String DROP_TABLE_PRODUCT = "DROP TABLE IF EXISTS productos";
+        // Borramos tabla producto:
+        static final String DROP_TABLE_PRODUCT = "DROP TABLE IF EXISTS productos";
 
-    // Creamos tabla Ingredientes
-    static final String CREATE_TABLE_INGREDIENTE = "CREATE TABLE IF NOT EXISTS INGREDIENTES( \r\n" + //
-            "    id int primary key Auto_Increment, \r\n" + //
-            "    nombre VARCHAR(255) not null unique,   \r\n" + //
-            "    precio double not null,     \r\n" + //
-            "    tipo VARCHAR(255) not null     \r\n" +
-            ");";
+        // Creamos tabla Producto
+        static final String CREATE_TABLE_ALERGENOS = "CREATE TABLE IF NOT EXISTS alergenos( \r\n" +
+                        "    id int primary key Auto_Increment, \r\n" +
+                        "    nombre VARCHAR(255) not null unique);";
 
-    // Borramos tabla producto:
-    static final String DROP_TABLE_INGREDIENTE = "DROP TABLE IF EXISTS productos";
+        // Borramos tabla producto:
+        static final String DROP_TABLE_ALERGENOS = "DROP TABLE IF EXISTS alergenos";
 
-    public static void dropAndCreateTables() throws SQLException {
-        try (Connection cn = DriverManager.getConnection(URL, USUARIO, PASSWORD);
-                Statement statement = cn.createStatement()) {
-            statement.execute(DROP_TABLE_CLIENTE);
-            statement.execute(DROP_TABLE_PRODUCT);
-            statement.execute(DROP_TABLE_INGREDIENTE);
+        // Creamos tabla Ingredientes
+        static final String CREATE_TABLE_INGREDIENTE = "CREATE TABLE IF NOT EXISTS INGREDIENTES( \r\n" +
+                        "    id int primary key Auto_Increment, \r\n" +
+                        "    nombre VARCHAR(255) not null unique,   \r\n" +
+                        "    id_Producto int not null,     \r\n" +
+                        "    FOREIGN KEY(id_Producto) references productos(id) on delete no action on update cascade" +
+                        ");";
 
-            statement.execute(CREATE_TABLE_CLIENTE);
-            statement.execute(CREATE_TABLE_PRODUCT);
-            statement.execute(CREATE_TABLE_INGREDIENTE);
-            System.out.println("Tabla de cliente borrada y creada perfe.");
+        // Borramos tabla producto:
+        static final String DROP_TABLE_INGREDIENTE = "DROP TABLE IF EXISTS ingredientes";
+
+        // tabla intermedia_Productos---Ingrediente
+        static final String PRODUCTOS_INGREDIENTES = "CREATE TABLE IF NOT EXISTS PRODUCTOS_INGREDIENTES(id int primary key Auto_Increment, id_producto int, id_Ingrediente int, FOREIGN KEY(id_producto) references productos(id) on delete no action on update cascade, Foreign key(id_Ingrediente) references ingredientes(id) on delete no action on update cascade);";
+        // Borramos tabla producto:
+        static final String DROP_PRODUCTOS_INGREDIENTES = "DROP TABLE IF EXISTS PRODUCTOS_INGREDIENTES";
+
+        // tabla intermedia_Ingredientes---Alergenos
+        static final String INGREDIENTES_ALERGENOS = "CREATE TABLE IF NOT EXISTS INGREDIENTES_ALERGENOS(id int primary key Auto_Increment, id_Ingrediente int, id_Alergenos int, FOREIGN KEY(id_Ingrediente) references ingredientes(id) on delete no action on update cascade,Foreign key(id_Alergenos) references alergenos(id) on delete no action on update cascade);";
+        // Borramos tabla producto:
+        static final String DROP_INGREDIENTES_ALERGENOS = "DROP TABLE IF EXISTS INGREDIENTES_ALERGENOS";
+
+        public static void dropAndCreateTables() throws SQLException {
+                try (Connection cn = DriverManager.getConnection(URL, USUARIO, PASSWORD);
+                                Statement statement = cn.createStatement()) {
+
+                        statement.execute(DROP_PRODUCTOS_INGREDIENTES);
+                        statement.execute(DROP_INGREDIENTES_ALERGENOS);
+
+                        statement.execute(DROP_TABLE_INGREDIENTE);
+                        statement.execute(DROP_TABLE_ALERGENOS);
+                        statement.execute(DROP_TABLE_PRODUCT);
+                        statement.execute(DROP_TABLE_CLIENTE);
+
+                        statement.execute(CREATE_TABLE_CLIENTE);
+                        statement.execute(CREATE_TABLE_PRODUCT);
+                        statement.execute(CREATE_TABLE_ALERGENOS);
+                        statement.execute(CREATE_TABLE_INGREDIENTE);
+                        
+
+                        statement.execute(PRODUCTOS_INGREDIENTES);
+                        statement.execute(INGREDIENTES_ALERGENOS);
+
+                        System.out.println("Tabla de cliente borrada y creada perfe.");
+                }
         }
-    }
 }
