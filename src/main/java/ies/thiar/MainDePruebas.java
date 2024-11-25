@@ -1,8 +1,13 @@
 package ies.thiar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ies.thiar.Modelo.Cliente;
+import ies.thiar.Modelo.Ingrediente;
+import ies.thiar.Modelo.Pizza;
+import ies.thiar.Modelo.Producto;
+import ies.thiar.Modelo.SIZE;
 import ies.thiar.Utils.DatabaseConf;
 import ies.thiar.controlador.ControladorCliente;
 
@@ -61,7 +66,21 @@ public class MainDePruebas {
 
             
 
+            //------------------------------------------------------------------------------------//
+            //Creamos unos cuantos ingredientes:
+            List<Ingrediente>listaIngredientes = new ArrayList<>(){
+                {
+                    add(new Ingrediente(1, "Ingre1", List.of("Alergeno uno")));
+                    add(new Ingrediente(1, "Ingre1", List.of("Alergeno uno")));
+                    add(new Ingrediente(1, "Ingre1", List.of("Alergeno uno")));
+                    add(new Ingrediente(1, "Ingre1", List.of("Alergeno uno")));
+                    add(new Ingrediente(1, "Ingre1", List.of("Alergeno uno")));
+                    add(new Ingrediente(1, "Ingre1", List.of("Alergeno uno")));
+                }
+            };
+            Producto pizzaPrueba = new Pizza(1, "Pizza kebab", 10, SIZE.GRANDE, listaIngredientes);
 
+            
 
 
 

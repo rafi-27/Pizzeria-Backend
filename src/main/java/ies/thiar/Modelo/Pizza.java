@@ -20,13 +20,13 @@ public class Pizza extends Producto{
     private List<Ingrediente>listaIngredientesPizza = new ArrayList<>();
 
     //,List<Ingrediente>listaIngredientesPizzaParam
-    public Pizza(int id, String nombre, double precio,SIZE tam) {
+    public Pizza(int id, String nombre, double precio,SIZE tam, List<Ingrediente>lista) {
         super(id, nombre, precio);
         this.tamanyo=tam;
-        //this.listaIngredientesPizza=listaIngredientesPizzaParam;
+        this.listaIngredientesPizza=lista;
     }
 
-    public Pizza(){}
+    //public Pizza(){}
 
     public SIZE getTamanyo() {
         return tamanyo;
