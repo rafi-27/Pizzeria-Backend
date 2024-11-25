@@ -70,9 +70,40 @@ public class DatabaseConf {
         // Borramos tabla producto:
         static final String DROP_INGREDIENTES_ALERGENOS = "DROP TABLE IF EXISTS INGREDIENTES_ALERGENOS";
 
+        //Creamos la tabla de pedido
+        static final String CREATE_TABLE_PEDIDO = "CREATE TABLE IF NOT EXISTS pedidos( \r\n" +
+                        "    id int primary key Auto_Increment, \r\n" +
+                        "    fecha Date not null,   \r\n" +
+                        "    precio_total double not null,     \r\n" +
+                        "    estado ENUM('PENDIENTE','FINALIZADO','ENTREGADO','CANCELADO') default 'PENDIENTE',     \r\n" +
+                        "    forma_pago ENUM('TARJETA','EFECTIVO') null default null,     \r\n" +
+                        "    id_cliente int not null,     \r\n" +
+                        "    FOREIGN KEY(id_cliente) references clientes(id) on delete no action on update cascade" +
+                        ");";
+
+        //Borramos la tabla de pedido
+        static final String DROP_TABLE_PEDIDO = "DROP TABLE IF EXISTS pedidos";
+
+        //Creamos la tabla de linea pedido
+        static final String CREATE_TABLE_LINEAPEDIDO = "CREATE TABLE IF NOT EXISTS linea_pedido( \r\n" +
+                        "    id int primary key Auto_Increment, \r\n" +
+                        "    cantidad int not null,   \r\n" +
+                        "    id_producto int not null,     \r\n" +
+                        "    id_pedido int not null,     \r\n" +
+                        "    FOREIGN KEY(id_producto) references productos(id) on delete no action on update cascade,     \r\n" +
+                        "    FOREIGN KEY(id_pedido) references pedidos(id) on delete no action on update cascade     \r\n" +
+                        ");";
+
+        //Borramos la tabla de linea pedido
+        static final String DROP_TABLE_LINEAPEDIDO = "DROP TABLE IF EXISTS linea_pedido";
+
         public static void dropAndCreateTables() throws SQLException {
                 try (Connection cn = DriverManager.getConnection(URL, USUARIO, PASSWORD);
                                 Statement statement = cn.createStatement()) {
+                        
+                        //Borrados
+                        statement.execute(DROP_TABLE_LINEAPEDIDO);
+                        statement.execute(DROP_TABLE_PEDIDO);
 
                         statement.execute(DROP_PRODUCTOS_INGREDIENTES);
                         statement.execute(DROP_INGREDIENTES_ALERGENOS);
@@ -82,16 +113,20 @@ public class DatabaseConf {
                         statement.execute(DROP_TABLE_PRODUCT);
                         statement.execute(DROP_TABLE_CLIENTE);
 
+                        //Creaciones
                         statement.execute(CREATE_TABLE_CLIENTE);
                         statement.execute(CREATE_TABLE_PRODUCT);
                         statement.execute(CREATE_TABLE_ALERGENOS);
                         statement.execute(CREATE_TABLE_INGREDIENTE);
                         
-
                         statement.execute(PRODUCTOS_INGREDIENTES);
                         statement.execute(INGREDIENTES_ALERGENOS);
+                        
+                        statement.execute(CREATE_TABLE_PEDIDO);
+                        statement.execute(CREATE_TABLE_LINEAPEDIDO);
+                        
 
-                        System.out.println("Tabla de cliente borrada y creada perfe.");
+                        System.out.println("Tablas borradas y creadas perfectamente.");
                 }
         }
 }
