@@ -10,10 +10,16 @@ public abstract class Producto {
     private int id;
     private String nombre;
     private double precio;
+    private TipoProducto tipoProducto;
     
-    public Producto(String nombre, double precio) {
+    public Producto(String nombre, double precio, TipoProducto tipe) {
         this.nombre = nombre;
         this.precio = precio;
+        this.tipoProducto = tipe;
+    }
+
+    public TipoProducto getTipoProducto() {
+        return tipoProducto;
     }
 
     public Producto(){}

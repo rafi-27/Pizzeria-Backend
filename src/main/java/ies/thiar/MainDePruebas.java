@@ -10,6 +10,7 @@ import ies.thiar.Modelo.Producto;
 import ies.thiar.Modelo.SIZE;
 import ies.thiar.Utils.DatabaseConf;
 import ies.thiar.controlador.ControladorCliente;
+import ies.thiar.controlador.ControladorProducto;
 
 public class MainDePruebas {
     public static void main(String[] args) {
@@ -67,6 +68,7 @@ public class MainDePruebas {
             
 
             //------------------------------------------------------------------------------------//
+            ControladorProducto controladorProducto = new ControladorProducto();
             //Creamos unos cuantos ingredientes:
             List<Ingrediente>listaIngredientes = new ArrayList<>(){
                 {
@@ -80,7 +82,7 @@ public class MainDePruebas {
             };
             Producto pizzaPrueba = new Pizza(1, "Pizza kebab", 10, SIZE.GRANDE, listaIngredientes);
 
-            
+            controladorProducto.insertProducto(pizzaPrueba);
 
 
 

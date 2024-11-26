@@ -10,7 +10,7 @@ public class Bebida extends Producto{
     
 
     public Bebida(int id, String nombre, double precio,SIZE tam) {
-        super(nombre, precio);
+        super(nombre, precio, TipoProducto.BEBIDA);
         this.tamanyo=tam;
     }
 

@@ -16,7 +16,7 @@ public class Pasta extends Producto{
     private List<Ingrediente>listaIngredientePasta = new ArrayList<>();
 
     public Pasta(int id, String nombre, double precio,List<Ingrediente>listaIngredientePastaParam) {
-        super(nombre, precio);
+        super(nombre, precio, TipoProducto.PASTA);
         this.listaIngredientePasta=listaIngredientePastaParam;
     }
 

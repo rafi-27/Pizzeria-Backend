@@ -28,22 +28,18 @@ public class JDBCProductoDao implements ProductoDao {
 
             pstmtCliente.setString(1, producto.getNombre());
             pstmtCliente.setDouble(2, producto.getPrecio());
-
+            pstmtCliente.setString(3, producto.getTipoProducto().toString());
             
             if(producto instanceof Pizza){
                 Pizza pizzita = (Pizza)producto;
-                saveIngrediente(conexion, pizzita.getListaIngredientesPizza(), id_producto);
-
-
+                saveIngrediente(conexion, pizzita.getListaIngredientesPizza(), producto.getId());
             }else if(producto instanceof Pasta){
-
-            }else{
-
+                Pasta pastita = (Pasta)producto;
+                saveIngrediente(conexion, pastita.getListaIngredientePasta(), producto.getId());
             }
+            //else{
 
-
-
-
+            //}
 
 
             pstmtCliente.executeUpdate();
@@ -99,25 +95,31 @@ public class JDBCProductoDao implements ProductoDao {
 
     // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
     final String INSERT_INGREDIENTE = "insert into ingredientes (nombre) values (?)";
-    final String INSERT_INGREDIENTE_EXISTENTE_TABLAINTER = "insert into ingredientes (nombre, id_Producto) values (?,?)";
+    final String INSERT_INGREDIENTE_EXISTENTE_TABLAINTER = "insert into productos_ingredientes (id_producto, id_ingrediente) values (?,?)";
 
     public void saveIngrediente(Connection conexion, List<Ingrediente> ingredientes, int id_producto)
             throws SQLException {
-        PreparedStatement pstmtIngrediente = conexion.prepareStatement(INSERT_INGREDIENTE,
-                Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement pstmtIngrediente = conexion.prepareStatement(INSERT_INGREDIENTE, Statement.RETURN_GENERATED_KEYS);
 
         for (Ingrediente ingrediente : ingredientes) {
             Ingrediente ingredienteAux = findByNameIngredient(conexion, ingrediente.getNombre());
 
             if (ingredienteAux != null) {
-                return;
+                PreparedStatement pstmtIngrediente2 = conexion.prepareStatement(INSERT_INGREDIENTE_EXISTENTE_TABLAINTER, Statement.RETURN_GENERATED_KEYS);
+                
+                pstmtIngrediente2.setInt(1, ingrediente.getId());
+                pstmtIngrediente2.setInt(2, id_producto);
+
+                pstmtIngrediente2.executeUpdate();
+                continue;
+
+            }else{
+                pstmtIngrediente.setString(1, ingrediente.getNombre());
+                for (String alergen : ingrediente.getListaAlergenos()) {
+                    saveAlergeno(conexion, alergen, ingrediente.getId());
+                }
             }
-
-            pstmtIngrediente.setString(1, ingrediente.getNombre());
-            pstmtIngrediente.setInt(2, id_producto);
         }
-
-        pstmtIngrediente.executeUpdate();
 
         try (ResultSet generatedKeys = pstmtIngrediente.getGeneratedKeys()) {
             if (generatedKeys.next()) {
