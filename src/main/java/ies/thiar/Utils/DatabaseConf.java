@@ -34,8 +34,7 @@ public class DatabaseConf {
                         "    id int primary key Auto_Increment, \r\n" +
                         "    nombre VARCHAR(255) not null unique,   \r\n" +
                         "    precio double not null,     \r\n" +
-                        "    tipo_Producto ENUM('PIZZA','PASTA','BEBIDA') not null,     \r\n" +
-                        "    size ENUM('Grande','Mediana','Pequeña') default null     \r\n" +
+                        "    tipo_Producto ENUM('PIZZA','PASTA','BEBIDA') not null     \r\n" +
                         ");";
 
         // Borramos tabla producto:
@@ -52,9 +51,7 @@ public class DatabaseConf {
         // Creamos tabla Ingredientes
         static final String CREATE_TABLE_INGREDIENTE = "CREATE TABLE IF NOT EXISTS INGREDIENTES( \r\n" +
                         "    id int primary key Auto_Increment, \r\n" +
-                        "    nombre VARCHAR(255) not null unique,   \r\n" +
-                        "    id_Producto int not null,     \r\n" +
-                        "    FOREIGN KEY(id_Producto) references productos(id) on delete no action on update cascade" +
+                        "    nombre VARCHAR(255) not null unique   \r\n" +
                         ");";
 
         // Borramos tabla producto:

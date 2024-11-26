@@ -6,12 +6,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -32,7 +29,6 @@ import ies.thiar.Modelo.LineaPedido;
 import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pizza;
 import ies.thiar.Modelo.Producto;
-import ies.thiar.Modelo.SIZE;
 
 public class GestionFicheros {
     private final String archivoXML = "Clientes.xml";
@@ -50,18 +46,18 @@ public class GestionFicheros {
     // Fichero aqui:
     private final String archivoPizzasTXT = "pizzas.txt";
 
-    //Ejercicio 1
-    public List<Pizza> importarPizzasSinLibreria() throws IOException {
-        try (Stream<String> lineas = Files.lines(Path.of(archivoPizzasTXT))) {
-            return lineas.map(linea -> {
-                List<String> cosas = List.of(linea.split("[*]"));
-                cosas = cosas.stream().map(String::trim).toList();
+    // //Ejercicio 1
+    // public List<Pizza> importarPizzasSinLibreria() throws IOException {
+    //     try (Stream<String> lineas = Files.lines(Path.of(archivoPizzasTXT))) {
+    //         return lineas.map(linea -> {
+    //             List<String> cosas = List.of(linea.split("[*]"));
+    //             cosas = cosas.stream().map(String::trim).toList();
 
-                return new Pizza(Integer.parseInt(cosas.get(0)), cosas.get(1), Double.parseDouble(cosas.get(2)),
-                        SIZE.valueOf(cosas.get(3)));
-            }).toList();
-        }
-    }
+    //             //return new Pizza(Integer.parseInt(cosas.get(0)), cosas.get(1), Double.parseDouble(cosas.get(2)),
+    //               //      SIZE.valueOf(cosas.get(3)));
+    //         }).toList();
+    //     }
+    // }
 
     /**
      * (1,5 puntos) Exportación. Modifica el método de exportación de clientes, de

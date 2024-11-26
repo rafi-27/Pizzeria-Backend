@@ -5,7 +5,6 @@ import java.util.List;
 
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.LineaPedido;
-import ies.thiar.Modelo.Pizza;
 
 public class ExamenMain {
     public static void main(String[] args) {
@@ -15,9 +14,9 @@ public class ExamenMain {
             ControladorProducto controladorProducto = new ControladorProducto();
 
             //Ejer 1:
-            List<Pizza>listaPizzas = controladorProducto.importarListaPizzasExamen();
-            listaPizzas.forEach(pizzas->System.out.println(pizzas.toString()));
-System.out.println();
+//             List<Pizza>listaPizzas = controladorProducto.importarListaPizzasExamen();
+//             listaPizzas.forEach(pizzas->System.out.println(pizzas.toString()));
+// System.out.println();
             
 
             //Ejer2:
@@ -70,6 +69,5 @@ System.out.println();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

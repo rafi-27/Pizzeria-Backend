@@ -11,8 +11,7 @@ public abstract class Producto {
     private String nombre;
     private double precio;
     
-    public Producto(int id, String nombre, double precio) {
-        this.id = id;
+    public Producto(String nombre, double precio) {
         this.nombre = nombre;
         this.precio = precio;
     }

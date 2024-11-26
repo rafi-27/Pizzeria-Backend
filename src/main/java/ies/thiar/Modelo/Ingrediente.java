@@ -30,7 +30,9 @@ public class Ingrediente {
         this.listaAlergenos = listaAlergenos;
     }
 
-    public Ingrediente() {
+    public Ingrediente(int id, String nombre) {
+        this.id = id;
+        this.nombre=nombre;
     }
 
     public int getId() {

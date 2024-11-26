@@ -14,6 +14,6 @@ public interface ProductoDao {
 
     public List<Producto> findAll() throws SQLException;
     public List<Ingrediente> findIngredientesProducto(int idProd) throws SQLException;
-    public List<String> listaAlergenosIngrediente(int idIngre) throws SQLException; 
+    public List<String> listaAlergenosIngrediente(int idIngre) throws SQLException;
     
 }

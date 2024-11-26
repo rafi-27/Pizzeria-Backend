@@ -58,9 +58,9 @@ public class ControladorProducto {
     }
 
     ///////////////////////////////////////////Examen///////////////////////////////////////////
-    public List<Pizza> importarListaPizzasExamen() throws IOException{
-        return gestor.importarPizzasSinLibreria();
-    }
+    // public List<Pizza> importarListaPizzasExamen() throws IOException{
+    //     return gestor.importarPizzasSinLibreria();
+    // }
     ///////////////////////////////////////////Examen///////////////////////////////////////////
 
 

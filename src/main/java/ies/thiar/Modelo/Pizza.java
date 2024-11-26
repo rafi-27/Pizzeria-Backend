@@ -21,7 +21,7 @@ public class Pizza extends Producto{
 
     //,List<Ingrediente>listaIngredientesPizzaParam
     public Pizza(int id, String nombre, double precio,SIZE tam, List<Ingrediente>lista) {
-        super(id, nombre, precio);
+        super(nombre, precio);
         this.tamanyo=tam;
         this.listaIngredientesPizza=lista;
     }
