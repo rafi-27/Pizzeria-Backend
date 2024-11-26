@@ -43,7 +43,7 @@ public class DatabaseConf {
         // Creamos tabla Producto
         static final String CREATE_TABLE_ALERGENOS = "CREATE TABLE IF NOT EXISTS alergenos( \r\n" +
                         "    id int primary key Auto_Increment, \r\n" +
-                        "    nombre VARCHAR(255) not null);";
+                        "    nombre VARCHAR(255) not null unique);";
 
         // Borramos tabla producto:
         static final String DROP_TABLE_ALERGENOS = "DROP TABLE IF EXISTS alergenos";
