@@ -3,8 +3,10 @@ package ies.thiar;
 import java.util.ArrayList;
 import java.util.List;
 
+import ies.thiar.Modelo.Bebida;
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.Ingrediente;
+import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pizza;
 import ies.thiar.Modelo.Producto;
 import ies.thiar.Modelo.SIZE;
@@ -72,22 +74,47 @@ public class MainDePruebas {
             //Creamos unos cuantos ingredientes:
             List<Ingrediente>listaIngredientes = new ArrayList<>(){
                 {
-                    add(new Ingrediente(1, "Ingre1", List.of("Leche")));
-                    add(new Ingrediente(1, "Ingre1", List.of("Huevos")));
-                    add(new Ingrediente(1, "Ingre1", List.of("Mani")));
-                    add(new Ingrediente(1, "Ingre1", List.of("Mariscos")));
-                    add(new Ingrediente(1, "Ingre1", List.of("Trigo")));
-                    add(new Ingrediente(1, "Ingre1", List.of("Soja")));
+                    add(new Ingrediente(1, "Tomate", List.of("Leche","Huevos","Kiwi","Cereales")));
+                    add(new Ingrediente(2, "Queso Mozzarella", List.of("Huevos")));
+                    add(new Ingrediente(3, "Pepperoni", List.of("Mani")));
+                    add(new Ingrediente(4, "Aceitunas negras", List.of("Mariscos")));
+                    add(new Ingrediente(5, "Albahaca fresca", List.of("Trigo")));
+                    add(new Ingrediente(6, "Champiñones", List.of("Soja")));
                 }
             };
-            Producto pizzaPrueba = new Pizza(1, "Pizza kebab", 10, SIZE.GRANDE, listaIngredientes);
 
+            Producto pizzaPrueba = new Pizza(1, "Pizza kebab", 10, SIZE.GRANDE, listaIngredientes);
             controladorProducto.insertProducto(pizzaPrueba);
 
+            List<Ingrediente>listaIngredientes2 = new ArrayList<>(){
+                {
+                    add(new Ingrediente(1, "Harina de trigo", List.of("gluten")));
+                    add(new Ingrediente(2, "Huevos frescos", List.of("huevo")));
+                    add(new Ingrediente(3, "Queso parmesano", List.of("lácteos","huevo")));
+                    add(new Ingrediente(4, "Nueces trituradas", List.of("frutos secos")));
+                    add(new Ingrediente(5, "Camarones", List.of("mariscos")));
+                    add(new Ingrediente(6, "Salsa de soya", List.of("soya")));
+                }
+            };
+
+            Producto pastaPrueba = new Pasta(1,"Pasta carbonara", 15, listaIngredientes2);
+            controladorProducto.insertProducto(pastaPrueba);
+
+            Producto bebidaPrueba = new Bebida(1, "Coca Cola", 2.5, SIZE.MEDIANA);
+            controladorProducto.insertProducto(bebidaPrueba);
+
+            Producto bebidaPruebaDelete = new Bebida(1, "Fanta Taronja", 6, SIZE.GRANDE);
+            controladorProducto.insertProducto(bebidaPruebaDelete);
+
+            controladorProducto.deleteProduct(4);
+
+            //Obtenemos los alergenos de un ingrediente:
+            List<String>listaAlergenosDeUnIngrediente = controladorProducto.findAlergenoByIdIngredient(1);
+            System.out.print("Los alergenos del ingrediente con id 1 son: ");
+            listaAlergenosDeUnIngrediente.forEach(alergen -> System.out.print(alergen+", "));
 
 
-
-
+            
         } catch (Exception e) {
             e.getMessage();
             e.printStackTrace();
