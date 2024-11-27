@@ -72,12 +72,12 @@ public class MainDePruebas {
             //Creamos unos cuantos ingredientes:
             List<Ingrediente>listaIngredientes = new ArrayList<>(){
                 {
-                    add(new Ingrediente(1, "Ingre1", List.of("Alergeno uno")));
-                    add(new Ingrediente(1, "Ingre1", List.of("Alergeno uno")));
-                    add(new Ingrediente(1, "Ingre1", List.of("Alergeno uno")));
-                    add(new Ingrediente(1, "Ingre1", List.of("Alergeno uno")));
-                    add(new Ingrediente(1, "Ingre1", List.of("Alergeno uno")));
-                    add(new Ingrediente(1, "Ingre1", List.of("Alergeno uno")));
+                    add(new Ingrediente(1, "Ingre1", List.of("Leche")));
+                    add(new Ingrediente(1, "Ingre1", List.of("Huevos")));
+                    add(new Ingrediente(1, "Ingre1", List.of("Mani")));
+                    add(new Ingrediente(1, "Ingre1", List.of("Mariscos")));
+                    add(new Ingrediente(1, "Ingre1", List.of("Trigo")));
+                    add(new Ingrediente(1, "Ingre1", List.of("Soja")));
                 }
             };
             Producto pizzaPrueba = new Pizza(1, "Pizza kebab", 10, SIZE.GRANDE, listaIngredientes);
