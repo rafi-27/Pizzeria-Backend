@@ -19,6 +19,12 @@ public class Pasta extends Producto{
         super(nombre, precio, TipoProducto.PASTA);
         this.listaIngredientePasta=listaIngredientePastaParam;
     }
+    public Pasta(int id, String nombre, double precio) {
+        super(nombre, precio, TipoProducto.PASTA);
+    }
+    public void setListaIngredientePasta(List<Ingrediente> listaIngredientePasta) {
+        this.listaIngredientePasta = listaIngredientePasta;
+    }
 
     public List<Ingrediente> getListaIngredientePasta() {
         return listaIngredientePasta;
@@ -28,8 +34,4 @@ public class Pasta extends Producto{
     public String toString() {
         return super.toString()+" lista ingredientes pasta "+listaIngredientePasta;
     }
-
-    
-    
-    
 }

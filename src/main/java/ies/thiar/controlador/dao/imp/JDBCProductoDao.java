@@ -15,6 +15,7 @@ import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pizza;
 import ies.thiar.Modelo.Producto;
+import ies.thiar.Modelo.SIZE;
 import ies.thiar.Utils.DatabaseConf;
 import ies.thiar.controlador.dao.ProductoDao;
 
@@ -23,14 +24,14 @@ public class JDBCProductoDao implements ProductoDao {
     final String INSERT_PRODUCTO = "insert into productos (nombre, precio, tipo_Producto, tamaño) values (?,?,?,?)";
     final String DELETE_PRODUCTO = "delete from productos where id=?";
     final String UPDATE_PRODUCTO = "update productos set nombre=?, precio=?,tipo_Producto=?,tamaño=? where id=?";
-
-
+    final String SELECT_ALL_PRODUCTO = "select id, nombre, precio, tipo_Producto, tamaño from productos;";
 
     @Override
     public void insert(Producto producto) throws SQLException {
         try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
                 DatabaseConf.PASSWORD);
-                PreparedStatement pstmtProducto = conexion.prepareStatement(INSERT_PRODUCTO, Statement.RETURN_GENERATED_KEYS);) {
+                PreparedStatement pstmtProducto = conexion.prepareStatement(INSERT_PRODUCTO,
+                        Statement.RETURN_GENERATED_KEYS);) {
 
             pstmtProducto.setString(1, producto.getNombre());
             pstmtProducto.setDouble(2, producto.getPrecio());
@@ -101,61 +102,63 @@ public class JDBCProductoDao implements ProductoDao {
         throw new UnsupportedOperationException("Unimplemented method 'findByID'");
     }
 
-    
     @Override
     public List<Producto> findAll() throws SQLException {
-        List<Producto>listaDeProductosADevolver = new ArrayList<>();
-        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO, DatabaseConf.PASSWORD);
-        PreparedStatement pstmtCliente = conexion.prepareStatement(SELECT_ALL);) {
-            try (ResultSet rs = pstmtCliente.executeQuery()) {
+        List<Producto> listaDeProductosADevolver = new ArrayList<>();
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
+                PreparedStatement pstmtProducto = conexion.prepareStatement(SELECT_ALL_PRODUCTO);) {
+            try (ResultSet rs = pstmtProducto.executeQuery()) {
                 while (rs.next()) {
-                    Cliente cliente = new Cliente(
-                            rs.getString("dni"),
-                            rs.getString("nombre"),
-                            rs.getString("direccion"),
-                            rs.getString("telefono"),
-                            rs.getString("email"),
-                            rs.getString("password"));
-                    cliente.setId(rs.getInt("id"));
-                    //listaClientesADevolver.add(cliente);
+
+                    if (rs.getString("tipo_Producto").equals("PIZZA")) {
+                        if (rs.getString("tamaño") != null) {
+                            Pizza pizza = new Pizza(rs.getInt("id"), rs.getString("nombre"), rs.getDouble("precio"),
+                                    SIZE.valueOf(rs.getString("tamaño")));
+                            pizza.setListaIngredientesPizza(findIngredientesProducto(rs.getInt("id")));
+                            listaDeProductosADevolver.add(pizza);
+                        }
+                    } else if (rs.getString("tipo_Producto").equals("PASTA")) {
+                        Pasta pasta = new Pasta(rs.getInt("id"), rs.getString("nombre"), rs.getDouble("precio"));
+                        pasta.setListaIngredientePasta(findIngredientesProducto(rs.getInt("id")));
+                        listaDeProductosADevolver.add(pasta);
+                    } else {
+                        if (rs.getString("tamaño") != null) {
+                            Bebida bebida = new Bebida(rs.getInt("id"), rs.getString("nombre"), rs.getDouble("precio"),
+                                    SIZE.valueOf(rs.getString("tamaño")));
+                            listaDeProductosADevolver.add(bebida);
+                        }
+                    }
                 }
             }
-            //return listaClientesADevolver;
         }
-
-
-
-
-
-
-
-
-
-
         return listaDeProductosADevolver;
     }
 
-    //mejorarlo
+    // mejorarlo
     final String SELECT_INGREDIENTE_BY_PRODUCTO = "SELECT ingredientes.nombre, alergenos.nombre FROM ingredientes join productos_ingredientes on ingredientes.id=productos_ingredientes.id_Ingrediente join ingredientes_alergenos on ingredientes_alergenos.id_Ingrediente=productos_ingredientes.id_Ingrediente join alergenos on alergenos.id=ingredientes_alergenos.id_Alergenos where productos_ingredientes.id_producto=?;";
+
     @Override
     public List<Ingrediente> findIngredientesProducto(int idProd) throws SQLException {
         List<Ingrediente> listaIngredientesADevolver = new ArrayList<>();
 
-        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO, DatabaseConf.PASSWORD);
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
                 PreparedStatement pstmtAlergen = conexion.prepareStatement(SELECT_INGREDIENTE_BY_PRODUCTO);) {
             pstmtAlergen.setInt(1, idProd);
 
             try (ResultSet rs = pstmtAlergen.executeQuery()) {
                 while (rs.next()) {
-                    listaIngredientesADevolver.add(new Ingrediente(rs.getString("ingredientes.nombre"),List.of(rs.getString("alergenos.nombre"))));
+                    listaIngredientesADevolver.add(new Ingrediente(rs.getString("ingredientes.nombre"),
+                            List.of(rs.getString("alergenos.nombre"))));
                 }
             }
         }
         return listaIngredientesADevolver;
     }
 
-
     final String SELECT_ALERGENOS_DE_INGREDIENT = "SELECT alergenos.nombre FROM alergenos join ingredientes_alergenos on alergenos.id=ingredientes_alergenos.id_Alergenos where ingredientes_alergenos.id_Ingrediente=?;";
+
     @Override
     public List<String> listaAlergenosIngrediente(int idIngre) throws SQLException {
         List<String> listaAlergenosADevolver = new ArrayList<>();

@@ -34,7 +34,7 @@ public class DatabaseConf {
                         "    nombre VARCHAR(255) not null unique,   \r\n" +
                         "    precio double not null,     \r\n" +
                         "    tipo_Producto ENUM('PIZZA','PASTA','BEBIDA') not null,     \r\n" +
-                        "    tamaño ENUM('Grande','Mediana','Pequeña') null default null     \r\n" +
+                        "    tamaño ENUM('GRANDE','MEDIANA','PEQUEÑA') default null     \r\n" +
                         ");";
 
         // Borramos tabla producto:

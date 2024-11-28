@@ -19,5 +19,9 @@ public class Bebida extends Producto{
     public SIZE getTamanyo() {
         return tamanyo;
     }
+
+    public void setTamanyo(SIZE tamanyo) {
+        this.tamanyo = tamanyo;
+    }
     
 }

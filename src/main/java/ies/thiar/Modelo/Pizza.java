@@ -27,6 +27,10 @@ public class Pizza extends Producto{
     }
 
     //public Pizza(){}
+    public Pizza(int id, String nombre, double precio,SIZE tam) {
+        super(nombre, precio, TipoProducto.PIZZA);
+        this.tamanyo=tam;
+    }
 
     public SIZE getTamanyo() {
         return tamanyo;
@@ -36,8 +40,16 @@ public class Pizza extends Producto{
         return listaIngredientesPizza;
     }
 
+    public void setTamanyo(SIZE tamanyo) {
+        this.tamanyo = tamanyo;
+    }
+
+    public void setListaIngredientesPizza(List<Ingrediente> listaIngredientesPizza) {
+        this.listaIngredientesPizza = listaIngredientesPizza;
+    }
+
     @Override
     public String toString() {
-        return super.toString()+" tamanyo=" + tamanyo;
+        return super.toString()+" tamanyo=" + tamanyo+" lista Ingredientes: "+getListaIngredientesPizza();
     }
 }

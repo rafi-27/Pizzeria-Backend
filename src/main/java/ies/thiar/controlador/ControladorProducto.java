@@ -26,5 +26,9 @@ public class ControladorProducto {
     public List<Ingrediente> findIngredientesByProducto(int idProduct) throws SQLException{
         return jProductoDao.findIngredientesProducto(idProduct);
     }
+
+    public List<Producto>findAllProducts() throws SQLException{
+        return jProductoDao.findAll();
+    }
     
 }

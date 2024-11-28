@@ -117,8 +117,13 @@ public class MainDePruebas {
 
             List<Ingrediente>listaIngredientesProducto1 = controladorProducto.findIngredientesByProducto(1);
             System.out.println("Los Ingredientes y alergenos de esos ingredientes del producto con id 1 son: ");
-            listaIngredientesProducto1.forEach(ingrediente -> System.out.print(ingrediente+", "));
+            listaIngredientesProducto1.forEach(ingrediente -> System.out.println(ingrediente+", "));
             
+            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
+            List<Producto>listaProductosPrueba = controladorProducto.findAllProducts();
+            System.out.println("Lista productos: "+listaProductosPrueba.size());
+            listaProductosPrueba.forEach(productos -> System.out.println(productos));
+
         } catch (Exception e) {
             e.getMessage();
             e.printStackTrace();
