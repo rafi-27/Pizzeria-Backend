@@ -30,8 +30,13 @@ public class Ingrediente {
         this.listaAlergenos = listaAlergenos;
     }
 
+    public Ingrediente(String nombre, List<String> listaAlergenos) {
+        this.nombre=nombre;
+        this.listaAlergenos=listaAlergenos;
+    }
+
     public Ingrediente(int id, String nombre) {
-        this.id = id;
+        this.id=id;
         this.nombre=nombre;
     }
 

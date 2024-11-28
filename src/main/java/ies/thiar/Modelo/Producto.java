@@ -11,7 +11,27 @@ public abstract class Producto {
     private String nombre;
     private double precio;
     private TipoProducto tipoProducto;
+    private SIZE tamanyo;
     
+    public Producto(String nombre, double precio, TipoProducto tipe,SIZE tamany) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.tipoProducto = tipe;
+        this.tamanyo=tamany;
+    }
+
+    public void setTipoProducto(TipoProducto tipoProducto) {
+        this.tipoProducto = tipoProducto;
+    }
+
+    public SIZE getTamanyo() {
+        return tamanyo;
+    }
+
+    public void setTamanyo(SIZE tamanyo) {
+        this.tamanyo = tamanyo;
+    }
+
     public Producto(String nombre, double precio, TipoProducto tipe) {
         this.nombre = nombre;
         this.precio = precio;

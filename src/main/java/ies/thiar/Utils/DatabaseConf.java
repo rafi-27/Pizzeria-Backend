@@ -9,7 +9,6 @@ public class DatabaseConf {
         /**
          * URL,User,Password,CreateTable
          */
-
         public static final String URL = "jdbc:mysql://localhost:3306/pizzeria";
         public static final String USUARIO = "root";
         public static final String PASSWORD = "admin";
@@ -59,12 +58,12 @@ public class DatabaseConf {
         static final String DROP_TABLE_INGREDIENTE = "DROP TABLE IF EXISTS ingredientes";
 
         // tabla intermedia_Productos---Ingrediente
-        static final String PRODUCTOS_INGREDIENTES = "CREATE TABLE IF NOT EXISTS PRODUCTOS_INGREDIENTES(id int primary key Auto_Increment, id_producto int, id_Ingrediente int, FOREIGN KEY(id_producto) references productos(id) on delete no action on update cascade, Foreign key(id_Ingrediente) references ingredientes(id) on delete no action on update cascade);";
+        static final String PRODUCTOS_INGREDIENTES = "CREATE TABLE IF NOT EXISTS PRODUCTOS_INGREDIENTES(id int primary key Auto_Increment, id_producto int, id_Ingrediente int, FOREIGN KEY(id_producto) references productos(id) on delete cascade on update cascade, Foreign key(id_Ingrediente) references ingredientes(id) on delete no action on update cascade);";
         // Borramos tabla producto:
         static final String DROP_PRODUCTOS_INGREDIENTES = "DROP TABLE IF EXISTS PRODUCTOS_INGREDIENTES";
 
         // tabla intermedia_Ingredientes---Alergenos
-        static final String INGREDIENTES_ALERGENOS = "CREATE TABLE IF NOT EXISTS INGREDIENTES_ALERGENOS(id int primary key Auto_Increment, id_Ingrediente int, id_Alergenos int, FOREIGN KEY(id_Ingrediente) references ingredientes(id) on delete no action on update cascade,Foreign key(id_Alergenos) references alergenos(id) on delete no action on update cascade);";
+        static final String INGREDIENTES_ALERGENOS = "CREATE TABLE IF NOT EXISTS INGREDIENTES_ALERGENOS(id int primary key Auto_Increment, id_Ingrediente int, id_Alergenos int, FOREIGN KEY(id_Ingrediente) references ingredientes(id) on delete cascade on update cascade,Foreign key(id_Alergenos) references alergenos(id) on delete no action on update cascade);";
         // Borramos tabla producto:
         static final String DROP_INGREDIENTES_ALERGENOS = "DROP TABLE IF EXISTS INGREDIENTES_ALERGENOS";
 

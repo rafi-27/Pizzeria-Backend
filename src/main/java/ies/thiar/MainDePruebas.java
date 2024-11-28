@@ -110,10 +110,14 @@ public class MainDePruebas {
 
             //Obtenemos los alergenos de un ingrediente:
             List<String>listaAlergenosDeUnIngrediente = controladorProducto.findAlergenoByIdIngredient(1);
-            System.out.print("Los alergenos del ingrediente con id 1 son: ");
+            System.out.println("Los alergenos del ingrediente con id 1 son: ");
             listaAlergenosDeUnIngrediente.forEach(alergen -> System.out.print(alergen+", "));
 
+            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
 
+            List<Ingrediente>listaIngredientesProducto1 = controladorProducto.findIngredientesByProducto(1);
+            System.out.println("Los Ingredientes y alergenos de esos ingredientes del producto con id 1 son: ");
+            listaIngredientesProducto1.forEach(ingrediente -> System.out.print(ingrediente+", "));
             
         } catch (Exception e) {
             e.getMessage();

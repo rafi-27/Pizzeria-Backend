@@ -22,13 +22,15 @@ public class JDBCProductoDao implements ProductoDao {
     // Instrucciones
     final String INSERT_PRODUCTO = "insert into productos (nombre, precio, tipo_Producto, tamaño) values (?,?,?,?)";
     final String DELETE_PRODUCTO = "delete from productos where id=?";
+    final String UPDATE_PRODUCTO = "update productos set nombre=?, precio=?,tipo_Producto=?,tamaño=? where id=?";
+
+
 
     @Override
     public void insert(Producto producto) throws SQLException {
         try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
                 DatabaseConf.PASSWORD);
-                PreparedStatement pstmtProducto = conexion.prepareStatement(INSERT_PRODUCTO,
-                        Statement.RETURN_GENERATED_KEYS);) {
+                PreparedStatement pstmtProducto = conexion.prepareStatement(INSERT_PRODUCTO, Statement.RETURN_GENERATED_KEYS);) {
 
             pstmtProducto.setString(1, producto.getNombre());
             pstmtProducto.setDouble(2, producto.getPrecio());
@@ -79,8 +81,18 @@ public class JDBCProductoDao implements ProductoDao {
 
     @Override
     public void update(Producto producto) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
+                PreparedStatement pstmtCliente = conexion.prepareStatement(UPDATE_PRODUCTO);) {
+            pstmtCliente.setString(1, producto.getNombre());
+            pstmtCliente.setDouble(2, producto.getPrecio());
+            pstmtCliente.setString(3, producto.getTipoProducto().toString());
+            pstmtCliente.setString(4, producto.getTamanyo().toString());
+            pstmtCliente.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error al hacer update del producto");
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -89,17 +101,59 @@ public class JDBCProductoDao implements ProductoDao {
         throw new UnsupportedOperationException("Unimplemented method 'findByID'");
     }
 
+    
     @Override
     public List<Producto> findAll() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        List<Producto>listaDeProductosADevolver = new ArrayList<>();
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO, DatabaseConf.PASSWORD);
+        PreparedStatement pstmtCliente = conexion.prepareStatement(SELECT_ALL);) {
+            try (ResultSet rs = pstmtCliente.executeQuery()) {
+                while (rs.next()) {
+                    Cliente cliente = new Cliente(
+                            rs.getString("dni"),
+                            rs.getString("nombre"),
+                            rs.getString("direccion"),
+                            rs.getString("telefono"),
+                            rs.getString("email"),
+                            rs.getString("password"));
+                    cliente.setId(rs.getInt("id"));
+                    //listaClientesADevolver.add(cliente);
+                }
+            }
+            //return listaClientesADevolver;
+        }
+
+
+
+
+
+
+
+
+
+
+        return listaDeProductosADevolver;
     }
 
+    //mejorarlo
+    final String SELECT_INGREDIENTE_BY_PRODUCTO = "SELECT ingredientes.nombre, alergenos.nombre FROM ingredientes join productos_ingredientes on ingredientes.id=productos_ingredientes.id_Ingrediente join ingredientes_alergenos on ingredientes_alergenos.id_Ingrediente=productos_ingredientes.id_Ingrediente join alergenos on alergenos.id=ingredientes_alergenos.id_Alergenos where productos_ingredientes.id_producto=?;";
     @Override
     public List<Ingrediente> findIngredientesProducto(int idProd) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findIngredientesProducto'");
+        List<Ingrediente> listaIngredientesADevolver = new ArrayList<>();
+
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO, DatabaseConf.PASSWORD);
+                PreparedStatement pstmtAlergen = conexion.prepareStatement(SELECT_INGREDIENTE_BY_PRODUCTO);) {
+            pstmtAlergen.setInt(1, idProd);
+
+            try (ResultSet rs = pstmtAlergen.executeQuery()) {
+                while (rs.next()) {
+                    listaIngredientesADevolver.add(new Ingrediente(rs.getString("ingredientes.nombre"),List.of(rs.getString("alergenos.nombre"))));
+                }
+            }
+        }
+        return listaIngredientesADevolver;
     }
+
 
     final String SELECT_ALERGENOS_DE_INGREDIENT = "SELECT alergenos.nombre FROM alergenos join ingredientes_alergenos on alergenos.id=ingredientes_alergenos.id_Alergenos where ingredientes_alergenos.id_Ingrediente=?;";
     @Override
