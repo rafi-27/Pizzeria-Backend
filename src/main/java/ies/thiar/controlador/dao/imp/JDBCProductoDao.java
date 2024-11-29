@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ies.thiar.Modelo.Bebida;
-import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pizza;
@@ -23,8 +22,9 @@ public class JDBCProductoDao implements ProductoDao {
     // Instrucciones
     final String INSERT_PRODUCTO = "insert into productos (nombre, precio, tipo_Producto, tamaño) values (?,?,?,?)";
     final String DELETE_PRODUCTO = "delete from productos where id=?";
-    final String UPDATE_PRODUCTO = "update productos set nombre=?, precio=?,tipo_Producto=?,tamaño=? where id=?";
+    final String UPDATE_PRODUCTO = "update productos set nombre=?, precio=?, tamaño=? where id=?";
     final String SELECT_ALL_PRODUCTO = "select id, nombre, precio, tipo_Producto, tamaño from productos;";
+    final String SELECT_PRODUCTO = "select id, nombre, precio, tipo_Producto, tamaño from productos where id=?";
 
     @Override
     public void insert(Producto producto) throws SQLException {
@@ -85,10 +85,11 @@ public class JDBCProductoDao implements ProductoDao {
         try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
                 DatabaseConf.PASSWORD);
                 PreparedStatement pstmtCliente = conexion.prepareStatement(UPDATE_PRODUCTO);) {
+
             pstmtCliente.setString(1, producto.getNombre());
             pstmtCliente.setDouble(2, producto.getPrecio());
-            pstmtCliente.setString(3, producto.getTipoProducto().toString());
-            pstmtCliente.setString(4, producto.getTamanyo().toString());
+            pstmtCliente.setString(3, producto.getTamanyo().toString());
+            pstmtCliente.setInt(4, producto.getId());
             pstmtCliente.executeUpdate();
         } catch (Exception e) {
             System.out.println("Error al hacer update del producto");
@@ -98,8 +99,27 @@ public class JDBCProductoDao implements ProductoDao {
 
     @Override
     public Producto findByID(int id) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByID'");
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO, DatabaseConf.PASSWORD);
+                PreparedStatement pstmtProducto = conexion.prepareStatement(SELECT_PRODUCTO);) {
+            pstmtProducto.setInt(1, id);
+            try (ResultSet rs = pstmtProducto.executeQuery()) {
+                if (rs.next()) {
+                    if(rs.getString("tipo_Producto").equals("PIZZA")){
+                        Pizza pizzita = new Pizza(0, rs.getString("nombre"),rs.getDouble("precio"), SIZE.valueOf(rs.getString("tamaño")));
+                        pizzita.setListaIngredientesPizza(findIngredientesProducto(rs.getInt("id")));
+                        return pizzita;
+                    }else if(rs.getString("tipo_Producto").equals("PASTA")){
+                        Pasta pasta = new Pasta(0, rs.getString("nombre"),rs.getDouble("precio"));
+                        pasta.setListaIngredientePasta(findIngredientesProducto(rs.getInt("id")));
+                        return pasta;
+                    }else{
+                        Bebida bebida = new Bebida(0, rs.getString("nombre"),rs.getDouble("precio"), SIZE.valueOf(rs.getString("tamaño")));
+                        return bebida;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     @Override
@@ -110,7 +130,6 @@ public class JDBCProductoDao implements ProductoDao {
                 PreparedStatement pstmtProducto = conexion.prepareStatement(SELECT_ALL_PRODUCTO);) {
             try (ResultSet rs = pstmtProducto.executeQuery()) {
                 while (rs.next()) {
-
                     if (rs.getString("tipo_Producto").equals("PIZZA")) {
                         if (rs.getString("tamaño") != null) {
                             Pizza pizza = new Pizza(rs.getInt("id"), rs.getString("nombre"), rs.getDouble("precio"),
@@ -135,22 +154,28 @@ public class JDBCProductoDao implements ProductoDao {
         return listaDeProductosADevolver;
     }
 
-    // mejorarlo
-    final String SELECT_INGREDIENTE_BY_PRODUCTO = "SELECT ingredientes.nombre, alergenos.nombre FROM ingredientes join productos_ingredientes on ingredientes.id=productos_ingredientes.id_Ingrediente join ingredientes_alergenos on ingredientes_alergenos.id_Ingrediente=productos_ingredientes.id_Ingrediente join alergenos on alergenos.id=ingredientes_alergenos.id_Alergenos where productos_ingredientes.id_producto=?;";
+    final String SELECT_INGREDIENTE_BY_PRODUCTO = "SELECT ingredientes.id, ingredientes.nombre, alergenos.nombre FROM ingredientes join productos_ingredientes on ingredientes.id=productos_ingredientes.id_Ingrediente join ingredientes_alergenos on ingredientes_alergenos.id_Ingrediente=productos_ingredientes.id_Ingrediente join alergenos on alergenos.id=ingredientes_alergenos.id_Alergenos where productos_ingredientes.id_producto=?;";
 
     @Override
     public List<Ingrediente> findIngredientesProducto(int idProd) throws SQLException {
         List<Ingrediente> listaIngredientesADevolver = new ArrayList<>();
+        List<String> listaIngredientesYaProcesados = new ArrayList<>();
 
-        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL,
+                DatabaseConf.USUARIO,
                 DatabaseConf.PASSWORD);
                 PreparedStatement pstmtAlergen = conexion.prepareStatement(SELECT_INGREDIENTE_BY_PRODUCTO);) {
             pstmtAlergen.setInt(1, idProd);
 
             try (ResultSet rs = pstmtAlergen.executeQuery()) {
                 while (rs.next()) {
-                    listaIngredientesADevolver.add(new Ingrediente(rs.getString("ingredientes.nombre"),
-                            List.of(rs.getString("alergenos.nombre"))));
+                    String nombre = rs.getString("nombre");
+                    if (!listaIngredientesYaProcesados.contains(nombre)) {
+                        Ingrediente ing = new Ingrediente(rs.getString("ingredientes.nombre"),
+                                listaAlergenosIngrediente(rs.getInt("ingredientes.id")));
+                        listaIngredientesADevolver.add(ing);
+                        listaIngredientesYaProcesados.add(nombre);
+                    }
                 }
             }
         }

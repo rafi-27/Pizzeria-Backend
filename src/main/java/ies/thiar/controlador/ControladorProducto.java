@@ -30,5 +30,9 @@ public class ControladorProducto {
     public List<Producto>findAllProducts() throws SQLException{
         return jProductoDao.findAll();
     }
+
+    public Producto findProductById(int idProducto) throws SQLException {
+        return jProductoDao.findByID(idProducto);
+    }
     
 }

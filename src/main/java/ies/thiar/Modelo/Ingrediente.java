@@ -39,6 +39,10 @@ public class Ingrediente {
         this.id=id;
         this.nombre=nombre;
     }
+    
+    public Ingrediente(String nombre) {
+        this.nombre=nombre;
+    }
 
     public int getId() {
         return id;

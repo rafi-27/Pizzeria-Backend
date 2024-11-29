@@ -75,7 +75,7 @@ public class MainDePruebas {
             List<Ingrediente>listaIngredientes = new ArrayList<>(){
                 {
                     add(new Ingrediente(1, "Tomate", List.of("Leche","Huevos","Kiwi","Cereales")));
-                    add(new Ingrediente(2, "Queso Mozzarella", List.of("Huevos")));
+                    add(new Ingrediente(2, "Queso Mozzarella", List.of("Huevos", "Cipote")));
                     add(new Ingrediente(3, "Pepperoni", List.of("Mani")));
                     add(new Ingrediente(4, "Aceitunas negras", List.of("Mariscos")));
                     add(new Ingrediente(5, "Albahaca fresca", List.of("Trigo")));
@@ -120,9 +120,33 @@ public class MainDePruebas {
             listaIngredientesProducto1.forEach(ingrediente -> System.out.println(ingrediente+", "));
             
             System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("---IMPORTANTE------");
             List<Producto>listaProductosPrueba = controladorProducto.findAllProducts();
             System.out.println("Lista productos: "+listaProductosPrueba.size());
-            listaProductosPrueba.forEach(productos -> System.out.println(productos));
+            listaProductosPrueba.forEach(productos -> System.out.println(productos+"\n"));
+
+            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
+            Producto pizzaRey = controladorProducto.findProductById(1);
+            System.out.println("----------Producto 1 --------: "+pizzaRey);
+
+            System.out.println();
+
+            Producto pastaRey = controladorProducto.findProductById(2);
+            System.out.println("----------Producto 2 --------: "+pastaRey);
+
+            System.out.println();
+
+            Producto bebidaRey = controladorProducto.findProductById(3);
+            System.out.println("----------Producto 3 --------: "+bebidaRey);
+
+            System.out.println("-------------------------------------------------------------Update-------------------------------------------------------------------");
+            Producto productUpdatear = new Bebida(5, "Fanta Naranja", 12, SIZE.PEQUENYA);
+            controladorProducto.insertProducto(productUpdatear);
+
+            productUpdatear.setNombre("EjemploPrueba");
+            
+
 
         } catch (Exception e) {
             e.getMessage();
