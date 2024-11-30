@@ -146,8 +146,6 @@ public class MainDePruebas {
 
             productUpdatear.setNombre("EjemploPrueba");
             
-
-
         } catch (Exception e) {
             e.getMessage();
             e.printStackTrace();
