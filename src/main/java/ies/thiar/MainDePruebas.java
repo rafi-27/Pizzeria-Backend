@@ -24,8 +24,8 @@ public class MainDePruebas {
             
 
             //Creacion de usuarios:
-            Cliente ruben = new Cliente("123456789Q","Ruben", "Garcia", "625478654", "ruben@gmail.com", "1234");
-            Cliente juan = new Cliente("12345678P","Juan", "Ramos", "614875254", "juan@gmail.com", "1234");
+            Cliente ruben = new Cliente("123456789Q","Ruben Garcia", "Calle Ruben Garcia", "625478654", "ruben@gmail.com", "1234");
+            Cliente juan = new Cliente("12345678P","Juan Ramos", "Calle Juan Ramos", "614875254", "juan@gmail.com", "1234");
 
 
             System.out.println("------------------------------------------------------------------------------------");
