@@ -11,7 +11,7 @@ public class LineaPedido {
     @CsvBindByName(column = "QUANTITY")
     private int cantidad;
 
-    private Producto p;
+    private Producto product;
     private Pedido pedido;
 
     public LineaPedido(int ide, int cantidad) {
@@ -19,6 +19,15 @@ public class LineaPedido {
         this.id=ide;
         this.cantidad = cantidad;
     }
+
+    public LineaPedido(int ide, int cantidad, Producto producto, Pedido pedido) {
+        this.id=ide;
+        this.cantidad = cantidad;
+        this.product=producto;
+        this.pedido=pedido;
+    }
+
+
     public LineaPedido(){}
 
     public int getId() {
@@ -34,11 +43,31 @@ public class LineaPedido {
     }
 
     public double getPrecioSubtotal(){
-        return p.getPrecio()*cantidad;
+        return product.getPrecio()*cantidad;
+    }
+
+    public Producto getProduct() {
+        return product;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
     }
 
     @Override
     public String toString() {
-        return "LineaPedido [id=" + id + ", cantidad=" + cantidad + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("LineaPedido{");
+        sb.append("id=").append(id);
+        sb.append(", cantidad=").append(cantidad);
+        sb.append(", product=").append(product);
+        sb.append(", pedido=").append(pedido);
+        sb.append('}');
+        return sb.toString();
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }

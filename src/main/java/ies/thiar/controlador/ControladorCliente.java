@@ -38,7 +38,7 @@ public class ControladorCliente {
 
         if (client == null) throw new IllegalArgumentException("Usuario no encontrado");
 
-        if (client.getPassword().equals(password)) return client;
+        if (client.getPassword().equals(password)){System.out.println("Usuario: "+email+" logeado correctamente. "); return client;} 
         throw new IllegalArgumentException("Contraseña incorrecta");
     }
 }

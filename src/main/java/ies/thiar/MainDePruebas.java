@@ -6,12 +6,16 @@ import java.util.List;
 import ies.thiar.Modelo.Bebida;
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.Ingrediente;
+import ies.thiar.Modelo.LineaPedido;
+import ies.thiar.Modelo.PagarEfectivo;
 import ies.thiar.Modelo.Pasta;
+import ies.thiar.Modelo.Pedido;
 import ies.thiar.Modelo.Pizza;
 import ies.thiar.Modelo.Producto;
 import ies.thiar.Modelo.SIZE;
 import ies.thiar.Utils.DatabaseConf;
 import ies.thiar.controlador.ControladorCliente;
+import ies.thiar.controlador.ControladorPedido;
 import ies.thiar.controlador.ControladorProducto;
 
 public class MainDePruebas {
@@ -21,7 +25,6 @@ public class MainDePruebas {
             //Creacion de controladores y tablas.
             ControladorCliente controladorCliente = new ControladorCliente();
             DatabaseConf.dropAndCreateTables();
-            
 
             //Creacion de usuarios:
             Cliente ruben = new Cliente("123456789Q","Ruben Garcia", "Calle Ruben Garcia", "625478654", "ruben@gmail.com", "1234");
@@ -35,18 +38,18 @@ public class MainDePruebas {
             controladorCliente.registrarCliente(juan);
 
             List<Cliente>listaClientesAll = controladorCliente.selectAll();
-            System.out.println(listaClientesAll.size());
+            //System.out.println(listaClientesAll.size());
             listaClientesAll.forEach((cliente) -> System.out.println(cliente.toString()));
             
-            System.out.println();
+            //System.out.println();
 
             System.out.println("------------------------------------------------------------------------------------");
 
             //pruebas con delete
             //controladorCliente.deleteClient(1);
 
-            System.out.println(listaClientesAll.size());
-            listaClientesAll.forEach((cliente) -> System.out.println(cliente.toString()));
+            //System.out.println(listaClientesAll.size());
+            //listaClientesAll.forEach((cliente) -> System.out.println(cliente.toString()));
 
 
             System.out.println("------------------------------------------------------------------------------------");
@@ -62,12 +65,6 @@ public class MainDePruebas {
             //System.out.println(ruben.toString());
 
             System.out.println("------------------------------------------------------------------------------------");
-            //Login
-            Cliente clienteLogin = controladorCliente.clienteLogin("ruben@gmail.com", "1234");
-            System.out.println(clienteLogin.toString());
-
-
-            
 
             //------------------------------------------------------------------------------------//
             ControladorProducto controladorProducto = new ControladorProducto();
@@ -110,42 +107,58 @@ public class MainDePruebas {
 
             //Obtenemos los alergenos de un ingrediente:
             List<String>listaAlergenosDeUnIngrediente = controladorProducto.findAlergenoByIdIngredient(1);
-            System.out.println("Los alergenos del ingrediente con id 1 son: ");
-            listaAlergenosDeUnIngrediente.forEach(alergen -> System.out.print(alergen+", "));
+            //System.out.println("Los alergenos del ingrediente con id 1 son: ");
+            //listaAlergenosDeUnIngrediente.forEach(alergen -> System.out.print(alergen+", "));
 
             System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
 
             List<Ingrediente>listaIngredientesProducto1 = controladorProducto.findIngredientesByProducto(1);
-            System.out.println("Los Ingredientes y alergenos de esos ingredientes del producto con id 1 son: ");
-            listaIngredientesProducto1.forEach(ingrediente -> System.out.println(ingrediente+", "));
+            //System.out.println("Los Ingredientes y alergenos de esos ingredientes del producto con id 1 son: ");
+            //listaIngredientesProducto1.forEach(ingrediente -> System.out.println(ingrediente+", "));
             
-            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
-            System.out.println("---IMPORTANTE------");
+            //System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
+            //System.out.println("---IMPORTANTE------");
             List<Producto>listaProductosPrueba = controladorProducto.findAllProducts();
-            System.out.println("Lista productos: "+listaProductosPrueba.size());
-            listaProductosPrueba.forEach(productos -> System.out.println(productos+"\n"));
+            // System.out.println("Lista productos: "+listaProductosPrueba.size());
+            // listaProductosPrueba.forEach(productos -> System.out.println(productos+"\n"));
 
-            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
-            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
+            // System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
+            // System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
             Producto pizzaRey = controladorProducto.findProductById(1);
-            System.out.println("----------Producto 1 --------: "+pizzaRey);
+            //System.out.println("----------Producto 1 --------: "+pizzaRey);
 
-            System.out.println();
+            //System.out.println();
 
             Producto pastaRey = controladorProducto.findProductById(2);
-            System.out.println("----------Producto 2 --------: "+pastaRey);
+            //System.out.println("----------Producto 2 --------: "+pastaRey);
 
-            System.out.println();
+            //System.out.println();
 
             Producto bebidaRey = controladorProducto.findProductById(3);
-            System.out.println("----------Producto 3 --------: "+bebidaRey);
+            //System.out.println("----------Producto 3 --------: "+bebidaRey);
 
             System.out.println("-------------------------------------------------------------Update-------------------------------------------------------------------");
             Producto productUpdatear = new Bebida(5, "Fanta Naranja", 12, SIZE.PEQUENYA);
             controladorProducto.insertProducto(productUpdatear);
-
             productUpdatear.setNombre("EjemploPrueba");
-            
+            controladorProducto.updateProduct(productUpdatear);
+            System.out.println("-----------------------------------------------------Nos logeamos------------------------------------------------------");
+            Cliente rubenLogin = controladorCliente.clienteLogin("ruben@gmail.com", "1234");
+
+            Pedido pedido = new Pedido(rubenLogin);
+
+            List<LineaPedido>listaLineaPedidos = new ArrayList<>(){{
+                add(new LineaPedido(1, 3, productUpdatear, pedido));
+                add(new LineaPedido(2, 2, pizzaRey, pedido));
+            }};
+
+            pedido.setLineaPedido(listaLineaPedidos);
+            pedido.setPago(new PagarEfectivo());
+
+            ControladorPedido controladorPedido = new ControladorPedido();
+            controladorPedido.insertPedido(pedido);
+
+
         } catch (Exception e) {
             e.getMessage();
             e.printStackTrace();

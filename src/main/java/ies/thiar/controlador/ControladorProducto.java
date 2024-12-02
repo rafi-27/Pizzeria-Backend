@@ -19,6 +19,10 @@ public class ControladorProducto {
         jProductoDao.delete(id);
     }
 
+    public void updateProduct(Producto producto) throws SQLException{
+        jProductoDao.update(producto);
+    }
+
     public List<String> findAlergenoByIdIngredient(int idIngrediente) throws SQLException{
         return jProductoDao.listaAlergenosIngrediente(idIngrediente);
     }
