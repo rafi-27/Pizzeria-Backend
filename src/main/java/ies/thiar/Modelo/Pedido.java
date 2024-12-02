@@ -10,7 +10,8 @@ public class Pedido {
     private double precioTotal;
     private EstadoPedido estado;
     private List<LineaPedido>lineaPedido;
-    private Pagable pago;
+    //private Pagable pago;
+    private FormaPago pago;
     private Cliente cliente;
 
     public Pedido(Cliente client) {
@@ -45,7 +46,7 @@ public class Pedido {
         this.estado = estado;
     }
 
-    public void setPago(Pagable pago) {
+    public void setPago(FormaPago pago) {
         this.pago = pago;
     }
 
@@ -75,8 +76,7 @@ public class Pedido {
         this.lineaPedido = lineaPedido;
     }
 
-    public Pagable getPago() {
+    public FormaPago getPago() {
         return pago;
     }
-    
 }

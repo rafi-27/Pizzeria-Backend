@@ -24,27 +24,26 @@ public class JDBCPedido implements PedidoDao {
     // ---------------------------------------------------------------------------------------------------------//
     @Override
     public void insert(Pedido pedido) throws SQLException {
-        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
-                DatabaseConf.PASSWORD);
-                PreparedStatement pstmtPedido = conexion.prepareStatement(INSERT_PEDIDO, Statement.RETURN_GENERATED_KEYS);) {
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO, DatabaseConf.PASSWORD);
+        
+            PreparedStatement pstmtPedido = conexion.prepareStatement(INSERT_PEDIDO, Statement.RETURN_GENERATED_KEYS);) {
                 //.getFecha().getTime())
             pstmtPedido.setDate(1, new Date(pedido.getFecha().getTime()));
             pstmtPedido.setDouble(2, pedido.getPrecioTotal());
             pstmtPedido.setString(3, pedido.getEstado().toString());
-            
-            if(){
-
-            }
             pstmtPedido.setString(4, pedido.getPago().toString());
             pstmtPedido.setInt(5, pedido.getCliente().getId());
-            
+
             pstmtPedido.executeUpdate();
 
             try (ResultSet generatedKeys = pstmtPedido.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     pedido.setId(generatedKeys.getInt(1));
+                    System.out.println("SOUT: "+generatedKeys.getInt(1));
                 }
             }
+
+            insertLineaPedido(conexion, pedido.getLineaPedido(), pedido.getId());
 
         } catch (Exception e) {
             System.out.println("Error al insertar pedido");
@@ -53,7 +52,7 @@ public class JDBCPedido implements PedidoDao {
     }
 
     // Hacemos el insert de la lineaDePedido:
-    final String INSERT_LINEA_PEDIDO = "insert into linea_pedido (cantidad, idProducto, idPedido) values (?,?,?)";
+    final String INSERT_LINEA_PEDIDO = "insert into linea_pedido (cantidad, id_producto, id_pedido) values (?,?,?)";
 
     public void insertLineaPedido(Connection conexion, List<LineaPedido> listaLineaPedidos, int idPedido) throws SQLException {
         PreparedStatement pstmtLineaPedido = conexion.prepareStatement(INSERT_LINEA_PEDIDO, Statement.RETURN_GENERATED_KEYS);

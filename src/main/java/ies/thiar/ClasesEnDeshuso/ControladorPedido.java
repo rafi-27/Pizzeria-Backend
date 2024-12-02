@@ -44,7 +44,7 @@ public class ControladorPedido {
             System.err.println("El pedido ya fue pagado bro");
         }else{
             metodoPagar.pagar(pedidoActual.getPrecioTotal());
-            pedidoActual.setPago(metodoPagar);
+            //pedidoActual.setPago(metodoPagar);
             pedidoActual.setEstado(EstadoPedido.FINALIZADO);
             pedidoActual = null;
         }

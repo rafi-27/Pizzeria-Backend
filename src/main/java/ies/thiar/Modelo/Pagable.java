@@ -1,5 +1,5 @@
 package ies.thiar.Modelo;
 
 public interface Pagable {
-    public void pagar(double cantidad);
+    public Enum pagar(double cantidad);
 }

@@ -5,9 +5,9 @@ import java.util.List;
 
 import ies.thiar.Modelo.Bebida;
 import ies.thiar.Modelo.Cliente;
+import ies.thiar.Modelo.FormaPago;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.LineaPedido;
-import ies.thiar.Modelo.PagarEfectivo;
 import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pedido;
 import ies.thiar.Modelo.Pizza;
@@ -145,15 +145,15 @@ public class MainDePruebas {
             System.out.println("-----------------------------------------------------Nos logeamos------------------------------------------------------");
             Cliente rubenLogin = controladorCliente.clienteLogin("ruben@gmail.com", "1234");
 
-            Pedido pedido = new Pedido(rubenLogin);
+            Pedido pedido = new Pedido(ruben);
 
             List<LineaPedido>listaLineaPedidos = new ArrayList<>(){{
-                add(new LineaPedido(1, 3, productUpdatear, pedido));
-                add(new LineaPedido(2, 2, pizzaRey, pedido));
+                add(new LineaPedido(1, 3, pizzaPrueba, pedido));
+                add(new LineaPedido(2, 2, pizzaPrueba, pedido));
             }};
 
             pedido.setLineaPedido(listaLineaPedidos);
-            pedido.setPago(new PagarEfectivo());
+            pedido.setPago(FormaPago.EFECTIVO);
 
             ControladorPedido controladorPedido = new ControladorPedido();
             controladorPedido.insertPedido(pedido);
