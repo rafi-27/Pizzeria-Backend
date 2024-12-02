@@ -126,4 +126,44 @@ public class DatabaseConf {
                         System.out.println("Tablas borradas y creadas perfectamente.");
                 }
         }
+
+        public static void createTables() throws SQLException {
+                try (Connection cn = DriverManager.getConnection(URL, USUARIO, PASSWORD);
+                                Statement statement = cn.createStatement()) {
+                        //Creaciones
+                        statement.execute(CREATE_TABLE_CLIENTE);
+                        statement.execute(CREATE_TABLE_PRODUCT);
+                        statement.execute(CREATE_TABLE_ALERGENOS);
+                        statement.execute(CREATE_TABLE_INGREDIENTE);
+                        
+                        statement.execute(PRODUCTOS_INGREDIENTES);
+                        statement.execute(INGREDIENTES_ALERGENOS);
+                        
+                        statement.execute(CREATE_TABLE_PEDIDO);
+                        statement.execute(CREATE_TABLE_LINEAPEDIDO);
+                        
+
+                        System.out.println("Tablas creadas perfectamente.");
+                }
+        }
+
+        public static void dropTables() throws SQLException {
+                try (Connection cn = DriverManager.getConnection(URL, USUARIO, PASSWORD); 
+                
+                Statement statement = cn.createStatement()) {
+                        //Borrados
+                        statement.execute(DROP_TABLE_LINEAPEDIDO);
+                        statement.execute(DROP_TABLE_PEDIDO);
+
+                        statement.execute(DROP_PRODUCTOS_INGREDIENTES);
+                        statement.execute(DROP_INGREDIENTES_ALERGENOS);
+
+                        statement.execute(DROP_TABLE_INGREDIENTE);
+                        statement.execute(DROP_TABLE_ALERGENOS);
+                        statement.execute(DROP_TABLE_PRODUCT);
+                        statement.execute(DROP_TABLE_CLIENTE);
+
+                        System.out.println("Tablas borradas perfectamente.");
+                }
+        }
 }

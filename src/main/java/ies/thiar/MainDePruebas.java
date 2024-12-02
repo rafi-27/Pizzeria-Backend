@@ -5,7 +5,6 @@ import java.util.List;
 
 import ies.thiar.Modelo.Bebida;
 import ies.thiar.Modelo.Cliente;
-import ies.thiar.Modelo.FormaPago;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.LineaPedido;
 import ies.thiar.Modelo.Pasta;
@@ -153,11 +152,12 @@ public class MainDePruebas {
             }};
 
             pedido.setLineaPedido(listaLineaPedidos);
-            pedido.setPago(FormaPago.EFECTIVO);
+            //pedido.setPago(new PagarTarjeta());
 
             ControladorPedido controladorPedido = new ControladorPedido();
             controladorPedido.insertPedido(pedido);
 
+            //DatabaseConf.dropTables();
 
         } catch (Exception e) {
             e.getMessage();

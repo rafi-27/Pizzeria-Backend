@@ -2,8 +2,12 @@ package ies.thiar.Modelo;
 
 public class PagarEfectivo implements Pagable{
     @Override
-    public Enum pagar(double cantidad) {
+    public void pagar(double cantidad) {
         System.out.println("Pagas en efectivo: "+cantidad);
-        return FormaPago.EFECTIVO;
+    }
+
+    @Override
+    public int formaPago() {
+        return 1;
     }
 }

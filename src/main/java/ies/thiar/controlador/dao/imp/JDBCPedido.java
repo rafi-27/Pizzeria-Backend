@@ -31,7 +31,18 @@ public class JDBCPedido implements PedidoDao {
             pstmtPedido.setDate(1, new Date(pedido.getFecha().getTime()));
             pstmtPedido.setDouble(2, pedido.getPrecioTotal());
             pstmtPedido.setString(3, pedido.getEstado().toString());
-            pstmtPedido.setString(4, pedido.getPago().toString());
+
+            //no aqui
+            if(pedido.getEstado().equals(EstadoPedido.PENDIENTE)){
+                pstmtPedido.setString(4, null);
+            }else{
+                if(pedido.getPago().formaPago()==0){
+                    pstmtPedido.setString(4, "TARJETA");
+                }else{
+                    pstmtPedido.setString(4, "EFECTIVO");
+                }
+            }
+
             pstmtPedido.setInt(5, pedido.getCliente().getId());
 
             pstmtPedido.executeUpdate();
@@ -42,7 +53,6 @@ public class JDBCPedido implements PedidoDao {
                     System.out.println("SOUT: "+generatedKeys.getInt(1));
                 }
             }
-
             insertLineaPedido(conexion, pedido.getLineaPedido(), pedido.getId());
 
         } catch (Exception e) {

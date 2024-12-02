@@ -1,22 +1,31 @@
 package ies.thiar;
 
-import ies.thiar.controlador.ControladorCliente;
-import ies.thiar.controlador.ControladorProducto;
-import ies.thiar.Modelo.Cliente;
-import ies.thiar.Modelo.Ingrediente;
-import ies.thiar.Modelo.Pasta;
-import ies.thiar.Modelo.Pizza;
-import ies.thiar.Modelo.Producto;
-import ies.thiar.Modelo.SIZE;
-import ies.thiar.Utils.DatabaseConf;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import ies.thiar.Modelo.Cliente;
+import ies.thiar.Modelo.FormaPago;
+import ies.thiar.Modelo.Ingrediente;
+import ies.thiar.Modelo.LineaPedido;
+import ies.thiar.Modelo.Pasta;
+import ies.thiar.Modelo.Pedido;
+import ies.thiar.Modelo.Pizza;
+import ies.thiar.Modelo.Producto;
+import ies.thiar.Modelo.SIZE;
+import ies.thiar.Utils.DatabaseConf;
+import ies.thiar.controlador.ControladorCliente;
+import ies.thiar.controlador.ControladorPedido;
+import ies.thiar.controlador.ControladorProducto;
 
 public class ControladorClienteTest {
 
@@ -27,7 +36,7 @@ public class ControladorClienteTest {
     @BeforeEach
     void setUp() throws SQLException {
         // Configuración de la base de datos antes de cada test.
-        DatabaseConf.dropAndCreateTables();
+        DatabaseConf.createTables();
         controladorCliente = new ControladorCliente();
         controladorProducto = new ControladorProducto();
     }
@@ -172,5 +181,38 @@ public class ControladorClienteTest {
             e.printStackTrace();
             fail("SQLException was thrown");
         }
+    }
+
+    @Test
+    public void testCreacionYInsercionPedidos() throws SQLException{
+        Cliente ruben = new Cliente("123456789Q", "Ruben Garcia", "Calle Ruben Garcia", "625478654", "ruben@gmail.com", "1234");
+        System.out.println("-----------------------------------------------------Nos logeamos------------------------------------------------------");
+            Cliente rubenLogin = controladorCliente.clienteLogin("ruben@gmail.com", "1234");
+
+            Pedido pedido = new Pedido(ruben);
+            
+            List<Ingrediente>listaIngredientes = new ArrayList<>(){
+                {
+                    add(new Ingrediente(1, "Tomate", List.of("Leche","Huevos","Kiwi","Cereales")));
+                    add(new Ingrediente(2, "Queso Mozzarella", List.of("Huevos", "Cipote")));
+                    add(new Ingrediente(3, "Pepperoni", List.of("Mani")));
+                    add(new Ingrediente(4, "Aceitunas negras", List.of("Mariscos")));
+                    add(new Ingrediente(5, "Albahaca fresca", List.of("Trigo")));
+                    add(new Ingrediente(6, "Champiñones", List.of("Soja")));
+                }
+            };
+            Producto pizzaPrueba = new Pizza(1, "Pizza kebab", 10, SIZE.GRANDE, listaIngredientes);
+
+
+            List<LineaPedido>listaLineaPedidos = new ArrayList<>(){{
+                add(new LineaPedido(1, 3, pizzaPrueba, pedido));
+                add(new LineaPedido(2, 2, pizzaPrueba, pedido));
+            }};
+
+            pedido.setLineaPedido(listaLineaPedidos);
+            //pedido.setPago(FormaPago.EFECTIVO);
+
+            ControladorPedido controladorPedido = new ControladorPedido();
+            controladorPedido.insertPedido(pedido);
     }
 }

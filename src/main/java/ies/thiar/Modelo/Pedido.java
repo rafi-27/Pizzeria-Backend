@@ -11,7 +11,7 @@ public class Pedido {
     private EstadoPedido estado;
     private List<LineaPedido>lineaPedido;
     //private Pagable pago;
-    private FormaPago pago;
+    private Pagable pago;
     private Cliente cliente;
 
     public Pedido(Cliente client) {
@@ -46,7 +46,7 @@ public class Pedido {
         this.estado = estado;
     }
 
-    public void setPago(FormaPago pago) {
+    public void setPago(Pagable pago) {
         this.pago = pago;
     }
 
@@ -76,7 +76,7 @@ public class Pedido {
         this.lineaPedido = lineaPedido;
     }
 
-    public FormaPago getPago() {
+    public Pagable getPago() {
         return pago;
     }
 }
