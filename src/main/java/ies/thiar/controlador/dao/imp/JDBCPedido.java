@@ -9,15 +9,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.EstadoPedido;
 import ies.thiar.Modelo.LineaPedido;
 import ies.thiar.Modelo.Pedido;
 import ies.thiar.Utils.DatabaseConf;
+import ies.thiar.controlador.ControladorCliente;
 import ies.thiar.controlador.dao.PedidoDao;
 
 public class JDBCPedido implements PedidoDao {
     // ---------------------------------------------------------------------------------------------------------//
     final String INSERT_PEDIDO = "insert into pedidos (fecha, precio_total, estado, forma_pago, id_cliente) values (?,?,?,?,?)";
+    final String SELECT_BY_ID = "select id, fecha, precio_total, estado, forma_pago, id_cliente from pedidos where id=?";
 
     final String DELETE_PEDIDO = "";
 
@@ -92,9 +95,22 @@ public class JDBCPedido implements PedidoDao {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+
     @Override
     public Pedido findByID(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
+                PreparedStatement pstmtCliente = conexion.prepareStatement(SELECT_BY_ID);) {
+                
+            pstmtCliente.setInt(1, id);
+            try (ResultSet rs = pstmtCliente.executeQuery()) {
+                if (rs.next()) {
+                    Pedido pedido = new Pedido()
+                    return cliente;
+                }
+            }
+            return null;
+        }
     }
 
     @Override
