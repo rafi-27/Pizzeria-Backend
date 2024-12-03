@@ -189,7 +189,7 @@ public class ControladorClienteTest {
         System.out.println("-----------------------------------------------------Nos logeamos------------------------------------------------------");
             Cliente rubenLogin = controladorCliente.clienteLogin("ruben@gmail.com", "1234");
 
-            Pedido pedido = new Pedido(ruben);
+            Pedido pedido = new Pedido(1);
             
             List<Ingrediente>listaIngredientes = new ArrayList<>(){
                 {

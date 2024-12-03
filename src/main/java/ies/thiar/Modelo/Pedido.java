@@ -12,15 +12,28 @@ public class Pedido {
     private List<LineaPedido>lineaPedido;
     //private Pagable pago;
     private Pagable pago;
-    private Cliente cliente;
+    private int cliente;
 
-    public Pedido(Cliente client) {
+    public Pedido(int client) {
         this.fecha = new Date();
         this.precioTotal = 0;
         this.estado=EstadoPedido.PENDIENTE;
         this.cliente=client;
         this.lineaPedido = new ArrayList<>();
     }
+
+    
+
+    public Pedido(int id, Date fecha, double precioTotal, EstadoPedido estado, Pagable pago, int cliente) {
+        this.id = id;
+        this.fecha = fecha;
+        this.precioTotal = precioTotal;
+        this.estado = estado;
+        this.pago = pago;
+        this.cliente = cliente;
+    }
+
+
 
     public int getId() {
         return id;
@@ -58,14 +71,14 @@ public class Pedido {
         return this.precioTotal+=lineaPedido.stream().mapToDouble(LineaPedido::getPrecioSubtotal).sum();
     }
 
-    public Cliente getCliente(){
+    public int getCliente(){
         return this.cliente;
     }
 
     @Override
     public String toString() {
         return "Pedido [id=" + id + ", fecha=" + fecha + ", precioTotal=" + precioTotal + ", estado=" + estado
-                + ", lineaPedido=" + lineaPedido + ", pago=" + pago + ", cliente=" + cliente + "]";
+                + ", pago=" + pago + ", cliente=" + cliente + "]";
     }
 
     public List<LineaPedido> getLineaPedido() {
@@ -78,5 +91,9 @@ public class Pedido {
 
     public Pagable getPago() {
         return pago;
+    }
+
+    public int getMetodoPagoCeroOuno(){
+        return pago.formaPago();
     }
 }

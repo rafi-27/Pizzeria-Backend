@@ -9,51 +9,52 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.EstadoPedido;
 import ies.thiar.Modelo.LineaPedido;
+import ies.thiar.Modelo.Pagable;
+import ies.thiar.Modelo.PagarEfectivo;
+import ies.thiar.Modelo.PagarTarjeta;
 import ies.thiar.Modelo.Pedido;
 import ies.thiar.Utils.DatabaseConf;
-import ies.thiar.controlador.ControladorCliente;
 import ies.thiar.controlador.dao.PedidoDao;
 
 public class JDBCPedido implements PedidoDao {
     // ---------------------------------------------------------------------------------------------------------//
     final String INSERT_PEDIDO = "insert into pedidos (fecha, precio_total, estado, forma_pago, id_cliente) values (?,?,?,?,?)";
-    final String SELECT_BY_ID = "select id, fecha, precio_total, estado, forma_pago, id_cliente from pedidos where id=?";
+    final String SELECT_BY_ID = "select  id, fecha, precio_total, estado, forma_pago, id_cliente from pedidos where id=?";
 
-    final String DELETE_PEDIDO = "";
+    final String DELETE_PEDIDO = "delete from pedidos where id=?";
+    final String UPDATE_PEDIDO = "UPDATE pedidos SET fecha=?, precio_total=?, estado=?, forma_pago=? WHERE id=?";
+
 
     // ---------------------------------------------------------------------------------------------------------//
     @Override
     public void insert(Pedido pedido) throws SQLException {
-        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO, DatabaseConf.PASSWORD);
-        
-            PreparedStatement pstmtPedido = conexion.prepareStatement(INSERT_PEDIDO, Statement.RETURN_GENERATED_KEYS);) {
-                //.getFecha().getTime())
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
+
+                PreparedStatement pstmtPedido = conexion.prepareStatement(INSERT_PEDIDO,
+                        Statement.RETURN_GENERATED_KEYS);) {
+            // .getFecha().getTime())
             pstmtPedido.setDate(1, new Date(pedido.getFecha().getTime()));
             pstmtPedido.setDouble(2, pedido.getPrecioTotal());
             pstmtPedido.setString(3, pedido.getEstado().toString());
-
-            //no aqui
-            if(pedido.getEstado().equals(EstadoPedido.PENDIENTE)){
-                pstmtPedido.setString(4, null);
+            
+            if (pedido.getPago() == null) {
+                pstmtPedido.setNull(4, 4);
+            }else if (pedido.getMetodoPagoCeroOuno()==0) {
+                pstmtPedido.setString(4, "TARJETA");
             }else{
-                if(pedido.getPago().formaPago()==0){
-                    pstmtPedido.setString(4, "TARJETA");
-                }else{
-                    pstmtPedido.setString(4, "EFECTIVO");
-                }
+                pstmtPedido.setString(4, "EFECTIVO");
             }
-
-            pstmtPedido.setInt(5, pedido.getCliente().getId());
+            pstmtPedido.setInt(5, pedido.getCliente());
 
             pstmtPedido.executeUpdate();
 
             try (ResultSet generatedKeys = pstmtPedido.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     pedido.setId(generatedKeys.getInt(1));
-                    System.out.println("SOUT: "+generatedKeys.getInt(1));
+                    System.out.println("SOUT: " + generatedKeys.getInt(1));
                 }
             }
             insertLineaPedido(conexion, pedido.getLineaPedido(), pedido.getId());
@@ -67,8 +68,10 @@ public class JDBCPedido implements PedidoDao {
     // Hacemos el insert de la lineaDePedido:
     final String INSERT_LINEA_PEDIDO = "insert into linea_pedido (cantidad, id_producto, id_pedido) values (?,?,?)";
 
-    public void insertLineaPedido(Connection conexion, List<LineaPedido> listaLineaPedidos, int idPedido) throws SQLException {
-        PreparedStatement pstmtLineaPedido = conexion.prepareStatement(INSERT_LINEA_PEDIDO, Statement.RETURN_GENERATED_KEYS);
+    public void insertLineaPedido(Connection conexion, List<LineaPedido> listaLineaPedidos, int idPedido)
+            throws SQLException {
+        PreparedStatement pstmtLineaPedido = conexion.prepareStatement(INSERT_LINEA_PEDIDO,
+                Statement.RETURN_GENERATED_KEYS);
 
         for (LineaPedido lineaPedido : listaLineaPedidos) {
             pstmtLineaPedido.setInt(1, lineaPedido.getCantidad());
@@ -87,26 +90,68 @@ public class JDBCPedido implements PedidoDao {
 
     @Override
     public void delete(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
+                PreparedStatement pstmtCliente = conexion.prepareStatement(DELETE_PEDIDO);) {
+            pstmtCliente.setInt(1, id);
+            pstmtCliente.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error al borrar");
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void update(Pedido pedido) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
+                PreparedStatement pstmtPedido = conexion.prepareStatement(UPDATE_PEDIDO);) {
 
+                    pstmtPedido.setDate(1, new Date(pedido.getFecha().getTime()));
+                    pstmtPedido.setDouble(2, pedido.getPrecioTotal());
+                    pstmtPedido.setString(3, pedido.getEstado().toString());
+            if (pedido.getPago() == null) {
+                pstmtPedido.setNull(4, 4);
+            }else if (pedido.getMetodoPagoCeroOuno()==0) {
+                pstmtPedido.setString(4, "TARJETA");
+            }else{
+                pstmtPedido.setString(4, "EFECTIVO");
+            }
+            pstmtPedido.setInt(5, pedido.getId());
+
+            pstmtPedido.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error al hacer update del producto");
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public Pedido findByID(int id) throws SQLException {
         try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
                 DatabaseConf.PASSWORD);
                 PreparedStatement pstmtCliente = conexion.prepareStatement(SELECT_BY_ID);) {
-                
             pstmtCliente.setInt(1, id);
+            Pedido pedido;
+            Pagable pago = null;
             try (ResultSet rs = pstmtCliente.executeQuery()) {
                 if (rs.next()) {
-                    Pedido pedido = new Pedido()
-                    return cliente;
+                    String formaPago = rs.getString("forma_pago");
+                    if (formaPago != null) {
+                        if (formaPago.equals("0")) {
+                            pago = new PagarTarjeta();
+                        } else {
+                            pago = new PagarEfectivo();
+                        }
+                    }
+                    pedido = new Pedido(
+                            rs.getInt("id"),
+                            rs.getDate("fecha"),
+                            rs.getDouble("precio_total"),
+                            EstadoPedido.valueOf(rs.getString("estado")),
+                            pago,
+                            rs.getInt("id_cliente"));
+                    return pedido;
                 }
             }
             return null;

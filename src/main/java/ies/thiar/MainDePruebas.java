@@ -5,8 +5,10 @@ import java.util.List;
 
 import ies.thiar.Modelo.Bebida;
 import ies.thiar.Modelo.Cliente;
+import ies.thiar.Modelo.EstadoPedido;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.LineaPedido;
+import ies.thiar.Modelo.PagarTarjeta;
 import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pedido;
 import ies.thiar.Modelo.Pizza;
@@ -144,7 +146,7 @@ public class MainDePruebas {
             System.out.println("-----------------------------------------------------Nos logeamos------------------------------------------------------");
             Cliente rubenLogin = controladorCliente.clienteLogin("ruben@gmail.com", "1234");
 
-            Pedido pedido = new Pedido(ruben);
+            Pedido pedido = new Pedido(1);
 
             List<LineaPedido>listaLineaPedidos = new ArrayList<>(){{
                 add(new LineaPedido(1, 3, pizzaPrueba, pedido));
@@ -158,7 +160,16 @@ public class MainDePruebas {
             controladorPedido.insertPedido(pedido);
 
             //DatabaseConf.dropTables();
+            //findByID
+            Pedido pedidoRecuperao = controladorPedido.findPedidoById(1); 
+            System.out.println(pedidoRecuperao);
 
+            Pedido pedidoDos = new Pedido(2);
+            controladorPedido.insertPedido(pedidoDos);
+
+            pedidoDos.setEstado(EstadoPedido.CANCELADO);
+            //controladorPedido.deletePedido(2);
+            controladorPedido.updatePedido(pedidoDos);
         } catch (Exception e) {
             e.getMessage();
             e.printStackTrace();
