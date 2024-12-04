@@ -33,14 +33,21 @@ public class Pedido {
         this.cliente = cliente;
     }
 
-    public Pedido(Date fecha, double precioTotal, EstadoPedido estado, Pagable pago, int cliente) {
+    public Pedido(Date fecha, double precioTotal, Pagable pago, int cliente) {
         this.fecha = fecha;
         this.precioTotal = precioTotal;
-        this.estado = estado;
+        this.estado = EstadoPedido.PENDIENTE;
         this.pago = pago;
         this.cliente = cliente;
     }
 
+    public Pedido(Date fecha, double precioTotal,EstadoPedido estadoPedido, Pagable pago, int cliente) {
+        this.fecha = fecha;
+        this.precioTotal = precioTotal;
+        this.estado = estadoPedido;
+        this.pago = pago;
+        this.cliente = cliente;
+    }
 
     public int getId() {
         return id;
@@ -75,7 +82,7 @@ public class Pedido {
     // }
 
     public double getPrecioTotal(){
-        return this.precioTotal+=lineaPedido.stream().mapToDouble(LineaPedido::getPrecioSubtotal).sum();
+        return lineaPedido.stream().mapToDouble(LineaPedido::getPrecioSubtotal).sum();
     }
 
     public int getCliente(){

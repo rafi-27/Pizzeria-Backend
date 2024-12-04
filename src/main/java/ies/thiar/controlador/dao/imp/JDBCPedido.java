@@ -61,7 +61,7 @@ public class JDBCPedido implements PedidoDao {
                 }
             }
             agregarLineaPedido(conexion, pedido.getLineaPedido(), pedido.getId());
-
+            System.out.println("echo");
         } catch (Exception e) {
             System.out.println("Error al insertar pedido");
             e.printStackTrace();
@@ -211,5 +211,38 @@ public class JDBCPedido implements PedidoDao {
             }
         }
         return listaLineaPedidosAdevolver;
+    }
+
+    String FIND_PEDIDO_BY_ID_CLIENTE = "select  id, fecha, precio_total, estado, forma_pago, id_cliente from pedidos where id_cliente=?";
+    @Override
+    public Pedido findPedidoByIdClient(int idCliente) throws SQLException{
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
+                PreparedStatement pstmtCliente = conexion.prepareStatement(FIND_PEDIDO_BY_ID_CLIENTE);) {
+            pstmtCliente.setInt(1, idCliente);
+            Pedido pedido;
+            Pagable pago = null;
+            try (ResultSet rs = pstmtCliente.executeQuery()) {
+                if (rs.next()) {
+                    String formaPago = rs.getString("forma_pago");
+                    if (formaPago != null) {
+                        if (formaPago.equals("0")) {
+                            pago = new PagarTarjeta();
+                        } else {
+                            pago = new PagarEfectivo();
+                        }
+                    }
+                    pedido = new Pedido(
+                            rs.getInt("id"),
+                            rs.getDate("fecha"),
+                            rs.getDouble("precio_total"),
+                            EstadoPedido.valueOf(rs.getString("estado")),
+                            pago,
+                            rs.getInt("id_cliente"));
+                    return pedido;
+                }
+            }
+            return null;
+        }
     }
 }

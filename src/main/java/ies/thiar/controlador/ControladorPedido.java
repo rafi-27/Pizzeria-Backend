@@ -6,6 +6,8 @@ import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.EstadoPedido;
 import ies.thiar.Modelo.LineaPedido;
 import ies.thiar.Modelo.Pagable;
+import ies.thiar.Modelo.PagarEfectivo;
+import ies.thiar.Modelo.PagarTarjeta;
 import ies.thiar.Modelo.Pedido;
 import ies.thiar.Modelo.Producto;
 import ies.thiar.Modelo.SIZE;
@@ -19,13 +21,11 @@ public class ControladorPedido {
     private ClienteDao jClienteDao = new JDBCClienteDao();
 
     private Pedido pedidoActual;
-
-    public ControladorPedido(Cliente cliente) {
-        this.pedidoActual = new Pedido(cliente.getId());
+    public ControladorPedido(Pedido pedido) {
+        this.pedidoActual=pedido;
     }
 
     public ControladorPedido() {}
-
 
     public void insertPedido(Pedido pedido) throws SQLException {
         jPedidoDao.insert(pedido);
@@ -35,42 +35,30 @@ public class ControladorPedido {
         jPedidoDao.delete(id);
     }
 
-    public void updatePedido(Pedido pedido)throws SQLException {
+    public void updatePedido(Pedido pedido) throws SQLException {
         jPedidoDao.update(pedido);
     }
 
-    public Pedido findPedidoById(int id) throws SQLException{
+    public Pedido findPedidoById(int id) throws SQLException {
         return jPedidoDao.findByID(id);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //primero comprobar si el pedido existe
-    public void anyadirCarrito(Producto producto, int cantidad, SIZE tamaño) throws SQLException, IllegalAccessException{
+    // primero comprobar si el pedido existe
+    public void anyadirCarrito(Producto producto, int cantidad, SIZE tamaño)
+            throws SQLException, IllegalAccessException {
         Cliente cliente = jClienteDao.findByID(pedidoActual.getCliente());
         if (cliente == null) {
             throw new IllegalAccessException("Usuario incorrecto{anyadirCarrito}");
         }
-        pedidoActual.getLineaPedido().add(new LineaPedido(pedidoActual.getLineaPedido().size() + 1, cantidad, producto, pedidoActual));
-        
-        if (pedidoActual.getEstado()!=EstadoPedido.PENDIENTE) {
+        pedidoActual.getLineaPedido()
+                .add(new LineaPedido(pedidoActual.getLineaPedido().size() + 1, cantidad, producto, pedidoActual));
+
+        if (pedidoActual.getEstado() != EstadoPedido.PENDIENTE) {
             pedidoActual.setEstado(EstadoPedido.PENDIENTE);
         }
     }
 
-
-    public void finalizarPedido(Pagable metodoPago) throws IllegalAccessException, SQLException{
+    public void finalizarPedido(Pagable metodoPago) throws IllegalAccessException, SQLException {
         Cliente client = jClienteDao.findByID(pedidoActual.getCliente());
         if (client == null) {
             throw new IllegalAccessException("Usuario incorrecto{finalizarPedido}");
@@ -78,13 +66,16 @@ public class ControladorPedido {
         if (pedidoActual.getEstado() == EstadoPedido.PENDIENTE) {
             metodoPago.pagar(pedidoActual.getPrecioTotal());
             pedidoActual.setEstado(EstadoPedido.FINALIZADO);
-            System.out.println("Precio total: "+pedidoActual.getPrecioTotal());
+            if (metodoPago.formaPago()==0) {
+                pedidoActual.setPago(new PagarTarjeta());
+            }else pedidoActual.setPago(new PagarEfectivo());
+            updatePedido(pedidoActual);
             pedidoActual.getLineaPedido().clear();
         } else {
             System.out.println("Algo salio mal al finalizar.");
         }
     }
-    
+
     public void cancelarPedido() throws IllegalAccessException, SQLException {
         Cliente client = jClienteDao.findByID(pedidoActual.getCliente());
 
@@ -93,22 +84,19 @@ public class ControladorPedido {
         }
         if (pedidoActual.getEstado() != EstadoPedido.FINALIZADO || pedidoActual.getEstado() == EstadoPedido.ENTREGADO) {
             pedidoActual.setEstado(EstadoPedido.CANCELADO);
+            updatePedido(pedidoActual);
             System.out.println("El pedido ha sido cancelado.");
-        }  else {
+        } else {
             System.out.println("Algo salio mal al cancelar el pedido.");
         }
     }
 
     public void entregarPedido(int idPedido) throws SQLException {
-        System.out.println("ID del pedido: "+pedidoActual.getId()+" ID del que le paso: "+idPedido);
-        if (pedidoActual.getId()==idPedido) {
-            Pedido pedido = jPedidoDao.findByID(pedidoActual.getId());
-            System.out.println(pedido.toString());
+        if (pedidoActual.getId() == idPedido) {
             pedidoActual.setEstado(EstadoPedido.ENTREGADO);
-            jPedidoDao.update(pedido);
-            System.out.println(pedido.toString());
-        }else{
+            updatePedido(pedidoActual);
+        } else {
             System.out.println("Id incorrecto");
-        } 
+        }
     }
 }

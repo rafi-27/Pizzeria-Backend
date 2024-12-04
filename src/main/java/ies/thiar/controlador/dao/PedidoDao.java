@@ -21,4 +21,5 @@ public interface PedidoDao {
     public List<LineaPedido> obtenerLineasPedidosByIdPedido(int idPedido) throws SQLException;
     //En caso de no haberse creado ese pedido se crea
     public void agregarLineaPedido(Connection conexion, List<LineaPedido> listaLineaPedidos, int idPedido) throws SQLException;
+    public Pedido findPedidoByIdClient(int idCliente) throws SQLException;
 }
