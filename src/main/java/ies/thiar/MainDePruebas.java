@@ -146,6 +146,11 @@ public class MainDePruebas {
             System.out.println("-----------------------------------------------------Nos logeamos------------------------------------------------------");
             Cliente rubenLogin = controladorCliente.clienteLogin("ruben@gmail.com", "1234");
 
+           
+            //pedido.setPago(new PagarTarjeta());
+
+            ControladorPedido controladorPedidoParaRuben = new ControladorPedido(ruben);
+            
             Pedido pedido = new Pedido(1);
 
             List<LineaPedido>listaLineaPedidos = new ArrayList<>(){{
@@ -154,22 +159,26 @@ public class MainDePruebas {
             }};
 
             pedido.setLineaPedido(listaLineaPedidos);
-            //pedido.setPago(new PagarTarjeta());
 
-            ControladorPedido controladorPedido = new ControladorPedido();
-            controladorPedido.insertPedido(pedido);
+            
+            controladorPedidoParaRuben.insertPedido(pedido);
 
-            //DatabaseConf.dropTables();
             //findByID
-            Pedido pedidoRecuperao = controladorPedido.findPedidoById(1); 
-            System.out.println(pedidoRecuperao);
+            // Pedido pedidoRecuperao = controladorPedido.findPedidoById(1); 
+            // System.out.println(pedidoRecuperao);
 
             Pedido pedidoDos = new Pedido(2);
-            controladorPedido.insertPedido(pedidoDos);
+            //controladorPedido.insertPedido(pedidoDos);
 
             pedidoDos.setEstado(EstadoPedido.CANCELADO);
             //controladorPedido.deletePedido(2);
-            controladorPedido.updatePedido(pedidoDos);
+            //controladorPedido.updatePedido(pedidoDos);
+
+            controladorPedidoParaRuben.entregarPedido(1);
+
+            controladorPedidoParaRuben.updatePedido(pedido);
+
+            //DatabaseConf.dropTables();
         } catch (Exception e) {
             e.getMessage();
             e.printStackTrace();

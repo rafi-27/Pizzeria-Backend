@@ -1,5 +1,6 @@
 package ies.thiar.controlador.dao;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface PedidoDao {
     public List<Pedido> obtenerPedidosByState(EstadoPedido state) throws SQLException;
     public List<LineaPedido> obtenerLineasPedidosByIdPedido(int idPedido) throws SQLException;
     //En caso de no haberse creado ese pedido se crea
-    public void agregarLineaPedido(LineaPedido lineaPedido, Pedido pedidoAsociado) throws SQLException;
+    public void agregarLineaPedido(Connection conexion, List<LineaPedido> listaLineaPedidos, int idPedido) throws SQLException;
 }

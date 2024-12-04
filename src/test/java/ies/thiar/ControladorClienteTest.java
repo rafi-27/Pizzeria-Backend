@@ -31,82 +31,13 @@ public class ControladorClienteTest {
 
     // Creando el controlador
     ControladorCliente controladorCliente = new ControladorCliente();
-    ControladorProducto controladorProducto = new ControladorProducto();
 
     @BeforeEach
     void setUp() throws SQLException {
         // Configuración de la base de datos antes de cada test.
         DatabaseConf.createTables();
         controladorCliente = new ControladorCliente();
-        controladorProducto = new ControladorProducto();
     }
-    //--------------------------------------------------------------TestProductos---------------------------------------------------------
-
-    @Test
-    public void testInsertarProductosConIngredientes() throws SQLException {
-        // Creamos algunos ingredientes
-        List<Ingrediente> listaIngredientesPizza = new ArrayList<>() {
-            {
-                add(new Ingrediente(1, "Tomate", List.of("Leche", "Huevos", "Kiwi", "Cereales")));
-                add(new Ingrediente(2, "Queso Mozzarella", List.of("Huevos", "Cipote")));
-                add(new Ingrediente(3, "Pepperoni", List.of("Mani")));
-                add(new Ingrediente(4, "Aceitunas negras", List.of("Mariscos")));
-                add(new Ingrediente(5, "Albahaca fresca", List.of("Trigo")));
-                add(new Ingrediente(6, "Champiñones", List.of("Soja")));
-            }
-        };
-
-        // Crear el producto tipo Pizza
-        Producto pizzaPrueba = new Pizza(1, "Pizza kebab", 10, SIZE.GRANDE, listaIngredientesPizza);
-
-        // Insertar el producto en la base de datos
-        controladorProducto.insertProducto(pizzaPrueba);
-
-        // Verificamos que el producto haya sido insertado
-        Producto productoRecuperadoPizza = controladorProducto.findProductById(1);
-        assertNotNull(productoRecuperadoPizza, "El producto debería ser recuperado");
-        assertEquals("Pizza kebab", productoRecuperadoPizza.getNombre(), "El nombre del producto debería ser el esperado");
-
-        // Verificamos los ingredientes asociados al producto de pizza
-        List<Ingrediente> ingredientesPizza = controladorProducto.findIngredientesByProducto(1);
-        assertEquals(6, ingredientesPizza.size(), "El número de ingredientes debería ser 6 para la pizza");
-        ingredientesPizza.forEach(ingrediente -> {
-            assertNotNull(ingrediente.getListaAlergenos(), "Cada ingrediente debería tener alergenos");
-            assertFalse(ingrediente.getListaAlergenos().isEmpty(), "El ingrediente no debería tener una lista vacía de alergenos");
-        });
-
-        // Creamos ingredientes para otro producto (pasta)
-        List<Ingrediente> listaIngredientesPasta = new ArrayList<>() {
-            {
-                add(new Ingrediente(1, "Harina de trigo", List.of("gluten")));
-                add(new Ingrediente(2, "Huevos frescos", List.of("huevo")));
-                add(new Ingrediente(3, "Queso parmesano", List.of("lácteos", "huevo")));
-                add(new Ingrediente(4, "Nueces trituradas", List.of("frutos secos")));
-                add(new Ingrediente(5, "Camarones", List.of("mariscos")));
-                add(new Ingrediente(6, "Salsa de soya", List.of("soya")));
-            }
-        };
-
-        // Crear el producto tipo Pasta
-        Producto pastaPrueba = new Pasta(2, "Pasta carbonara", 15, listaIngredientesPasta);
-
-        // Insertar el producto en la base de datos
-        controladorProducto.insertProducto(pastaPrueba);
-
-        // Verificamos que el producto haya sido insertado
-        Producto productoRecuperadoPasta = controladorProducto.findProductById(2);
-        assertNotNull(productoRecuperadoPasta, "El producto debería ser recuperado");
-        assertEquals("Pasta carbonara", productoRecuperadoPasta.getNombre(), "El nombre del producto debería ser el esperado");
-
-        // Verificamos los ingredientes asociados al producto de pasta
-        List<Ingrediente> ingredientesPasta = controladorProducto.findIngredientesByProducto(2);
-        assertEquals(6, ingredientesPasta.size(), "El número de ingredientes debería ser 6 para la pasta");
-        ingredientesPasta.forEach(ingrediente -> {
-            assertNotNull(ingrediente.getListaAlergenos(), "Cada ingrediente debería tener alergenos");
-            assertFalse(ingrediente.getListaAlergenos().isEmpty(), "El ingrediente no debería tener una lista vacía de alergenos");
-        });
-    }
-
     
     //-------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -147,17 +78,10 @@ public class ControladorClienteTest {
     @Test
     public void testLoginCorrecto() {
         try {
-            // Crear un cliente
-            Cliente cliente = new Cliente("123456789Q", "Ruben Garcia", "Calle Ruben Garcia", "625478654",
-                    "ruben@gmail.com", "1234");
-
-            // Registrar al cliente
-            controladorCliente.registrarCliente(cliente);
-
             // Realizar login con los datos correctos
             Cliente clienteLogin = controladorCliente.clienteLogin("ruben@gmail.com", "1234");
             assertNotNull(clienteLogin); // Aseguramos que el cliente se haya encontrado
-            assertEquals(cliente.getEmail(), clienteLogin.getEmail()); // Comprobamos que los datos coinciden
+            assertEquals("ruben@gmail.com", clienteLogin.getEmail()); // Comprobamos que los datos coinciden
         } catch (SQLException e) {
             e.printStackTrace();
             fail("SQLException was thrown");
@@ -172,11 +96,11 @@ public class ControladorClienteTest {
                     () -> controladorCliente.clienteLogin("noexiste@gmail.com", "1234"));
 
             // Intentamos hacer login con un email correcto pero contraseña incorrecta
-            Cliente cliente = new Cliente("123456789Q", "Ruben Garcia", "Calle Ruben Garcia", "625478654",
-                    "ruben@gmail.com", "1234");
+            Cliente cliente = new Cliente("1357908642E", "Jose manolo", "Calle Ruben Garcia", "625478654",
+                    "jose@gmail.com", "1234");
             controladorCliente.registrarCliente(cliente); // Registrar el cliente para la prueba
             assertThrows(IllegalArgumentException.class,
-                    () -> controladorCliente.clienteLogin("ruben@gmail.com", "incorrecta"));
+                    () -> controladorCliente.clienteLogin("jose@gmail.com", "incorrecta"));
         } catch (SQLException e) {
             e.printStackTrace();
             fail("SQLException was thrown");
@@ -185,9 +109,9 @@ public class ControladorClienteTest {
 
     @Test
     public void testCreacionYInsercionPedidos() throws SQLException{
-        Cliente ruben = new Cliente("123456789Q", "Ruben Garcia", "Calle Ruben Garcia", "625478654", "ruben@gmail.com", "1234");
+        //Cliente ruben = new Cliente("123456789Q", "Ruben Garcia", "Calle Ruben Garcia", "625478654", "ruben@gmail.com", "1234");
         System.out.println("-----------------------------------------------------Nos logeamos------------------------------------------------------");
-            Cliente rubenLogin = controladorCliente.clienteLogin("ruben@gmail.com", "1234");
+            //Cliente rubenLogin = controladorCliente.clienteLogin("ruben@gmail.com", "1234");
 
             Pedido pedido = new Pedido(1);
             

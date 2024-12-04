@@ -60,7 +60,7 @@ public class JDBCPedido implements PedidoDao {
                     System.out.println("SOUT: " + generatedKeys.getInt(1));
                 }
             }
-            insertLineaPedido(conexion, pedido.getLineaPedido(), pedido.getId());
+            agregarLineaPedido(conexion, pedido.getLineaPedido(), pedido.getId());
 
         } catch (Exception e) {
             System.out.println("Error al insertar pedido");
@@ -70,8 +70,9 @@ public class JDBCPedido implements PedidoDao {
 
     // Hacemos el insert de la lineaDePedido:
     final String INSERT_LINEA_PEDIDO = "insert into linea_pedido (cantidad, id_producto, id_pedido) values (?,?,?)";
-
-    public void insertLineaPedido(Connection conexion, List<LineaPedido> listaLineaPedidos, int idPedido)
+    
+    @Override
+    public void agregarLineaPedido(Connection conexion, List<LineaPedido> listaLineaPedidos, int idPedido)
             throws SQLException {
         PreparedStatement pstmtLineaPedido = conexion.prepareStatement(INSERT_LINEA_PEDIDO,
                 Statement.RETURN_GENERATED_KEYS);
@@ -211,10 +212,4 @@ public class JDBCPedido implements PedidoDao {
         }
         return listaLineaPedidosAdevolver;
     }
-
-    @Override
-    public void agregarLineaPedido(LineaPedido lineaPedido, Pedido pedidoAsociado) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 }
