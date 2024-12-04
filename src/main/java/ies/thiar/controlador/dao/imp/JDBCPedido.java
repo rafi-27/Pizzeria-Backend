@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import ies.thiar.Modelo.EstadoPedido;
@@ -16,6 +17,7 @@ import ies.thiar.Modelo.PagarEfectivo;
 import ies.thiar.Modelo.PagarTarjeta;
 import ies.thiar.Modelo.Pedido;
 import ies.thiar.Utils.DatabaseConf;
+import ies.thiar.controlador.ControladorProducto;
 import ies.thiar.controlador.dao.PedidoDao;
 
 public class JDBCPedido implements PedidoDao {
@@ -25,7 +27,7 @@ public class JDBCPedido implements PedidoDao {
 
     final String DELETE_PEDIDO = "delete from pedidos where id=?";
     final String UPDATE_PEDIDO = "UPDATE pedidos SET fecha=?, precio_total=?, estado=?, forma_pago=? WHERE id=?";
-
+    final String SELECT_BY_ID_PEDIDO = "select cantidad, id_producto, id_pedido from linea_pedido where id_pedido=?";
 
     // ---------------------------------------------------------------------------------------------------------//
     @Override
@@ -165,12 +167,42 @@ public class JDBCPedido implements PedidoDao {
 
     @Override
     public List<Pedido> obtenerPedidosByState(EstadoPedido state) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<Pedido>listaPedidosAdevolver = new ArrayList<>();
+        ControladorProducto controladorProducto = new ControladorProducto();
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL,
+                DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
+                PreparedStatement pstmtAlergen = conexion.prepareStatement(SELECT_BY_ID_PEDIDO);) {
+            pstmtAlergen.setInt(1, idPedido);
+
+            try (ResultSet rs = pstmtAlergen.executeQuery()) {
+                while (rs.next()) {
+                    LineaPedido lineaPedido = new LineaPedido(rs.getInt(1),controladorProducto.findProductById(rs.getInt(2)), findByID(rs.getInt(3)));
+                    listaPedidosAdevolver.add(lineaPedido);
+                }
+            }
+        }
+        return listaPedidosAdevolver;
     }
 
     @Override
-    public List<Pedido> obtenerLineasPedidosByIdPedido(int idPedido) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<LineaPedido> obtenerLineasPedidosByIdPedido(int idPedido) throws SQLException {
+        List<LineaPedido>listaLineaPedidosAdevolver = new ArrayList<>();
+        ControladorProducto controladorProducto = new ControladorProducto();
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL,
+                DatabaseConf.USUARIO,
+                DatabaseConf.PASSWORD);
+                PreparedStatement pstmtAlergen = conexion.prepareStatement(SELECT_BY_ID_PEDIDO);) {
+            pstmtAlergen.setInt(1, idPedido);
+
+            try (ResultSet rs = pstmtAlergen.executeQuery()) {
+                while (rs.next()) {
+                    LineaPedido lineaPedido = new LineaPedido(rs.getInt(1),controladorProducto.findProductById(rs.getInt(2)), findByID(rs.getInt(3)));
+                    listaLineaPedidosAdevolver.add(lineaPedido);
+                }
+            }
+        }
+        return listaLineaPedidosAdevolver;
     }
 
     @Override

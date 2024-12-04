@@ -17,7 +17,7 @@ public interface PedidoDao {
     //Otros:
     public List<Pedido> obtenerPedidosByIdClient(int idCliente) throws SQLException;
     public List<Pedido> obtenerPedidosByState(EstadoPedido state) throws SQLException;
-    public List<Pedido> obtenerLineasPedidosByIdPedido(int idPedido) throws SQLException;
+    public List<LineaPedido> obtenerLineasPedidosByIdPedido(int idPedido) throws SQLException;
     //En caso de no haberse creado ese pedido se crea
     public void agregarLineaPedido(LineaPedido lineaPedido, Pedido pedidoAsociado) throws SQLException;
 }

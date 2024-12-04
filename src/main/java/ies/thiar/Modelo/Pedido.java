@@ -96,4 +96,10 @@ public class Pedido {
     public int getMetodoPagoCeroOuno(){
         return pago.formaPago();
     }
+
+    //metodo para finalizar
+    public void finalizarPedido(){
+        setEstado(EstadoPedido.FINALIZADO);
+        
+    }
 }

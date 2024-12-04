@@ -3,10 +3,7 @@ package ies.thiar.controlador;
 import java.sql.SQLException;
 
 import ies.thiar.Modelo.Cliente;
-import ies.thiar.Modelo.EstadoPedido;
 import ies.thiar.Modelo.Pagable;
-import ies.thiar.Modelo.PagarEfectivo;
-import ies.thiar.Modelo.PagarTarjeta;
 import ies.thiar.Modelo.Pedido;
 import ies.thiar.controlador.dao.ClienteDao;
 import ies.thiar.controlador.dao.PedidoDao;
