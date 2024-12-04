@@ -33,6 +33,13 @@ public class Pedido {
         this.cliente = cliente;
     }
 
+    public Pedido(Date fecha, double precioTotal, EstadoPedido estado, Pagable pago, int cliente) {
+        this.fecha = fecha;
+        this.precioTotal = precioTotal;
+        this.estado = estado;
+        this.pago = pago;
+        this.cliente = cliente;
+    }
 
 
     public int getId() {

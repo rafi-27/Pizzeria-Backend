@@ -26,12 +26,14 @@ public class JDBCProductoDao implements ProductoDao {
     final String SELECT_ALL_PRODUCTO = "select id, nombre, precio, tipo_Producto, tamaño from productos;";
     final String SELECT_PRODUCTO = "select id, nombre, precio, tipo_Producto, tamaño from productos where id=?";
 
+
     @Override
     public void insert(Producto producto) throws SQLException {
-        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
-                DatabaseConf.PASSWORD);
-                PreparedStatement pstmtProducto = conexion.prepareStatement(INSERT_PRODUCTO,
-                        Statement.RETURN_GENERATED_KEYS);) {
+        Connection conexion = null;
+        try {
+            conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO, DatabaseConf.PASSWORD);
+            PreparedStatement pstmtProducto = conexion.prepareStatement(INSERT_PRODUCTO, Statement.RETURN_GENERATED_KEYS);
+            conexion.setAutoCommit(false);
 
             pstmtProducto.setString(1, producto.getNombre());
             pstmtProducto.setDouble(2, producto.getPrecio());
@@ -61,9 +63,19 @@ public class JDBCProductoDao implements ProductoDao {
                 saveIngrediente(conexion, pastita.getListaIngredientePasta(), producto.getId());
             }
 
-        } catch (Exception e) {
+            conexion.commit();
+        } catch (SQLException e) {
+            if (conexion != null){
+                conexion.rollback();
+                throw new SQLException("Error al guardar, "+e);
+            }
             System.out.println("Error al insertar");
-            e.printStackTrace();
+        }finally{
+            if(conexion!=null){
+                conexion.close();
+            }else{
+                System.out.println("No se ha podido cerrar la conexion.");
+            }
         }
     }
 

@@ -28,6 +28,7 @@ public class JDBCPedido implements PedidoDao {
     final String DELETE_PEDIDO = "delete from pedidos where id=?";
     final String UPDATE_PEDIDO = "UPDATE pedidos SET fecha=?, precio_total=?, estado=?, forma_pago=? WHERE id=?";
     final String SELECT_BY_ID_PEDIDO = "select cantidad, id_producto, id_pedido from linea_pedido where id_pedido=?";
+    final String SELECT_BY_STATE = "select fecha, precio_total, forma_pago, id_cliente where estado=?";
 
     // ---------------------------------------------------------------------------------------------------------//
     @Override
@@ -168,17 +169,23 @@ public class JDBCPedido implements PedidoDao {
     @Override
     public List<Pedido> obtenerPedidosByState(EstadoPedido state) throws SQLException {
         List<Pedido>listaPedidosAdevolver = new ArrayList<>();
-        ControladorProducto controladorProducto = new ControladorProducto();
-        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL,
-                DatabaseConf.USUARIO,
-                DatabaseConf.PASSWORD);
-                PreparedStatement pstmtAlergen = conexion.prepareStatement(SELECT_BY_ID_PEDIDO);) {
-            pstmtAlergen.setInt(1, idPedido);
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO, DatabaseConf.PASSWORD);
+            PreparedStatement pstmtAlergen = conexion.prepareStatement(SELECT_BY_STATE);) {
+            pstmtAlergen.setString(1, state.toString());
 
+            Pagable pago = null;
             try (ResultSet rs = pstmtAlergen.executeQuery()) {
                 while (rs.next()) {
-                    LineaPedido lineaPedido = new LineaPedido(rs.getInt(1),controladorProducto.findProductById(rs.getInt(2)), findByID(rs.getInt(3)));
-                    listaPedidosAdevolver.add(lineaPedido);
+                    String formaPago = rs.getString("forma_pago");
+                    if (formaPago != null) {
+                        if (formaPago.equals("0")) {
+                            pago = new PagarTarjeta();
+                        } else {
+                            pago = new PagarEfectivo();
+                        }
+                    }
+                    Pedido pedido = new Pedido(rs.getDate("fecha"),rs.getDouble("precio_total"),EstadoPedido.valueOf(rs.getString("estado")),pago,rs.getInt("id_cliente"));
+                    listaPedidosAdevolver.add(pedido);
                 }
             }
         }
