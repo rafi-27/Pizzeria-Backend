@@ -175,7 +175,7 @@ public class MainDePruebas {
             pedido.getLineaPedido().add(new LineaPedido(4,1,pizzaPrueba,pedido));
             controladorPedido.updatePedido(pedido);
 
-            //controladorPedido.cancelarPedido();
+            controladorPedido.cancelarPedido();
             //controladorPedido.finalizarPedido(new PagarTarjeta());
 
 
@@ -204,7 +204,7 @@ public class MainDePruebas {
             List<LineaPedido>listaLineaPedidoUsos = controladorPedidoUsos.obtenerLineasPedidosByIdPedido(1);
             listaLineaPedidoUsos.stream().forEach(linea->System.out.println(linea));
 
-            // DatabaseConf.dropTables();
+            //DatabaseConf.dropTables();
         } catch (Exception e) {
             e.getMessage();
             e.printStackTrace();

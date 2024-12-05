@@ -80,6 +80,12 @@ public class Pedido {
         this.pago = pago;
     }
 
+    public void setPrecioTotal(double precioTotal) {
+        this.precioTotal = precioTotal;
+    }
+
+
+
     public double getPrecioTotal(){
         return lineaPedido.stream().mapToDouble(LineaPedido::getPrecioSubtotal).sum();
     }
