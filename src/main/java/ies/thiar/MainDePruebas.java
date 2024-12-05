@@ -8,6 +8,7 @@ import ies.thiar.Modelo.Bebida;
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.LineaPedido;
+import ies.thiar.Modelo.PagarTarjeta;
 import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pedido;
 import ies.thiar.Modelo.Pizza;
@@ -152,9 +153,9 @@ public class MainDePruebas {
                     "-----------------------------------------------------Nos logeamos------------------------------------------------------");
             Cliente rubenLogin = controladorCliente.clienteLogin("ruben@gmail.com", "1234");
 
+
             // Si no existe un pedido, crearlo
-            Cliente rafik = new Cliente("51234567Y", "Rafik bachri", "calle rafik", "123456789", "rafik@gmail.com",
-                    "12345");
+            Cliente rafik = new Cliente("51234567Y", "Rafik bachri", "calle rafik", "123456789", "rafik@gmail.com", "12345");
             controladorCliente.registrarCliente(rafik);
             Pedido pedido = new Pedido(new Date(),23,null,rafik.getId());
 
@@ -176,6 +177,33 @@ public class MainDePruebas {
 
             //controladorPedido.cancelarPedido();
             //controladorPedido.finalizarPedido(new PagarTarjeta());
+
+
+            Cliente jose = new Cliente("1122334455P", "Jose manolo", "calle rafik", "0987654321", "josek@gmail.com", "12345");
+            controladorCliente.registrarCliente(jose);
+            Pedido pedidoJose = new Pedido(new Date(),23,null,jose.getId());
+
+            ControladorPedido controladorPedidoJose = new ControladorPedido(pedidoJose);
+            
+            List<LineaPedido> listaLineaPedidosJose = new ArrayList<>() {
+                    {
+                        add(new LineaPedido(4, 3, pastaPrueba, pedidoJose));
+                        add(new LineaPedido(5, 2, pastaPrueba, pedidoJose));
+                        add(new LineaPedido(6,1,pastaPrueba,pedidoJose));
+                    }
+                };
+
+            //pedidoJose.setLineaPedido(listaLineaPedidosJose);
+            controladorPedidoJose.anyadirCarrito(pastaPrueba, 3);
+            controladorPedidoJose.finalizarPedido(new PagarTarjeta());
+
+            ControladorPedido controladorPedidoUsos = new ControladorPedido();
+            Pedido pedidoABuscarID = controladorPedidoUsos.findPedidoByIdCliente(4);
+            System.out.println("Pedido encontrado: "+pedidoABuscarID);
+
+            List<LineaPedido>listaLineaPedidoUsos = controladorPedidoUsos.obtenerLineasPedidosByIdPedido(1);
+            listaLineaPedidoUsos.stream().forEach(linea->System.out.println(linea));
+
             // DatabaseConf.dropTables();
         } catch (Exception e) {
             e.getMessage();

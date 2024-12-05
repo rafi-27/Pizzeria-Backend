@@ -29,6 +29,9 @@ public class JDBCPedido implements PedidoDao {
     final String UPDATE_PEDIDO = "UPDATE pedidos SET fecha=?, precio_total=?, estado=?, forma_pago=? WHERE id=?";
     final String SELECT_BY_ID_PEDIDO = "select cantidad, id_producto, id_pedido from linea_pedido where id_pedido=?";
     final String SELECT_BY_STATE = "select fecha, precio_total, forma_pago, id_cliente where estado=?";
+    String FIND_PEDIDO_BY_ID_CLIENTE = "select  id, fecha, precio_total, estado, forma_pago, id_cliente from pedidos where id_cliente=?";
+    // Hacemos el insert de la lineaDePedido:
+    final String INSERT_LINEA_PEDIDO = "insert into linea_pedido (cantidad, id_producto, id_pedido) values (?,?,?)";
 
     // ---------------------------------------------------------------------------------------------------------//
     @Override
@@ -68,8 +71,6 @@ public class JDBCPedido implements PedidoDao {
         }
     }
 
-    // Hacemos el insert de la lineaDePedido:
-    final String INSERT_LINEA_PEDIDO = "insert into linea_pedido (cantidad, id_producto, id_pedido) values (?,?,?)";
     
     @Override
     public void agregarLineaPedido(Connection conexion, List<LineaPedido> listaLineaPedidos, int idPedido)
@@ -164,16 +165,36 @@ public class JDBCPedido implements PedidoDao {
 
     @Override
     public List<Pedido> obtenerPedidosByIdClient(int idCliente) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<Pedido>listaPedidosAdevolver = new ArrayList<>();
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO, DatabaseConf.PASSWORD);
+            PreparedStatement pstmtAlergen = conexion.prepareStatement(SELECT_BY_STATE);) {
+            pstmtAlergen.setInt(1, idCliente);
+
+            Pagable pago = null;
+            try (ResultSet rs = pstmtAlergen.executeQuery()) {
+                while (rs.next()) {
+                    String formaPago = rs.getString("forma_pago");
+                    if (formaPago != null) {
+                        if (formaPago.equals("0")) {
+                            pago = new PagarTarjeta();
+                        } else {
+                            pago = new PagarEfectivo();
+                        }
+                    }
+                    Pedido pedido = new Pedido(rs.getDate("fecha"),rs.getDouble("precio_total"),EstadoPedido.valueOf(rs.getString("estado")),pago,rs.getInt("id_cliente"));
+                    listaPedidosAdevolver.add(pedido);
+                }
+            }
+        } 
+        return listaPedidosAdevolver;
     }
 
     @Override
     public List<Pedido> obtenerPedidosByState(EstadoPedido state) throws SQLException {
-        List<Pedido>listaPedidosAdevolver = new ArrayList<>();
+         List<Pedido>listaPedidosAdevolver = new ArrayList<>();
         try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO, DatabaseConf.PASSWORD);
             PreparedStatement pstmtAlergen = conexion.prepareStatement(SELECT_BY_STATE);) {
             pstmtAlergen.setString(1, state.toString());
-
             Pagable pago = null;
             try (ResultSet rs = pstmtAlergen.executeQuery()) {
                 while (rs.next()) {
@@ -213,7 +234,6 @@ public class JDBCPedido implements PedidoDao {
         return listaLineaPedidosAdevolver;
     }
 
-    String FIND_PEDIDO_BY_ID_CLIENTE = "select  id, fecha, precio_total, estado, forma_pago, id_cliente from pedidos where id_cliente=?";
     @Override
     public Pedido findPedidoByIdClient(int idCliente) throws SQLException{
         try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,

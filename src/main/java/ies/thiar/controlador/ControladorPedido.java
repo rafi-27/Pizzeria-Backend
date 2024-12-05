@@ -1,6 +1,7 @@
 package ies.thiar.controlador;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.EstadoPedido;
@@ -10,7 +11,6 @@ import ies.thiar.Modelo.PagarEfectivo;
 import ies.thiar.Modelo.PagarTarjeta;
 import ies.thiar.Modelo.Pedido;
 import ies.thiar.Modelo.Producto;
-import ies.thiar.Modelo.SIZE;
 import ies.thiar.controlador.dao.ClienteDao;
 import ies.thiar.controlador.dao.PedidoDao;
 import ies.thiar.controlador.dao.imp.JDBCClienteDao;
@@ -43,8 +43,26 @@ public class ControladorPedido {
         return jPedidoDao.findByID(id);
     }
 
+    //Metodos complementarios:
+    public Pedido findPedidoByIdCliente(int idCliente) throws SQLException{
+        return jPedidoDao.findPedidoByIdClient(idCliente);
+    }
+
+    public List<LineaPedido> obtenerLineasPedidosByIdPedido(int idPedido) throws SQLException{
+        return jPedidoDao.obtenerLineasPedidosByIdPedido(idPedido);
+    }
+
+    public List<Pedido> obtenerPedidosByState(EstadoPedido state) throws SQLException {
+        return jPedidoDao.obtenerPedidosByState(state);
+    }
+
+    public List<Pedido> obtenerPedidosByIdClient(int idCliente) throws SQLException {
+        return jPedidoDao.obtenerPedidosByIdClient(idCliente);
+    }
+
+    
     // primero comprobar si el pedido existe
-    public void anyadirCarrito(Producto producto, int cantidad, SIZE tamaño) throws SQLException, IllegalAccessException {
+    public void anyadirCarrito(Producto producto, int cantidad) throws SQLException, IllegalAccessException {
         Cliente cliente = jClienteDao.findByID(pedidoActual.getCliente());
         
         if (cliente == null) {
@@ -57,8 +75,9 @@ public class ControladorPedido {
 
         try {
             Pedido existente = jPedidoDao.findByID(pedidoActual.getId());
+
             if(existente == null){
-                jPedidoDao.insert(existente);
+                insertPedido(pedidoActual);
             }else{
                 pedidoActual.setLineaPedido(existente.getLineaPedido());
             }
@@ -68,12 +87,9 @@ public class ControladorPedido {
 
             updatePedido(pedidoActual);
 
-
-
         } catch (Exception e) {
-            // TODO: handle exception
+            System.out.println("Algo salio mal al anyadir al carrito.");
         }
-        
 
         pedidoActual.getLineaPedido().add(new LineaPedido(pedidoActual.getLineaPedido().size() + 1, cantidad, producto, pedidoActual));
 
@@ -81,6 +97,7 @@ public class ControladorPedido {
             pedidoActual.setEstado(EstadoPedido.PENDIENTE);
         }
     }
+
 
     public void finalizarPedido(Pagable metodoPago) throws IllegalAccessException, SQLException {
         Cliente client = jClienteDao.findByID(pedidoActual.getCliente());
@@ -92,13 +109,18 @@ public class ControladorPedido {
             pedidoActual.setEstado(EstadoPedido.FINALIZADO);
             if (metodoPago.formaPago()==0) {
                 pedidoActual.setPago(new PagarTarjeta());
-            }else pedidoActual.setPago(new PagarEfectivo());
+                metodoPago.pagar(pedidoActual.getPrecioTotal());
+            }else {
+                pedidoActual.setPago(new PagarEfectivo());
+                metodoPago.pagar(pedidoActual.getPrecioTotal());
+            }
             updatePedido(pedidoActual);
             pedidoActual.getLineaPedido().clear();
         } else {
             System.out.println("Algo salio mal al finalizar.");
         }
     }
+
 
     public void cancelarPedido() throws IllegalAccessException, SQLException {
         Cliente client = jClienteDao.findByID(pedidoActual.getCliente());
@@ -114,6 +136,7 @@ public class ControladorPedido {
             System.out.println("Algo salio mal al cancelar el pedido.");
         }
     }
+
 
     public void entregarPedido(int idPedido) throws SQLException {
         if (pedidoActual.getId() == idPedido) {

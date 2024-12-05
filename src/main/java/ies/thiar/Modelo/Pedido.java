@@ -31,6 +31,7 @@ public class Pedido {
         this.estado = estado;
         this.pago = pago;
         this.cliente = cliente;
+        this.lineaPedido = new ArrayList<>();
     }
 
     public Pedido(Date fecha, double precioTotal, Pagable pago, int cliente) {
@@ -39,6 +40,7 @@ public class Pedido {
         this.estado = EstadoPedido.PENDIENTE;
         this.pago = pago;
         this.cliente = cliente;
+        this.lineaPedido = new ArrayList<>();
     }
 
     public Pedido(Date fecha, double precioTotal,EstadoPedido estadoPedido, Pagable pago, int cliente) {
@@ -47,6 +49,7 @@ public class Pedido {
         this.estado = estadoPedido;
         this.pago = pago;
         this.cliente = cliente;
+        this.lineaPedido = new ArrayList<>();
     }
 
     public int getId() {
@@ -76,10 +79,6 @@ public class Pedido {
     public void setPago(Pagable pago) {
         this.pago = pago;
     }
-
-    // public void anyadirCarrito(Producto p, int canti){
-    //     lineaPedido.add(new LineaPedido(p, canti));
-    // }
 
     public double getPrecioTotal(){
         return lineaPedido.stream().mapToDouble(LineaPedido::getPrecioSubtotal).sum();

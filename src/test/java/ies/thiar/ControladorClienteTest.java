@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,10 +13,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ies.thiar.Modelo.Cliente;
-import ies.thiar.Modelo.FormaPago;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.LineaPedido;
-import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pedido;
 import ies.thiar.Modelo.Pizza;
 import ies.thiar.Modelo.Producto;
@@ -25,7 +22,6 @@ import ies.thiar.Modelo.SIZE;
 import ies.thiar.Utils.DatabaseConf;
 import ies.thiar.controlador.ControladorCliente;
 import ies.thiar.controlador.ControladorPedido;
-import ies.thiar.controlador.ControladorProducto;
 
 public class ControladorClienteTest {
 
