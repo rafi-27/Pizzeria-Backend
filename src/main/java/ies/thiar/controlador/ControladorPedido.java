@@ -91,8 +91,6 @@ public class ControladorPedido {
             System.out.println("Algo salio mal al anyadir al carrito.");
         }
 
-        pedidoActual.getLineaPedido().add(new LineaPedido(pedidoActual.getLineaPedido().size() + 1, cantidad, producto, pedidoActual));
-
         if (pedidoActual.getEstado() != EstadoPedido.PENDIENTE) {
             pedidoActual.setEstado(EstadoPedido.PENDIENTE);
         }

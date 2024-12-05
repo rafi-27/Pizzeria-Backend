@@ -193,7 +193,7 @@ public class MainDePruebas {
                     }
                 };
 
-            //pedidoJose.setLineaPedido(listaLineaPedidosJose);
+            pedidoJose.setLineaPedido(listaLineaPedidosJose);
             controladorPedidoJose.anyadirCarrito(pastaPrueba, 3);
             controladorPedidoJose.finalizarPedido(new PagarTarjeta());
 

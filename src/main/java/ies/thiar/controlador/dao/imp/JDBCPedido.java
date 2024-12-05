@@ -105,11 +105,13 @@ public class JDBCPedido implements PedidoDao {
         }
     }
 
+    //por la forma en la que lo hago debo borrar lineas de pedido para no repetir
+    String DELETE_LINEAS_PEDIDO = "DELETE FROM linea_pedido WHERE id_pedido = ?";
     @Override
     public void update(Pedido pedido) throws SQLException {
-        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO,
-                DatabaseConf.PASSWORD);
-                PreparedStatement pstmtPedido = conexion.prepareStatement(UPDATE_PEDIDO);) {
+        try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO, DatabaseConf.PASSWORD);
+                PreparedStatement pstmtPedido = conexion.prepareStatement(UPDATE_PEDIDO);
+                PreparedStatement pstmtDeleteLineas = conexion.prepareStatement(DELETE_LINEAS_PEDIDO)) {
 
                     pstmtPedido.setDate(1, new Date(pedido.getFecha().getTime()));
                     pstmtPedido.setDouble(2, pedido.getPrecioTotal());
@@ -124,7 +126,14 @@ public class JDBCPedido implements PedidoDao {
             pstmtPedido.setInt(5, pedido.getId());
 
             pstmtPedido.executeUpdate();
-            agregarLineaPedido(conexion, pedido.getLineaPedido(), pedido.getId());
+
+            pstmtDeleteLineas.setInt(1, pedido.getId());
+            pstmtDeleteLineas.executeUpdate();
+
+            if (!pedido.getLineaPedido().isEmpty()) {
+                agregarLineaPedido(conexion, pedido.getLineaPedido(), pedido.getId());
+            }
+
         } catch (Exception e) {
             System.out.println("Error al hacer update del producto");
             e.printStackTrace();
