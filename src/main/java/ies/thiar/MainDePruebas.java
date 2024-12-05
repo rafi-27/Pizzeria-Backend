@@ -6,6 +6,7 @@ import java.util.List;
 
 import ies.thiar.Modelo.Bebida;
 import ies.thiar.Modelo.Cliente;
+import ies.thiar.Modelo.EstadoPedido;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.LineaPedido;
 import ies.thiar.Modelo.PagarTarjeta;
@@ -203,7 +204,14 @@ public class MainDePruebas {
 
             List<LineaPedido>listaLineaPedidoUsos = controladorPedidoUsos.obtenerLineasPedidosByIdPedido(1);
             listaLineaPedidoUsos.stream().forEach(linea->System.out.println(linea));
+            System.out.println("Lista de los pedidos que esten cancelados.");
+            List<Pedido>listaPedidosBBDD = controladorPedidoUsos.obtenerPedidosByState(EstadoPedido.CANCELADO);
+            System.out.println(listaPedidosBBDD.size());
 
+System.out.println();
+
+            //Visualizamos todos los productos:
+            listaProductosPrueba.stream().forEach(prod->System.out.println(prod));
             //DatabaseConf.dropTables();
         } catch (Exception e) {
             e.getMessage();

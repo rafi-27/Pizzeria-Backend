@@ -28,7 +28,7 @@ public class JDBCPedido implements PedidoDao {
     final String DELETE_PEDIDO = "delete from pedidos where id=?";
     final String UPDATE_PEDIDO = "UPDATE pedidos SET fecha=?, precio_total=?, estado=?, forma_pago=? WHERE id=?";
     final String SELECT_BY_ID_PEDIDO = "select cantidad, id_producto, id_pedido from linea_pedido where id_pedido=?";
-    final String SELECT_BY_STATE = "select fecha, precio_total, forma_pago, id_cliente where estado=?";
+    final String SELECT_BY_STATE = "select fecha, precio_total, forma_pago, id_cliente from pedidos where estado=?";
     String FIND_PEDIDO_BY_ID_CLIENTE = "select  id, fecha, precio_total, estado, forma_pago, id_cliente from pedidos where id_cliente=?";
     // Hacemos el insert de la lineaDePedido:
     final String INSERT_LINEA_PEDIDO = "insert into linea_pedido (cantidad, id_producto, id_pedido) values (?,?,?)";
@@ -106,12 +106,12 @@ public class JDBCPedido implements PedidoDao {
     }
 
     //por la forma en la que lo hago debo borrar lineas de pedido para no repetir
-    String DELETE_LINEAS_PEDIDO = "DELETE FROM linea_pedido WHERE id_pedido = ?";
+    String DELETE_LINEAPEDIDO = "delete from linea_pedido WHERE id_pedido = ?";
     @Override
     public void update(Pedido pedido) throws SQLException {
         try (Connection conexion = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USUARIO, DatabaseConf.PASSWORD);
                 PreparedStatement pstmtPedido = conexion.prepareStatement(UPDATE_PEDIDO);
-                PreparedStatement pstmtDeleteLineas = conexion.prepareStatement(DELETE_LINEAS_PEDIDO)) {
+                PreparedStatement pstmtDeleteLineas = conexion.prepareStatement(DELETE_LINEAPEDIDO)) {
 
                     pstmtPedido.setDate(1, new Date(pedido.getFecha().getTime()));
                     pstmtPedido.setDouble(2, pedido.getPrecioTotal());
@@ -215,7 +215,9 @@ public class JDBCPedido implements PedidoDao {
                             pago = new PagarEfectivo();
                         }
                     }
-                    Pedido pedido = new Pedido(rs.getDate("fecha"),rs.getDouble("precio_total"),EstadoPedido.valueOf(rs.getString("estado")),pago,rs.getInt("id_cliente"));
+                    Pedido pedido = new Pedido(rs.getDate("fecha"),
+                    rs.getDouble("precio_total"),
+                    pago,rs.getInt("id_cliente"));
                     listaPedidosAdevolver.add(pedido);
                 }
             }
