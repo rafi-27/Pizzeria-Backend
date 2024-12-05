@@ -6,10 +6,8 @@ import java.util.List;
 
 import ies.thiar.Modelo.Bebida;
 import ies.thiar.Modelo.Cliente;
-import ies.thiar.Modelo.EstadoPedido;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.LineaPedido;
-import ies.thiar.Modelo.PagarTarjeta;
 import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pedido;
 import ies.thiar.Modelo.Pizza;
@@ -177,7 +175,7 @@ public class MainDePruebas {
             controladorPedido.updatePedido(pedido);
 
             //controladorPedido.cancelarPedido();
-            controladorPedido.finalizarPedido(new PagarTarjeta());
+            //controladorPedido.finalizarPedido(new PagarTarjeta());
             // DatabaseConf.dropTables();
         } catch (Exception e) {
             e.getMessage();

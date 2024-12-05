@@ -44,14 +44,38 @@ public class ControladorPedido {
     }
 
     // primero comprobar si el pedido existe
-    public void anyadirCarrito(Producto producto, int cantidad, SIZE tamaño)
-            throws SQLException, IllegalAccessException {
+    public void anyadirCarrito(Producto producto, int cantidad, SIZE tamaño) throws SQLException, IllegalAccessException {
         Cliente cliente = jClienteDao.findByID(pedidoActual.getCliente());
+        
         if (cliente == null) {
             throw new IllegalAccessException("Usuario incorrecto{anyadirCarrito}");
         }
-        pedidoActual.getLineaPedido()
-                .add(new LineaPedido(pedidoActual.getLineaPedido().size() + 1, cantidad, producto, pedidoActual));
+
+        if(pedidoActual.getEstado()!=EstadoPedido.PENDIENTE){
+            pedidoActual = new Pedido(pedidoActual.getCliente());
+        }
+
+        try {
+            Pedido existente = jPedidoDao.findByID(pedidoActual.getId());
+            if(existente == null){
+                jPedidoDao.insert(existente);
+            }else{
+                pedidoActual.setLineaPedido(existente.getLineaPedido());
+            }
+
+            LineaPedido lineaPedido = new LineaPedido(cantidad, producto, existente);
+            pedidoActual.getLineaPedido().add(lineaPedido);
+
+            updatePedido(pedidoActual);
+
+
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        
+
+        pedidoActual.getLineaPedido().add(new LineaPedido(pedidoActual.getLineaPedido().size() + 1, cantidad, producto, pedidoActual));
 
         if (pedidoActual.getEstado() != EstadoPedido.PENDIENTE) {
             pedidoActual.setEstado(EstadoPedido.PENDIENTE);

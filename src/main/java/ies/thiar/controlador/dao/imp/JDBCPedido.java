@@ -74,8 +74,7 @@ public class JDBCPedido implements PedidoDao {
     @Override
     public void agregarLineaPedido(Connection conexion, List<LineaPedido> listaLineaPedidos, int idPedido)
             throws SQLException {
-        PreparedStatement pstmtLineaPedido = conexion.prepareStatement(INSERT_LINEA_PEDIDO,
-                Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement pstmtLineaPedido = conexion.prepareStatement(INSERT_LINEA_PEDIDO, Statement.RETURN_GENERATED_KEYS);
 
         for (LineaPedido lineaPedido : listaLineaPedidos) {
             pstmtLineaPedido.setInt(1, lineaPedido.getCantidad());
@@ -124,6 +123,7 @@ public class JDBCPedido implements PedidoDao {
             pstmtPedido.setInt(5, pedido.getId());
 
             pstmtPedido.executeUpdate();
+            agregarLineaPedido(conexion, pedido.getLineaPedido(), pedido.getId());
         } catch (Exception e) {
             System.out.println("Error al hacer update del producto");
             e.printStackTrace();
@@ -189,7 +189,7 @@ public class JDBCPedido implements PedidoDao {
                     listaPedidosAdevolver.add(pedido);
                 }
             }
-        }
+        } 
         return listaPedidosAdevolver;
     }
 
