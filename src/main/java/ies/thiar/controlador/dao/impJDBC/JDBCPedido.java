@@ -1,4 +1,4 @@
-package ies.thiar.controlador.dao.imp;
+package ies.thiar.controlador.dao.impJDBC;
 
 import java.sql.Connection;
 import java.sql.Date;

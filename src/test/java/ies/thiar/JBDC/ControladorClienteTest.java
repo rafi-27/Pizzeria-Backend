@@ -1,4 +1,4 @@
-package ies.thiar;
+package ies.thiar.JBDC;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

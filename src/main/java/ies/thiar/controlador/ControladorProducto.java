@@ -6,7 +6,7 @@ import java.util.List;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.Producto;
 import ies.thiar.controlador.dao.ProductoDao;
-import ies.thiar.controlador.dao.imp.JDBCProductoDao;
+import ies.thiar.controlador.dao.impJDBC.JDBCProductoDao;
 
 public class ControladorProducto {
     ProductoDao jProductoDao = new JDBCProductoDao();

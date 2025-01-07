@@ -5,7 +5,7 @@ import java.util.List;
 
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.controlador.dao.ClienteDao;
-import ies.thiar.controlador.dao.imp.JDBCClienteDao;
+import ies.thiar.controlador.dao.impJDBC.JDBCClienteDao;
 
 public class ControladorCliente {
     ClienteDao jClienteDao = new JDBCClienteDao();

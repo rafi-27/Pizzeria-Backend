@@ -13,8 +13,8 @@ import ies.thiar.Modelo.Pedido;
 import ies.thiar.Modelo.Producto;
 import ies.thiar.controlador.dao.ClienteDao;
 import ies.thiar.controlador.dao.PedidoDao;
-import ies.thiar.controlador.dao.imp.JDBCClienteDao;
-import ies.thiar.controlador.dao.imp.JDBCPedido;
+import ies.thiar.controlador.dao.impJDBC.JDBCClienteDao;
+import ies.thiar.controlador.dao.impJDBC.JDBCPedido;
 
 public class ControladorPedido {
     private PedidoDao jPedidoDao = new JDBCPedido();

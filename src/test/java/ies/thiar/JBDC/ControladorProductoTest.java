@@ -1,4 +1,4 @@
-package ies.thiar;
+package ies.thiar.JBDC;
 
 import ies.thiar.controlador.ControladorCliente;
 import ies.thiar.controlador.ControladorProducto;
