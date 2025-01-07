@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
 //@XmlAccessorType(XmlAccessType.FIELD)
-
+//@Entity
 public class Cliente {
     /**
      * Cliente. Representa un cliente que realiza un pedido. 
