@@ -5,7 +5,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.persistence.Entity;
+
+import jakarta.persistence.Entity;
 
 @Entity
 public class Cliente {
