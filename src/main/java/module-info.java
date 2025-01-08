@@ -4,6 +4,12 @@ module ies.thiar {
     requires java.xml.bind;
     requires com.opencsv;
     requires java.sql;
+    requires java.desktop;
+    requires java.xml;
+    requires jdk.compiler;
+    requires jdk.javadoc;
+    requires org.hibernate.orm.core;
+    requires javax.persistence;
 
     opens ies.thiar to javafx.fxml;
     exports ies.thiar;
