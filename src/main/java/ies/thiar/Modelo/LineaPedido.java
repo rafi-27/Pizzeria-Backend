@@ -2,22 +2,42 @@ package ies.thiar.Modelo;
 
 import com.opencsv.bean.CsvBindByName;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class LineaPedido {
 
     //@CsvBindAndSplitByName(column = "IDENTIFICATION", writeDelimiter = ",", elementType = Integer.class)
     @CsvBindByName(column = "IDENTIFICATION")
+    @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private int id;
     
     @CsvBindByName(column = "QUANTITY")
     private int cantidad;
 
     private Producto product;
+        
+    @ManyToOne(cascade = CascadeType.ALL)
     private Pedido pedido;
 
     public LineaPedido(int ide, int cantidad) {
         //this.p=a;
         this.id=ide;
         this.cantidad = cantidad;
+    }
+
+    public void setProduct(Producto product) {
+        this.product = product;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
     public LineaPedido(int ide, int cantidad, Producto producto, Pedido pedido) {

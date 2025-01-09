@@ -6,27 +6,39 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Cliente {
     /**
-     * Cliente. Representa un cliente que realiza un pedido. 
-     */
+    * Cliente. Representa un cliente que realiza un pedido. 
+    */
     
-     //Atributos:
+    //Atributos:
+    @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private int id;
 
+    @Column(unique=true, nullable=false)
     private String dni;
     private String nombre;
     private String direccion;
     private String telefono;
+    
+    @Column(unique=true, nullable=false)
     private String email;
 
     @XmlTransient
     private String password;
     
     @XmlTransient
+    @OneToMany(mappedBy="cliente", cascade = CascadeType.ALL)
     private List<Pedido> listaPedidos = new ArrayList<>();
 
 
@@ -115,6 +127,14 @@ public class Cliente {
 
     public List<Pedido> getListaPedidos() {
         return listaPedidos;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setListaPedidos(List<Pedido> listaPedidos) {

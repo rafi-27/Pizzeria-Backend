@@ -4,17 +4,43 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
+@Entity
 public class Pedido {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private int id;
+
+    @Temporal(TemporalType.DATE)
     private Date fecha;
     private double precioTotal;
+
+    @Enumerated(EnumType.STRING)
     private EstadoPedido estado;
+
+    @OneToMany(mappedBy="pedido", cascade = CascadeType.ALL)
     private List<LineaPedido>lineaPedido;
     //private Pagable pago;
-    private Pagable pago;
-    private int cliente;
+    @Enumerated(EnumType.STRING)
+    private FormaPago pago;
 
-    public Pedido(int client) {
+    //    private Pagable pago;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Cliente cliente;
+
+    public Pedido(Cliente client) {
         this.fecha = new Date();
         this.precioTotal = 0;
         this.estado=EstadoPedido.PENDIENTE;
@@ -22,9 +48,7 @@ public class Pedido {
         this.lineaPedido = new ArrayList<>();
     }
 
-    
-
-    public Pedido(int id, Date fecha, double precioTotal, EstadoPedido estado, Pagable pago, int cliente) {
+    public Pedido(int id, Date fecha, double precioTotal, EstadoPedido estado, FormaPago pago, Cliente cliente) {
         this.id = id;
         this.fecha = fecha;
         this.precioTotal = precioTotal;
@@ -33,8 +57,23 @@ public class Pedido {
         this.cliente = cliente;
         this.lineaPedido = new ArrayList<>();
     }
+    /**
+     * public Pedido(int id, Date fecha, double precioTotal, EstadoPedido estado, Pagable pago, Cliente cliente) {
+        this.id = id;
+        this.fecha = fecha;
+        this.precioTotal = precioTotal;
+        this.estado = estado;
+        this.pago = pago;
+        this.cliente = cliente;
+        this.lineaPedido = new ArrayList<>();
+    }
+     * @param fecha
+     * @param precioTotal
+     * @param pago
+     * @param cliente
+     */
 
-    public Pedido(Date fecha, double precioTotal, Pagable pago, int cliente) {
+    public Pedido(Date fecha, double precioTotal, FormaPago pago, Cliente cliente) {
         this.fecha = fecha;
         this.precioTotal = precioTotal;
         this.estado = EstadoPedido.PENDIENTE;
@@ -42,8 +81,23 @@ public class Pedido {
         this.cliente = cliente;
         this.lineaPedido = new ArrayList<>();
     }
+    /**
+     * public Pedido(Date fecha, double precioTotal, Pagable pago, Cliente cliente) {
+        this.fecha = fecha;
+        this.precioTotal = precioTotal;
+        this.estado = EstadoPedido.PENDIENTE;
+        this.pago = pago;
+        this.cliente = cliente;
+        this.lineaPedido = new ArrayList<>();
+    }
+     * @param fecha
+     * @param precioTotal
+     * @param estadoPedido
+     * @param pago
+     * @param cliente
+     */
 
-    public Pedido(Date fecha, double precioTotal,EstadoPedido estadoPedido, Pagable pago, int cliente) {
+    public Pedido(Date fecha, double precioTotal,EstadoPedido estadoPedido, FormaPago pago, Cliente cliente) {
         this.fecha = fecha;
         this.precioTotal = precioTotal;
         this.estado = estadoPedido;
@@ -51,6 +105,17 @@ public class Pedido {
         this.cliente = cliente;
         this.lineaPedido = new ArrayList<>();
     }
+    /**
+     * public Pedido(Date fecha, double precioTotal,EstadoPedido estadoPedido, Pagable pago, Cliente cliente) {
+        this.fecha = fecha;
+        this.precioTotal = precioTotal;
+        this.estado = estadoPedido;
+        this.pago = pago;
+        this.cliente = cliente;
+        this.lineaPedido = new ArrayList<>();
+    }
+     * @return
+     */
 
     public int getId() {
         return id;
@@ -76,7 +141,7 @@ public class Pedido {
         this.estado = estado;
     }
 
-    public void setPago(Pagable pago) {
+    public void setPago(FormaPago pago) {
         this.pago = pago;
     }
 
@@ -90,7 +155,7 @@ public class Pedido {
         return lineaPedido.stream().mapToDouble(LineaPedido::getPrecioSubtotal).sum();
     }
 
-    public int getCliente(){
+    public Cliente getCliente(){
         return this.cliente;
     }
 
@@ -108,13 +173,13 @@ public class Pedido {
         this.lineaPedido = lineaPedido;
     }
 
-    public Pagable getPago() {
+    public FormaPago getPago() {
         return pago;
     }
 
-    public int getMetodoPagoCeroOuno(){
-        return pago.formaPago();
-    }
+    // public int getMetodoPagoCeroOuno(){
+    //     return pago.formaPago();
+    // }
 
     //metodo para finalizar
     public void finalizarPedido(){
