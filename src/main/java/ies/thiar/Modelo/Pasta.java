@@ -3,16 +3,21 @@ package ies.thiar.Modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+
+@Entity
 @XmlRootElement(name = "pasta")
 public class Pasta extends Producto{
 
     public Pasta(){}
         
-    //@CsvBindAndSplitByName(column = "Ingredientes pasta", writeDelimiter = ",", elementType = String.class)
-    @XmlElement(name = "ingredientes")
+    @ManyToMany
+    @JoinTable(name="Producto_Ingrediente", joinColumns=@JoinColumn(name = "producto_id"))
     private List<Ingrediente>listaIngredientePasta = new ArrayList<>();
 
     public Pasta(int id, String nombre, double precio,List<Ingrediente>listaIngredientePastaParam) {

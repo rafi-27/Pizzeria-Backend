@@ -1,6 +1,9 @@
 package ies.thiar.Modelo;
 
-public class PagarTarjeta implements Pagable{
+import jakarta.persistence.Entity;
+
+@Entity
+public class PagarTarjeta extends  Pagable{
 
     @Override
     public void pagar(double cantidad) {

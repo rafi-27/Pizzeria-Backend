@@ -1,6 +1,9 @@
 package ies.thiar.Modelo;
 
-public class PagarEfectivo implements Pagable{
+import jakarta.persistence.Entity;
+
+@Entity
+public class PagarEfectivo extends  Pagable{
     @Override
     public void pagar(double cantidad) {
         System.out.println("Pagas en efectivo: "+cantidad);

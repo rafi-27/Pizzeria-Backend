@@ -8,15 +8,26 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+
 //@XmlRootElement(name = "pizza")
 @XmlAccessorType(XmlAccessType.FIELD)
+@Entity
 public class Pizza extends Producto{
     //@CsvBindByName(column = "Tamanyo")
+    @Enumerated(EnumType.STRING)
     private SIZE tamanyo;
     
     //@CsvBindAndSplitByName(column = "Ingredientes pizza", writeDelimiter = ",", elementType = String.class)
     @XmlElementWrapper(name="Ingredientes")
     @XmlElement(name = "ingrediente")
+    @ManyToMany
+    @JoinTable(name="Producto_Ingrediente", joinColumns=@JoinColumn(name = "producto_id"))
     private List<Ingrediente>listaIngredientesPizza = new ArrayList<>();
 
     //,List<Ingrediente>listaIngredientesPizzaParam

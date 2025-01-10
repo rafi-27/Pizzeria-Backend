@@ -13,12 +13,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
 public class Pedido {
-
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private int id;
@@ -32,9 +32,10 @@ public class Pedido {
 
     @OneToMany(mappedBy="pedido", cascade = CascadeType.ALL)
     private List<LineaPedido>lineaPedido;
-    //private Pagable pago;
-    @Enumerated(EnumType.STRING)
-    private FormaPago pago;
+    
+    @OneToOne
+    private Pagable pago;
+    //private FormaPago pago;
 
     //    private Pagable pago;
     @ManyToOne(cascade = CascadeType.ALL)
@@ -48,7 +49,7 @@ public class Pedido {
         this.lineaPedido = new ArrayList<>();
     }
 
-    public Pedido(int id, Date fecha, double precioTotal, EstadoPedido estado, FormaPago pago, Cliente cliente) {
+    public Pedido(int id, Date fecha, double precioTotal, EstadoPedido estado, Pagable pago, Cliente cliente) {
         this.id = id;
         this.fecha = fecha;
         this.precioTotal = precioTotal;
@@ -73,7 +74,7 @@ public class Pedido {
      * @param cliente
      */
 
-    public Pedido(Date fecha, double precioTotal, FormaPago pago, Cliente cliente) {
+    public Pedido(Date fecha, double precioTotal, Pagable pago, Cliente cliente) {
         this.fecha = fecha;
         this.precioTotal = precioTotal;
         this.estado = EstadoPedido.PENDIENTE;
@@ -97,7 +98,7 @@ public class Pedido {
      * @param cliente
      */
 
-    public Pedido(Date fecha, double precioTotal,EstadoPedido estadoPedido, FormaPago pago, Cliente cliente) {
+    public Pedido(Date fecha, double precioTotal,EstadoPedido estadoPedido, Pagable pago, Cliente cliente) {
         this.fecha = fecha;
         this.precioTotal = precioTotal;
         this.estado = estadoPedido;
@@ -141,7 +142,7 @@ public class Pedido {
         this.estado = estado;
     }
 
-    public void setPago(FormaPago pago) {
+    public void setPago(Pagable pago) {
         this.pago = pago;
     }
 
@@ -173,7 +174,7 @@ public class Pedido {
         this.lineaPedido = lineaPedido;
     }
 
-    public FormaPago getPago() {
+    public Pagable getPago() {
         return pago;
     }
 

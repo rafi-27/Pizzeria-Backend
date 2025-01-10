@@ -2,10 +2,16 @@ package ies.thiar.Modelo;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
 @XmlRootElement(name = "bebida")
+@Entity
 public class Bebida extends Producto{
     
     //@CsvBindByName(column = "TamanyoB")
+    @Enumerated(EnumType.STRING)
     private SIZE tamanyo;
     
 

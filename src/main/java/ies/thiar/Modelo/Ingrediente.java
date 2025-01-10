@@ -2,26 +2,25 @@ package ies.thiar.Modelo;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-import com.opencsv.bean.CsvBindAndSplitByName;
-import com.opencsv.bean.CsvBindByName;
 
-@XmlAccessorType(XmlAccessType.FIELD)
+@Entity
 public class Ingrediente {
 
-    @CsvBindAndSplitByName(column = "ALERGENOS", writeDelimiter = ",", elementType = String.class)
-    @XmlElementWrapper(name="alergenos")
-    @XmlElement(name="alergeno")
+    @ElementCollection()
     private List<String> listaAlergenos;
 
-    @CsvBindByName(column = "ID")
+    @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private int id;
 
-    @CsvBindByName(column = "NOMBRE")
+    @Column(unique=true, nullable=false)
     private String nombre;
 
     public Ingrediente(int id, String nombre, List<String> listaAlergenos) {
