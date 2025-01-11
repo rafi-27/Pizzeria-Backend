@@ -2,6 +2,7 @@ package ies.thiar.Modelo;
 
 import java.util.List;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -14,6 +15,7 @@ import jakarta.persistence.Id;
 public class Ingrediente {
 
     @ElementCollection()
+    @CollectionTable(name = "ingrediente_alergenos")
     private List<String> listaAlergenos;
 
     @Id

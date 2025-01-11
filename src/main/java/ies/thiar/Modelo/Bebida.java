@@ -1,33 +1,29 @@
 package ies.thiar.Modelo;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
-@XmlRootElement(name = "bebida")
 @Entity
 public class Bebida extends Producto{
-    
-    //@CsvBindByName(column = "TamanyoB")
-    @Enumerated(EnumType.STRING)
-    private SIZE tamanyo;
+    // @Enumerated(EnumType.STRING)
+    // private SIZE taman;
     
 
     public Bebida(int id, String nombre, double precio,SIZE tam) {
-        super(nombre, precio, TipoProducto.BEBIDA);
-        this.tamanyo=tam;
+        super(nombre, precio, TipoProducto.BEBIDA,tam);
+        //this.taman=tam;
     }
 
     public Bebida() {}
 
-    public SIZE getTamanyo() {
-        return tamanyo;
-    }
+    // public SIZE getTamanyo() {
+    //     return taman;
+    // }
 
-    public void setTamanyo(SIZE tamanyo) {
-        this.tamanyo = tamanyo;
-    }
+    // public void setTamanyo(SIZE tamanyo) {
+    //     this.taman = tamanyo;
+    // }
     
 }

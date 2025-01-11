@@ -3,15 +3,14 @@ package ies.thiar.Modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
 @Entity
-@XmlRootElement(name = "pasta")
 public class Pasta extends Producto{
 
     public Pasta(){}

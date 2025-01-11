@@ -20,8 +20,8 @@ import jakarta.persistence.ManyToMany;
 @Entity
 public class Pizza extends Producto{
     //@CsvBindByName(column = "Tamanyo")
-    @Enumerated(EnumType.STRING)
-    private SIZE tamanyo;
+    // @Enumerated(EnumType.STRING)
+    // private SIZE tamanyo;
     
     //@CsvBindAndSplitByName(column = "Ingredientes pizza", writeDelimiter = ",", elementType = String.class)
     @XmlElementWrapper(name="Ingredientes")
@@ -32,28 +32,28 @@ public class Pizza extends Producto{
 
     //,List<Ingrediente>listaIngredientesPizzaParam
     public Pizza(int id, String nombre, double precio,SIZE tam, List<Ingrediente>lista) {
-        super(nombre, precio, TipoProducto.PIZZA);
-        this.tamanyo=tam;
+        super(nombre, precio, TipoProducto.PIZZA,tam);
+        //this.tamanyo=tam;
         this.listaIngredientesPizza=lista;
     }
 
     //public Pizza(){}
     public Pizza(int id, String nombre, double precio,SIZE tam) {
         super(nombre, precio, TipoProducto.PIZZA);
-        this.tamanyo=tam;
+        //this.tamanyo=tam;
     }
 
-    public SIZE getTamanyo() {
-        return tamanyo;
-    }
+    // public SIZE getTamanyo() {
+    //     return tamanyo;
+    // }
 
     public List<Ingrediente> getListaIngredientesPizza() {
         return listaIngredientesPizza;
     }
 
-    public void setTamanyo(SIZE tamanyo) {
-        this.tamanyo = tamanyo;
-    }
+    // public void setTamanyo(SIZE tamanyo) {
+    //     this.tamanyo = tamanyo;
+    // }
 
     public void setListaIngredientesPizza(List<Ingrediente> listaIngredientesPizza) {
         this.listaIngredientesPizza = listaIngredientesPizza;
@@ -61,6 +61,6 @@ public class Pizza extends Producto{
 
     @Override
     public String toString() {
-        return super.toString()+" tamanyo=" + tamanyo+" lista Ingredientes: "+getListaIngredientesPizza();
+        return super.toString()+" lista Ingredientes: "+getListaIngredientesPizza();
     }
 }

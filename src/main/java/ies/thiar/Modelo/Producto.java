@@ -3,7 +3,6 @@ package ies.thiar.Modelo;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -23,6 +22,7 @@ public abstract class Producto {
 
     @Enumerated(EnumType.STRING)
     private TipoProducto tipoProducto;
+    
     @Enumerated(EnumType.STRING)
     private SIZE tamanyo;
     
