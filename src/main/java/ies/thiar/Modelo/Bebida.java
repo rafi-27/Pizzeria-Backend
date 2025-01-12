@@ -1,29 +1,20 @@
 package ies.thiar.Modelo;
 
-
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.SequenceGenerator;
 
 @Entity
-public class Bebida extends Producto{
-    // @Enumerated(EnumType.STRING)
-    // private SIZE taman;
-    
-
-    public Bebida(int id, String nombre, double precio,SIZE tam) {
-        super(nombre, precio, TipoProducto.BEBIDA,tam);
-        //this.taman=tam;
-    }
+@SequenceGenerator(name="cliente_seq", sequenceName="hibernate_sequence", allocationSize=1)
+public class Bebida extends Producto {
 
     public Bebida() {}
 
-    // public SIZE getTamanyo() {
-    //     return taman;
-    // }
+    public Bebida(String nombre, double precio, SIZE tamanyo) {
+        super(nombre, precio, TipoProducto.BEBIDA, tamanyo);
+    }
 
-    // public void setTamanyo(SIZE tamanyo) {
-    //     this.taman = tamanyo;
-    // }
-    
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

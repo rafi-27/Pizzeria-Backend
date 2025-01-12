@@ -9,53 +9,39 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
+@SequenceGenerator(name="cliente_seq", sequenceName="hibernate_sequence", allocationSize=1)
 public abstract class Producto {
     @XmlAttribute
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private String nombre;
     private double precio;
 
     @Enumerated(EnumType.STRING)
     private TipoProducto tipoProducto;
-    
+
     @Enumerated(EnumType.STRING)
     private SIZE tamanyo;
-    
-    public Producto(String nombre, double precio, TipoProducto tipe,SIZE tamany) {
+
+    public Producto() {}
+
+    public Producto(String nombre, double precio, TipoProducto tipo, SIZE tamanyo) {
         this.nombre = nombre;
         this.precio = precio;
-        this.tipoProducto = tipe;
-        this.tamanyo=tamany;
-    }
-
-    public void setTipoProducto(TipoProducto tipoProducto) {
-        this.tipoProducto = tipoProducto;
-    }
-
-    public SIZE getTamanyo() {
-        return tamanyo;
-    }
-
-    public void setTamanyo(SIZE tamanyo) {
+        this.tipoProducto = tipo;
         this.tamanyo = tamanyo;
     }
 
-    public Producto(String nombre, double precio, TipoProducto tipe) {
+    public Producto(String nombre, double precio, TipoProducto tipo) {
         this.nombre = nombre;
         this.precio = precio;
-        this.tipoProducto = tipe;
+        this.tipoProducto = tipo;
     }
-
-    public TipoProducto getTipoProducto() {
-        return tipoProducto;
-    }
-
-    public Producto(){}
 
     public int getId() {
         return id;
@@ -79,6 +65,22 @@ public abstract class Producto {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public TipoProducto getTipoProducto() {
+        return tipoProducto;
+    }
+
+    public void setTipoProducto(TipoProducto tipoProducto) {
+        this.tipoProducto = tipoProducto;
+    }
+
+    public SIZE getTamanyo() {
+        return tamanyo;
+    }
+
+    public void setTamanyo(SIZE tamanyo) {
+        this.tamanyo = tamanyo;
     }
 
     @Override

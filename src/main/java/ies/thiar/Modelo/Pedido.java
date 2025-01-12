@@ -14,10 +14,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
+@SequenceGenerator(name="cliente_seq", sequenceName="hibernate_sequence", allocationSize=1)
 public class Pedido {
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)

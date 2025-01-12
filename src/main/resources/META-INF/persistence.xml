@@ -7,7 +7,11 @@
         <class>ies.thiar.Modelo.Cliente</class>
         <class>ies.thiar.Modelo.Pedido</class>
         <class>ies.thiar.Modelo.LineaPedido</class>
-
+        <class>ies.thiar.Modelo.Producto</class>
+        <class>ies.thiar.Modelo.Pizza</class>
+        <class>ies.thiar.Modelo.Pasta</class>
+        <class>ies.thiar.Modelo.Bebida</class>
+        <class>ies.thiar.Modelo.Ingrediente</class>
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="create-drop" />
             <property name="jakarta.persistence.jdbc.driver"

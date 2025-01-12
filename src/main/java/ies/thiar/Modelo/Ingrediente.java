@@ -1,7 +1,6 @@
 package ies.thiar.Modelo;
 
 import java.util.List;
-
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -9,40 +8,28 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.SequenceGenerator;
 
 @Entity
+@SequenceGenerator(name="cliente_seq", sequenceName="hibernate_sequence", allocationSize=1)
 public class Ingrediente {
 
-    @ElementCollection()
+    @ElementCollection
     @CollectionTable(name = "ingrediente_alergenos")
     private List<String> listaAlergenos;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(unique=true, nullable=false)
+    @Column(unique = true, nullable = false)
     private String nombre;
 
-    public Ingrediente(int id, String nombre, List<String> listaAlergenos) {
-        this.id = id;
-        this.nombre = nombre;
-        this.listaAlergenos = listaAlergenos;
-    }
+    public Ingrediente() {}
 
     public Ingrediente(String nombre, List<String> listaAlergenos) {
-        this.nombre=nombre;
-        this.listaAlergenos=listaAlergenos;
-    }
-
-    public Ingrediente(int id, String nombre) {
-        this.id=id;
-        this.nombre=nombre;
-    }
-    
-    public Ingrediente(String nombre) {
-        this.nombre=nombre;
+        this.nombre = nombre;
+        this.listaAlergenos = listaAlergenos;
     }
 
     public int getId() {
@@ -65,17 +52,12 @@ public class Ingrediente {
         return listaAlergenos;
     }
 
-    public void setListaAlergenos(List<String> alergenos) {
-        this.listaAlergenos = alergenos;
+    public void setListaAlergenos(List<String> listaAlergenos) {
+        this.listaAlergenos = listaAlergenos;
     }
 
     @Override
     public String toString() {
-        return "Ingrediente [id=" + id + ", nombre=" + nombre + ", lista de alergenos " + listaAlergenos;
+        return "Ingrediente [id=" + id + ", nombre=" + nombre + ", lista de alergenos " + listaAlergenos + "]";
     }
-
-
-
-
-    
 }
