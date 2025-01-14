@@ -1,10 +1,9 @@
 package ies.thiar;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -68,5 +67,6 @@ public class ControladorProductoTestJPA {
         assertEquals("Fanta", producto.getNombre());
     }
 
+    
 
 }

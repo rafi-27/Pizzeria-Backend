@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.hibernate.Hibernate;
 
-import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pizza;

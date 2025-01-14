@@ -1,6 +1,7 @@
 package ies.thiar.Modelo;
 
 import java.util.List;
+
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
