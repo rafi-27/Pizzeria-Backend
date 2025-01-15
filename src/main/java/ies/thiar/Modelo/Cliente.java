@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,7 +41,7 @@ public class Cliente {
     private String password;
     
     @XmlTransient
-    @OneToMany(mappedBy="cliente", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="cliente", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     private List<Pedido> listaPedidos = new ArrayList<>();
 
 

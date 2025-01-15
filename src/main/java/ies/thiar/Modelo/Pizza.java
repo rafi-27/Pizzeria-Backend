@@ -2,8 +2,10 @@ package ies.thiar.Modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,7 +19,7 @@ import jakarta.persistence.SequenceGenerator;
 @SequenceGenerator(name="cliente_seq", sequenceName="hibernate_sequence", allocationSize=1)
 public class Pizza extends Producto {
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
         name = "Producto_Ingrediente",
         joinColumns = @JoinColumn(name = "producto_id"),

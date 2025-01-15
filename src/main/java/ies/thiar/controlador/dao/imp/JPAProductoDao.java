@@ -1,6 +1,7 @@
 package ies.thiar.controlador.dao.imp;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -20,6 +21,7 @@ public class JPAProductoDao implements ProductoDao {
     public JPAProductoDao() {
         this.entityManagerFactory = Persistence.createEntityManagerFactory("default");
     }
+
     @Override
     public void insert(Producto producto) throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -45,7 +47,7 @@ public class JPAProductoDao implements ProductoDao {
                     }
                 }
             }
-    
+
             entityManager.persist(producto);
             entityManager.getTransaction().commit();
         } catch (Exception e) {
@@ -103,8 +105,26 @@ public class JPAProductoDao implements ProductoDao {
 
     @Override
     public List<Producto> findAll() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<Producto>listaProductos = new ArrayList<>();
+
+        try {
+            listaProductos = entityManager.createQuery("SELECT c FROM Cliente c", Producto.class).getResultList();
+            for (Producto producto : listaProductos) {
+                if(producto instanceof Pizza pizza){
+                    Hibernate.initialize(pizza.getListaIngredientesPizza());
+                }else if(producto instanceof Pasta pasta){
+                    Hibernate.initialize(pasta.getListaIngredientePasta());
+                }
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error en findAll.");
+        } finally {
+            entityManager.close();
+        }
+        return listaProductos;
     }
 
     @Override

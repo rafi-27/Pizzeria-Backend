@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import ies.thiar.Modelo.Bebida;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.Pasta;
+import ies.thiar.Modelo.Pizza;
 import ies.thiar.Modelo.Producto;
 import ies.thiar.Modelo.SIZE;
 import ies.thiar.controlador.ControladorProducto;
@@ -25,18 +26,26 @@ public class ControladorProductoTestJPA {
     @Test
     public void insertarUnProducto() throws SQLException {
         List<Ingrediente> listaIngredientes = List.of(
-            new Ingrediente("Queso", List.of("Lactosa")),
+            new Ingrediente("Queso", List.of("Lactosa", "Gluten")),
             new Ingrediente("Tomate", List.of("")),
-            new Ingrediente("Jamon", List.of("Lactosa", "Gluten"))
+            new Ingrediente("Jamon", List.of("Lactosa", "Gluten")),
+            new Ingrediente("Jamones", List.of( "Gluten"))
+        );
+
+        List<Ingrediente> listaIngredientesPizza = List.of(
+            new Ingrediente("Queso", List.of("Lactosa", "Gluten")),
+            new Ingrediente("Kebab", List.of("Mayonesa","Pistachos"))
         );
 
         Producto producto = new Bebida("CocaCola", 2.50, SIZE.GRANDE);
         Producto pasta = new Pasta("Pasta", 5.50, listaIngredientes);
+        Producto pizza = new Pizza("Pizza kebab", 8.50, SIZE.GRANDE, listaIngredientesPizza);
 
         controladorProducto.insertProducto(producto);
         controladorProducto.insertProducto(pasta);
+        controladorProducto.insertProducto(pizza);
 
-        //
+        List<Producto>listaProducto;
     }
 
     @Test

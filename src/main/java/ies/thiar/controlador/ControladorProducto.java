@@ -1,6 +1,8 @@
 package ies.thiar.controlador;
 
 import java.sql.SQLException;
+import java.util.List;
+
 import ies.thiar.Modelo.Producto;
 import ies.thiar.controlador.dao.ProductoDao;
 import ies.thiar.controlador.dao.imp.JPAProductoDao;
@@ -32,9 +34,9 @@ public class ControladorProducto {
     //     return jProductoDao.findIngredientesProducto(idProduct);
     // }
 
-    // public List<Producto>findAllProducts() throws SQLException{
-    //     return jProductoDao.findAll();
-    // }
+    public List<Producto>findAllProducts() throws SQLException{
+        return productoJpa.findAll();
+    }
 
     // public Producto findProductById(int idProducto) throws SQLException {
     //     return jProductoDao.findByID(idProducto);
