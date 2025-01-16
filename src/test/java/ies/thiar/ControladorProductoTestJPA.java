@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import ies.thiar.Modelo.Bebida;
 import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.Pasta;
+import ies.thiar.Modelo.Pizza;
 import ies.thiar.Modelo.Producto;
 import ies.thiar.Modelo.SIZE;
 import ies.thiar.controlador.ControladorProducto;
@@ -31,20 +32,21 @@ public class ControladorProductoTestJPA {
             new Ingrediente("Jamones", List.of( "Gluten"))
         );
 
-        // List<Ingrediente> listaIngredientesPizza = List.of(
-        //     new Ingrediente("Queso", List.of("Lactosa", "Gluten")),
-        //     new Ingrediente("Kebab", List.of("Mayonesa","Pistachos"))
-        // );
+        List<Ingrediente> listaIngredientesPizza = List.of(
+            new Ingrediente("Queso", List.of("Lactosa", "Gluten")),
+            new Ingrediente("Kebab", List.of("Mayonesa","Pistachos"))
+        );
 
         Producto producto = new Bebida("CocaCola", 2.50, SIZE.GRANDE);
         Producto pasta = new Pasta("Pasta", 5.50, listaIngredientes);
-        //Producto pizza = new Pizza("Pizza kebab", 8.50, SIZE.GRANDE, listaIngredientesPizza);
+        Producto pizza = new Pizza("Pizza kebab", 8.50, SIZE.GRANDE, listaIngredientesPizza);
 
         controladorProducto.insertProducto(producto);
         controladorProducto.insertProducto(pasta);
-        //controladorProducto.insertProducto(pizza);
+        controladorProducto.insertProducto(pizza);
 
-        List<Producto>listaProducto;
+        List<Producto>listaProducto = controladorProducto.findAllProducts();
+        assertEquals(3, listaProducto.size());
     }
 
     @Test
@@ -60,7 +62,7 @@ public class ControladorProductoTestJPA {
 
         controladorProducto.deleteProduct(1);
 
-        //assertEquals(null, controladorProducto.findAll().size());
+        assertEquals(1, controladorProducto.findAllProducts().size());
     }
 
     @Test
@@ -75,6 +77,35 @@ public class ControladorProductoTestJPA {
         assertEquals("Fanta", producto.getNombre());
     }
 
-    
+    @Test
+    public void testFindAlergenosByIngrediente() throws SQLException{
+        List<Ingrediente> listaIngredientes = List.of(
+            new Ingrediente("Queso", List.of("Lactosa", "Gluten")),
+            new Ingrediente("Tomate", List.of("")),
+            new Ingrediente("Jamon", List.of("Lactosa", "Gluten")),
+            new Ingrediente("Jamones", List.of( "Gluten"))
+        );
+
+        List<Ingrediente> listaIngredientesPizza = List.of(
+            new Ingrediente("Queso", List.of("Lactosa", "Gluten")),
+            new Ingrediente("Kebab", List.of("Mayonesa","Pistachos"))
+        );
+
+        Producto producto = new Bebida("CocaCola", 2.50, SIZE.GRANDE);
+        Producto pasta = new Pasta("Pasta", 5.50, listaIngredientes);
+        Producto pizza = new Pizza("Pizza kebab", 8.50, SIZE.GRANDE, listaIngredientesPizza);
+
+        controladorProducto.insertProducto(producto);
+        controladorProducto.insertProducto(pasta);
+        controladorProducto.insertProducto(pizza);
+
+        List<String>listaAlergenos = controladorProducto.findAlergenoByIdIngredient(1);
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------");
+        assertEquals(2, listaAlergenos.size());
+        for (String string : listaAlergenos) {
+            System.out.println(string);
+        }
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------");
+    }
 
 }

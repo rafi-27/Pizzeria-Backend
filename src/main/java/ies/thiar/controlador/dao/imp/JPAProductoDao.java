@@ -25,37 +25,37 @@ public class JPAProductoDao implements ProductoDao {
     @Override
     public void insert(Producto producto) throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        try {
-            entityManager.getTransaction().begin();
-    
-            if (producto instanceof Pizza) {
-                Pizza pizza = (Pizza) producto;
-                for (Ingrediente ingrediente : pizza.getListaIngredientesPizza()) {
-                    if (ingrediente.getId() != 0) {
-                        entityManager.merge(ingrediente);
-                    } else {
-                        entityManager.persist(ingrediente);
-                    }
-                }
-            } else if (producto instanceof Pasta) {
-                Pasta pasta = (Pasta) producto;
-                for (Ingrediente ingrediente : pasta.getListaIngredientePasta()) {
-                    if (ingrediente.getId() != 0) {
-                        entityManager.merge(ingrediente);
-                    } else {
-                        entityManager.persist(ingrediente);
-                    }
-                }
-            }
-
-            entityManager.persist(producto);
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-            throw new SQLException("Error persisting Producto", e);
-        } finally {
-            entityManager.close();
+        entityManager.getTransaction().begin();
+        List<Ingrediente> ingredientes = new ArrayList<>();
+        if (producto instanceof Pizza pizza) {
+            ingredientes = pizza.getListaIngredientesPizza();
+        } else if (producto instanceof Pasta pasta) {
+            ingredientes = pasta.getListaIngredientePasta();
         }
+        List<Ingrediente> ingredientesConID = new ArrayList<>();
+        for (Ingrediente i : ingredientes) {
+            Ingrediente ingredienteConId = entityManager.createQuery(
+                    "SELECT ing FROM Ingrediente ing WHERE ing.nombre = :nombre", Ingrediente.class)
+                    .setParameter("nombre", i.getNombre())
+                    .getResultStream()
+                    .findFirst()
+                    .orElse(null);
+
+            if (ingredienteConId == null) {
+                entityManager.persist(i);
+                ingredienteConId = i;
+            }
+            ingredienteConId.setListaAlergenos(i.getListaAlergenos());
+            ingredientesConID.add(ingredienteConId);
+        }
+        if (producto instanceof Pizza pizza) {
+            pizza.setListaIngredientesPizza(ingredientesConID);
+        } else if (producto instanceof Pasta pasta) {
+            pasta.setListaIngredientePasta(ingredientesConID);
+        }
+        entityManager.persist(producto);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
@@ -106,17 +106,17 @@ public class JPAProductoDao implements ProductoDao {
     @Override
     public List<Producto> findAll() throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        List<Producto>listaProductos = new ArrayList<>();
+        List<Producto> listaProductos = new ArrayList<>();
 
         try {
-            listaProductos = entityManager.createQuery("SELECT c FROM Cliente c", Producto.class).getResultList();
+            listaProductos = entityManager.createQuery("SELECT c FROM Producto c", Producto.class).getResultList();
             for (Producto producto : listaProductos) {
-                if(producto instanceof Pizza pizza){
+                if (producto instanceof Pizza pizza) {
                     Hibernate.initialize(pizza.getListaIngredientesPizza());
-                }else if(producto instanceof Pasta pasta){
+                } else if (producto instanceof Pasta pasta) {
                     Hibernate.initialize(pasta.getListaIngredientePasta());
                 }
-                
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -135,8 +135,40 @@ public class JPAProductoDao implements ProductoDao {
 
     @Override
     public List<String> listaAlergenosIngrediente(int idIngre) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listaAlergenosIngrediente'");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<String> listaAlergenos = new ArrayList<>();
+
+        try {
+            listaAlergenos = entityManager
+                    .createQuery("SELECT a.listaAlergenos FROM IngredienteAlergenos a WHERE a.ingredienteId = :idIngre",
+                            String.class)
+                    .setParameter("idIngre", idIngre)
+                    .getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error en listaAlergenosIngrediente.");
+        } finally {
+            entityManager.close();
+        }
+        return listaAlergenos;
+    }
+
+    public Ingrediente findIngredienteByName(String name) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Ingrediente ingrediente = new Ingrediente();
+        try {
+            ingrediente = entityManager
+                    .createQuery("SELECT i FROM Ingrediente i WHERE i.nombre = :name", Ingrediente.class)
+                    .setParameter("nombre", name).getSingleResult();
+            Hibernate.initialize(ingrediente.getListaAlergenos());
+            return ingrediente;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error en findIngredienteByName.");
+        } finally {
+            entityManager.close();
+        }
+        return null;
     }
 
 }

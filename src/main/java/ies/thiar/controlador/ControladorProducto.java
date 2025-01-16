@@ -26,9 +26,9 @@ public class ControladorProducto {
         productoJpa.update(producto);
     }
 
-    // public List<String> findAlergenoByIdIngredient(int idIngrediente) throws SQLException{
-    //     return jProductoDao.listaAlergenosIngrediente(idIngrediente);
-    // }
+    public List<String> findAlergenoByIdIngredient(int idIngrediente) throws SQLException{
+        return productoJpa.listaAlergenosIngrediente(idIngrediente);
+    }
 
     // public List<Ingrediente> findIngredientesByProducto(int idProduct) throws SQLException{
     //     return jProductoDao.findIngredientesProducto(idProduct);
