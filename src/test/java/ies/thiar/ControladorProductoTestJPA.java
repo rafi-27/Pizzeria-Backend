@@ -100,12 +100,61 @@ public class ControladorProductoTestJPA {
         controladorProducto.insertProducto(pizza);
 
         List<String>listaAlergenos = controladorProducto.findAlergenoByIdIngredient(1);
-        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------");
         assertEquals(2, listaAlergenos.size());
-        for (String string : listaAlergenos) {
-            System.out.println(string);
-        }
-        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------");
     }
+
+    @Test
+    public void testFindIngredientesByIdProd() throws SQLException{
+        List<Ingrediente> listaIngredientes = List.of(
+            new Ingrediente("Queso", List.of("Lactosa", "Gluten")),
+            new Ingrediente("Tomate", List.of("")),
+            new Ingrediente("Jamon", List.of("Lactosa", "Gluten")),
+            new Ingrediente("Jamones", List.of( "Gluten"))
+        );
+
+        List<Ingrediente> listaIngredientesPizza = List.of(
+            new Ingrediente("Queso", List.of("Lactosa", "Gluten")),
+            new Ingrediente("Kebab", List.of("Mayonesa","Pistachos"))
+        );
+
+        Producto producto = new Bebida("CocaCola", 2.50, SIZE.GRANDE);
+        Producto pasta = new Pasta("Pasta", 5.50, listaIngredientes);
+        Producto pizza = new Pizza("Pizza Kebab", 8.50, SIZE.GRANDE, listaIngredientesPizza);
+
+        controladorProducto.insertProducto(producto);
+        controladorProducto.insertProducto(pasta);
+        controladorProducto.insertProducto(pizza);
+
+        List<Ingrediente>listaIngredientesABuscar = controladorProducto.findIngredientesByProducto(2);
+        assertEquals(4,listaIngredientesABuscar.size());
+    }
+
+
+    @Test
+    public void testFindPRoductoById() throws SQLException{
+        List<Ingrediente> listaIngredientes = List.of(
+            new Ingrediente("Queso", List.of("Lactosa", "Gluten")),
+            new Ingrediente("Tomate", List.of("")),
+            new Ingrediente("Jamon", List.of("Lactosa", "Gluten")),
+            new Ingrediente("Jamones", List.of( "Gluten"))
+        );
+
+        List<Ingrediente> listaIngredientesPizza = List.of(
+            new Ingrediente("Queso", List.of("Lactosa", "Gluten")),
+            new Ingrediente("Kebab", List.of("Mayonesa","Pistachos"))
+        );
+
+        Producto producto = new Bebida("CocaCola", 2.50, SIZE.GRANDE);
+        Producto pasta = new Pasta("Pasta", 5.50, listaIngredientes);
+        Producto pizza = new Pizza("Pizza Kebab", 8.50, SIZE.GRANDE, listaIngredientesPizza);
+
+        controladorProducto.insertProducto(producto);
+        controladorProducto.insertProducto(pasta);
+        controladorProducto.insertProducto(pizza);
+
+        Producto producto1 = controladorProducto.findProductById(3);
+        assertEquals("Pizza Kebab", producto1.getNombre());
+    }
+
 
 }

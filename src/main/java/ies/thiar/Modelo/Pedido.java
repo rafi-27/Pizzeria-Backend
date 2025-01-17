@@ -14,12 +14,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@SequenceGenerator(name="cliente_seq", sequenceName="hibernate_sequence", allocationSize=1)
 public class Pedido {
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
@@ -51,8 +49,7 @@ public class Pedido {
         this.lineaPedido = new ArrayList<>();
     }
 
-    public Pedido(int id, Date fecha, double precioTotal, EstadoPedido estado, Pagable pago, Cliente cliente) {
-        this.id = id;
+    public Pedido(Date fecha, double precioTotal, EstadoPedido estado, Pagable pago, Cliente cliente) {
         this.fecha = fecha;
         this.precioTotal = precioTotal;
         this.estado = estado;
@@ -93,21 +90,7 @@ public class Pedido {
         this.cliente = cliente;
         this.lineaPedido = new ArrayList<>();
     }
-     * @param fecha
-     * @param precioTotal
-     * @param estadoPedido
-     * @param pago
-     * @param cliente
-     */
 
-    public Pedido(Date fecha, double precioTotal,EstadoPedido estadoPedido, Pagable pago, Cliente cliente) {
-        this.fecha = fecha;
-        this.precioTotal = precioTotal;
-        this.estado = estadoPedido;
-        this.pago = pago;
-        this.cliente = cliente;
-        this.lineaPedido = new ArrayList<>();
-    }
     /**
      * public Pedido(Date fecha, double precioTotal,EstadoPedido estadoPedido, Pagable pago, Cliente cliente) {
         this.fecha = fecha;

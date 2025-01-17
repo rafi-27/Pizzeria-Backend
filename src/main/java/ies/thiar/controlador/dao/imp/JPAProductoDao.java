@@ -129,8 +129,31 @@ public class JPAProductoDao implements ProductoDao {
 
     @Override
     public List<Ingrediente> findIngredientesProducto(int idProd) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findIngredientesProducto'");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<Ingrediente> listaIngredientes = new ArrayList<>();
+
+        try {
+            entityManager.getTransaction().begin();
+            Producto producto = entityManager.find(Producto.class, idProd);
+            if(producto == null){
+                throw new SQLException("El producto es null.");
+            }   
+            if(producto instanceof Pizza pizza){
+                listaIngredientes = pizza.getListaIngredientesPizza();
+            }else if(producto instanceof Pasta pasta){
+                listaIngredientes = pasta.getListaIngredientePasta();
+            }
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(entityManager.getTransaction().isActive()){
+                entityManager.getTransaction().rollback();
+                System.out.println("Error en findIngredientesProducto.");
+            }
+        } finally {
+            entityManager.close();
+        }
+        return listaIngredientes;
     }
 
     @Override
@@ -139,14 +162,19 @@ public class JPAProductoDao implements ProductoDao {
         List<String> listaAlergenos = new ArrayList<>();
 
         try {
-            listaAlergenos = entityManager
-                    .createQuery("SELECT a.listaAlergenos FROM IngredienteAlergenos a WHERE a.ingredienteId = :idIngre",
-                            String.class)
-                    .setParameter("idIngre", idIngre)
-                    .getResultList();
+            entityManager.getTransaction().begin();
+            Ingrediente ingrediente = entityManager.find(Ingrediente.class, idIngre);
+            if(ingrediente == null){
+                throw new SQLException("El ingrediente es null.");
+            }   
+            listaAlergenos = ingrediente.getListaAlergenos();
+            entityManager.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error en listaAlergenosIngrediente.");
+            if(entityManager.getTransaction().isActive()){
+                entityManager.getTransaction().rollback();
+                System.out.println("Error en listaAlergenosIngrediente.");
+            }
         } finally {
             entityManager.close();
         }
