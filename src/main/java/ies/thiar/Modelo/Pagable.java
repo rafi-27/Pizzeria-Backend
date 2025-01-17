@@ -15,4 +15,10 @@ public abstract class Pagable {
     
     public abstract  void pagar(double cantidad);
     public abstract int formaPago();
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
 }

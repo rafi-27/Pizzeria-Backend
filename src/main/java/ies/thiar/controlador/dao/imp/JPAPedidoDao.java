@@ -23,6 +23,9 @@ public class JPAPedidoDao implements PedidoDao{
     public void insert(Pedido pedido) throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
+        if (pedido.getPago() != null && pedido.getPago().getId() == 0) {
+            entityManager.persist(pedido.getPago());
+        }
         entityManager.persist(pedido);
         entityManager.getTransaction().commit();
         entityManager.close();
