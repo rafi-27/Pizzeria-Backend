@@ -79,10 +79,21 @@ public class JPAPedidoDao implements PedidoDao {
     @Override
     public void update(Pedido pedido) throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
-        entityManager.merge(pedido);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+        try {
+            entityManager.getTransaction().begin();
+            if (pedido.getPago() != null && entityManager.contains(pedido.getPago()) == false) {
+                entityManager.persist(pedido.getPago());
+            }
+            entityManager.merge(pedido);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override
@@ -186,21 +197,22 @@ public class JPAPedidoDao implements PedidoDao {
     @Override
     public void agregarLineaPedido(List<LineaPedido> listaLineaPedidos, int idPedido) throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-
         try {
             entityManager.getTransaction().begin();
-
             Pedido pedido = entityManager.find(Pedido.class, idPedido);
             if (pedido == null) {
                 throw new SQLException("El Pedido es null.");
-            } else {
-                for (LineaPedido lineaPedido : listaLineaPedidos) {
-                    lineaPedido.setPedido(pedido);
-                    entityManager.persist(lineaPedido);
-                }
-                pedido.setLineaPedido(listaLineaPedidos);
             }
 
+            for (LineaPedido lineaPedido : listaLineaPedidos) {
+                Producto producto = entityManager.find(Producto.class, lineaPedido.getProduct().getId());
+                if (producto == null) {
+                    throw new SQLException("El producto asociado no está persistido.");
+                }
+                lineaPedido.setProduct(producto);
+                lineaPedido.setPedido(pedido);
+                entityManager.persist(lineaPedido);
+            }
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -208,18 +220,9 @@ public class JPAPedidoDao implements PedidoDao {
                 entityManager.getTransaction().rollback();
                 System.out.println("Error en agregarLineaPedido.");
             }
+            throw new SQLException("Error en líneas de pedido.", e);
         } finally {
             entityManager.close();
         }
     }
-
-    @Override
-    public Pedido findPedidoByIdClient(int idCliente) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findPedidoByIdClient'");
-    }
-
-    
-
-
 }

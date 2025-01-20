@@ -21,7 +21,7 @@ public class ControladorPedido {
     private ClienteDao jClienteDao = new JPAClienteDao();
     private PedidoDao jpaPedidoDao;
 
-    private Pedido pedidoActual;
+   private Pedido pedidoActual;
 
     public ControladorPedido(Pedido pedido) {
         this.pedidoActual=pedido;
@@ -49,10 +49,6 @@ public class ControladorPedido {
     }
 
     //Metodos complementarios:
-    public Pedido findPedidoByIdCliente(int idCliente) throws SQLException{
-        return jpaPedidoDao.findPedidoByIdClient(idCliente);
-    }
-
     public List<LineaPedido> obtenerLineasPedidosByIdPedido(int idPedido) throws SQLException{
         return jpaPedidoDao.obtenerLineasPedidosByIdPedido(idPedido);
     }
@@ -71,73 +67,76 @@ public class ControladorPedido {
 
     
     // primero comprobar si el pedido existe
-    public void anyadirCarrito(Producto producto, int cantidad) throws SQLException, IllegalAccessException {
-        Cliente cliente = jClienteDao.findByID(pedidoActual.getCliente().getId());
-        
+    public void anyadirCarrito(Pedido pedido,Producto producto, int cantidad) throws SQLException, IllegalAccessException {
+        Cliente cliente = jClienteDao.findByID(pedido.getCliente().getId());
+
         if (cliente == null) {
-            throw new IllegalAccessException("Usuario incorrecto{anyadirCarrito}");
+           // throw new IllegalAccessException("Usuario incorrecto{anyadirCarrito}");
+            jClienteDao.insert(pedido.getCliente());
         }
 
-        if(pedidoActual.getEstado()!=EstadoPedido.PENDIENTE){
-            pedidoActual = new Pedido(pedidoActual.getCliente());
+        if(pedido.getEstado()!=EstadoPedido.PENDIENTE){
+            pedido = new Pedido(pedido.getCliente());
         }
 
         try {
-            Pedido existente = jpaPedidoDao.findByID(pedidoActual.getId());
+            Pedido existente = jpaPedidoDao.findByID(pedido.getId());
 
             if(existente == null){
-                insertPedido(pedidoActual);
+                insertPedido(pedido);
             }else{
-                pedidoActual.setLineaPedido(existente.getLineaPedido());
+                pedido.setLineaPedido(existente.getLineaPedido());
             }
 
             LineaPedido lineaPedido = new LineaPedido(cantidad, producto, existente);
-            pedidoActual.getLineaPedido().add(lineaPedido);
+            pedido.getLineaPedido().add(lineaPedido);
 
-            updatePedido(pedidoActual);
-
+            updatePedido(pedido);
         } catch (Exception e) {
             System.out.println("Algo salio mal al anyadir al carrito.");
         }
 
-        if (pedidoActual.getEstado() != EstadoPedido.PENDIENTE) {
-            pedidoActual.setEstado(EstadoPedido.PENDIENTE);
+        if (pedido.getEstado() != EstadoPedido.PENDIENTE) {
+            pedido.setEstado(EstadoPedido.PENDIENTE);
         }
     }
 
 
-    public void finalizarPedido(Pagable metodoPago) throws IllegalAccessException, SQLException {
-        Cliente client = jClienteDao.findByID(pedidoActual.getCliente().getId());
+    public void finalizarPedido(Pedido pedido, Pagable metodoPago) throws IllegalAccessException, SQLException {
+        Cliente client = jClienteDao.findByID(pedido.getCliente().getId());
         if (client == null) {
             throw new IllegalAccessException("Usuario incorrecto{finalizarPedido}");
         }
-        if (pedidoActual.getEstado() == EstadoPedido.PENDIENTE) {
-            metodoPago.pagar(pedidoActual.getPrecioTotal());
-            pedidoActual.setEstado(EstadoPedido.FINALIZADO);
-            if (metodoPago.formaPago()==0) {
-                pedidoActual.setPago(new PagarTarjeta());
-                metodoPago.pagar(pedidoActual.getPrecioTotal());
-            }else {
-                pedidoActual.setPago(new PagarEfectivo());
-                metodoPago.pagar(pedidoActual.getPrecioTotal());
+    
+        if (pedido.getEstado() == EstadoPedido.PENDIENTE) {
+            metodoPago.pagar(pedido.getPrecioTotal());
+            pedido.setEstado(EstadoPedido.FINALIZADO);
+    
+            if (metodoPago.formaPago() == 0) {
+                pedido.setPago(new PagarTarjeta());
+            } else {
+                pedido.setPago(new PagarEfectivo());
             }
-            updatePedido(pedidoActual);
-            pedidoActual.getLineaPedido().clear();
+    
+            // Delegar al DAO para manejar el update
+            jpaPedidoDao.update(pedido);
+    
+            pedido.getLineaPedido().clear();
         } else {
-            System.out.println("Algo salio mal al finalizar.");
+            System.out.println("Algo salió mal al finalizar.");
         }
     }
+    
 
-
-    public void cancelarPedido() throws IllegalAccessException, SQLException {
-        Cliente client = jClienteDao.findByID(pedidoActual.getCliente().getId());
+    public void cancelarPedido(Pedido pedido) throws IllegalAccessException, SQLException {
+        Cliente client = jClienteDao.findByID(pedido.getCliente().getId());
 
         if (client == null) {
             throw new IllegalAccessException("Usuario incorrecto{cancelarPedido}");
         }
-        if (pedidoActual.getEstado() != EstadoPedido.FINALIZADO || pedidoActual.getEstado() == EstadoPedido.ENTREGADO) {
-            pedidoActual.setEstado(EstadoPedido.CANCELADO);
-            updatePedido(pedidoActual);
+        if (pedido.getEstado() != EstadoPedido.FINALIZADO || pedido.getEstado() == EstadoPedido.ENTREGADO) {
+            pedido.setEstado(EstadoPedido.CANCELADO);
+            updatePedido(pedido);
             System.out.println("El pedido ha sido cancelado.");
         } else {
             System.out.println("Algo salio mal al cancelar el pedido.");
@@ -145,10 +144,10 @@ public class ControladorPedido {
     }
 
 
-    public void entregarPedido(int idPedido) throws SQLException {
-        if (pedidoActual.getId() == idPedido) {
-            pedidoActual.setEstado(EstadoPedido.ENTREGADO);
-            updatePedido(pedidoActual);
+    public void entregarPedido(Pedido pedido) throws SQLException {
+        if (findPedidoById(pedido.getId()) != null) {
+            pedido.setEstado(EstadoPedido.ENTREGADO);
+            updatePedido(pedido);
         } else {
             System.out.println("Id incorrecto");
         }
