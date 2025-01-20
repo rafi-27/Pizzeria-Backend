@@ -31,16 +31,12 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     private EstadoPedido estado;
 
-    //@OneToMany(mappedBy="pedido", cascade = CascadeType.ALL)
-    //@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<LineaPedido> lineaPedido;
     
     @OneToOne
     private Pagable pago;
-    //private FormaPago pago;
-
-    //    private Pagable pago;
+  
     @ManyToOne(cascade = CascadeType.ALL)
     private Cliente cliente;
 

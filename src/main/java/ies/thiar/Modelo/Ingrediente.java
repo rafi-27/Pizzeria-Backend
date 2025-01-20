@@ -10,10 +10,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 
 @Entity
-@SequenceGenerator(name="cliente_seq", sequenceName="hibernate_sequence", allocationSize=1)
 public class Ingrediente {
 
     @ElementCollection(fetch=FetchType.EAGER)

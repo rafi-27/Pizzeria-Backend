@@ -71,6 +71,4 @@ public class ControladorProducto {
     // public Producto findProductById(int idProducto) throws SQLException {
     //     return jProductoDao.findByID(idProducto);
     // }
-
-
 }

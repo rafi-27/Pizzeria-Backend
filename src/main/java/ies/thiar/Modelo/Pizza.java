@@ -9,10 +9,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.SequenceGenerator;
 
 @Entity
-@SequenceGenerator(name="cliente_seq", sequenceName="hibernate_sequence", allocationSize=1)
 public class Pizza extends Producto {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

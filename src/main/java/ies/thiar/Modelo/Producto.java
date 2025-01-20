@@ -1,7 +1,5 @@
 package ies.thiar.Modelo;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import jakarta.persistence.Entity;
@@ -10,11 +8,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 
-@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-@SequenceGenerator(name="cliente_seq", sequenceName="hibernate_sequence", allocationSize=1)
 public abstract class Producto {
     @XmlAttribute
     @Id

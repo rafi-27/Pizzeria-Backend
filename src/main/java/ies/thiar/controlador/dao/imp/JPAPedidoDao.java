@@ -1,6 +1,5 @@
 package ies.thiar.controlador.dao.imp;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +8,8 @@ import org.hibernate.Hibernate;
 
 import ies.thiar.Modelo.Cliente;
 import ies.thiar.Modelo.EstadoPedido;
-import ies.thiar.Modelo.Ingrediente;
 import ies.thiar.Modelo.LineaPedido;
-import ies.thiar.Modelo.Pasta;
 import ies.thiar.Modelo.Pedido;
-import ies.thiar.Modelo.Pizza;
 import ies.thiar.Modelo.Producto;
 import ies.thiar.controlador.dao.PedidoDao;
 import jakarta.persistence.EntityManager;

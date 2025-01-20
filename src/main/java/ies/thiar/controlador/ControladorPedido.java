@@ -118,7 +118,6 @@ public class ControladorPedido {
                 pedido.setPago(new PagarEfectivo());
             }
     
-            // Delegar al DAO para manejar el update
             jpaPedidoDao.update(pedido);
     
             pedido.getLineaPedido().clear();
