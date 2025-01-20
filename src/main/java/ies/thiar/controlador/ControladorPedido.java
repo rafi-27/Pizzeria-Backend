@@ -65,6 +65,10 @@ public class ControladorPedido {
         return jpaPedidoDao.obtenerPedidosByIdClient(idCliente);
     }
 
+    public void agregarLineaPedido(List<LineaPedido> listaLineaPedidos, int idPedido) throws SQLException {
+        jpaPedidoDao.agregarLineaPedido(listaLineaPedidos, idPedido);
+    }
+
     
     // primero comprobar si el pedido existe
     public void anyadirCarrito(Producto producto, int cantidad) throws SQLException, IllegalAccessException {

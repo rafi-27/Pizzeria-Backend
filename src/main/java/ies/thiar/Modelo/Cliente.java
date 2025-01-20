@@ -40,7 +40,6 @@ public class Cliente {
     @XmlTransient
     private String password;
     
-    @XmlTransient
     @OneToMany(mappedBy="cliente", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     private List<Pedido> listaPedidos = new ArrayList<>();
 

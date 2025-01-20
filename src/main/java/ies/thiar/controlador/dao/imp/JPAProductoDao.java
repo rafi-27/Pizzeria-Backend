@@ -131,7 +131,6 @@ public class JPAProductoDao implements ProductoDao {
     public List<Ingrediente> findIngredientesProducto(int idProd) throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         List<Ingrediente> listaIngredientes = new ArrayList<>();
-
         try {
             entityManager.getTransaction().begin();
             Producto producto = entityManager.find(Producto.class, idProd);

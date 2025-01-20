@@ -8,6 +8,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,8 +32,9 @@ public class Pedido {
     private EstadoPedido estado;
 
     //@OneToMany(mappedBy="pedido", cascade = CascadeType.ALL)
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LineaPedido>lineaPedido;
+    //@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<LineaPedido> lineaPedido;
     
     @OneToOne
     private Pagable pago;
@@ -84,6 +86,10 @@ public class Pedido {
         this.cliente = cliente;
         this.lineaPedido = new ArrayList<>();
     }
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     /**
      * public Pedido(Date fecha, double precioTotal, Pagable pago, Cliente cliente) {
         this.fecha = fecha;
