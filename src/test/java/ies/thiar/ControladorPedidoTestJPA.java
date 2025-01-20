@@ -98,7 +98,12 @@ public class ControladorPedidoTestJPA {
         Pedido pedidoPersistido = controladorPedido.findPedidoById(pedido.getId());
         assertNotNull(pedidoPersistido);
         assertEquals(2, pedidoPersistido.getLineaPedido().size());
+
+        
+
+
     }
+
 
 
 
