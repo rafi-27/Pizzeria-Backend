@@ -13,7 +13,7 @@ public abstract class Pagable {
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private int id;
     
-    public abstract  void pagar(double cantidad);
+    public abstract void pagar(double cantidad);
     public abstract int formaPago();
     public int getId() {
         return id;

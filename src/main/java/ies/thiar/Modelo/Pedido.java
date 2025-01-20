@@ -30,7 +30,8 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     private EstadoPedido estado;
 
-    @OneToMany(mappedBy="pedido", cascade = CascadeType.ALL)
+    //@OneToMany(mappedBy="pedido", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LineaPedido>lineaPedido;
     
     @OneToOne
@@ -48,6 +49,8 @@ public class Pedido {
         this.cliente=client;
         this.lineaPedido = new ArrayList<>();
     }
+
+    public Pedido() {}
 
     public Pedido(Date fecha, double precioTotal, EstadoPedido estado, Pagable pago, Cliente cliente) {
         this.fecha = fecha;
@@ -135,8 +138,6 @@ public class Pedido {
         this.precioTotal = precioTotal;
     }
 
-
-
     public double getPrecioTotal(){
         return lineaPedido.stream().mapToDouble(LineaPedido::getPrecioSubtotal).sum();
     }
@@ -171,5 +172,15 @@ public class Pedido {
     public void finalizarPedido(){
         setEstado(EstadoPedido.FINALIZADO);
         
+    }
+
+    public void addLineaPedido(LineaPedido lineaPedido) {
+        lineaPedido.setPedido(this);
+        this.lineaPedido.add(lineaPedido);
+    }
+
+    public void removeLineaPedido(LineaPedido lineaPedido) {
+        lineaPedido.setPedido(null);
+        this.lineaPedido.remove(lineaPedido);
     }
 }

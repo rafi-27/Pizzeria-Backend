@@ -39,20 +39,14 @@ public class LineaPedido {
         this.pedido = pedido;
     }
 
-    public LineaPedido(int ide, int cantidad, Producto producto, Pedido pedido) {
-        this.id=ide;
-        this.cantidad = cantidad;
-        this.product=producto;
-        this.pedido=pedido;
-    }
-
     public LineaPedido(int cantidad, Producto producto, Pedido pedido) {
         this.cantidad = cantidad;
         this.product=producto;
         this.pedido=pedido;
     }
 
-    public LineaPedido(){}
+    public LineaPedido() {}
+
 
     public int getId() {
         return id;
@@ -93,5 +87,4 @@ public class LineaPedido {
     public void setId(int id) {
         this.id = id;
     }
-
 }

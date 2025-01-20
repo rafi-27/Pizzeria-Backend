@@ -4,15 +4,18 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.hibernate.Hibernate;
+
 import ies.thiar.Modelo.EstadoPedido;
 import ies.thiar.Modelo.LineaPedido;
 import ies.thiar.Modelo.Pedido;
+import ies.thiar.Modelo.Producto;
 import ies.thiar.controlador.dao.PedidoDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-public class JPAPedidoDao implements PedidoDao{
+public class JPAPedidoDao implements PedidoDao {
     private final EntityManagerFactory entityManagerFactory;
 
     public JPAPedidoDao() {
@@ -23,9 +26,23 @@ public class JPAPedidoDao implements PedidoDao{
     public void insert(Pedido pedido) throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
+
         if (pedido.getPago() != null && pedido.getPago().getId() == 0) {
             entityManager.persist(pedido.getPago());
         }
+
+        // Uso de cascade para manejar LineaPedido
+        for (LineaPedido lineaPedido : pedido.getLineaPedido()) {
+            Producto producto = lineaPedido.getProduct();
+            if (producto != null) {
+                if (producto.getId() == 0) { // Suponiendo que ID 0 significa que no está persistido
+                    entityManager.persist(producto);
+                } else {
+                    entityManager.merge(producto);
+                }
+            }
+        }
+
         entityManager.persist(pedido);
         entityManager.getTransaction().commit();
         entityManager.close();
@@ -45,8 +62,18 @@ public class JPAPedidoDao implements PedidoDao{
 
     @Override
     public Pedido findByID(int id) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByID'");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Pedido pedido = entityManager.find(Pedido.class, id);
+        try {
+            if (pedido != null) { 
+                Hibernate.initialize(pedido.getLineaPedido());
+                return pedido;
+            } else {
+                return null;
+            }
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override
